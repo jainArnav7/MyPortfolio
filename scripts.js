@@ -16,53 +16,61 @@ document.addEventListener('DOMContentLoaded', () => {
   initFormHandling();
 });
 
-// ========================================
-// CUSTOM CURSOR
-// ========================================
+// Initialize a custom cursor and ensure proper scoping
 function initCustomCursor() {
-  // Check if device supports hover (not touch device)
-  if (window.matchMedia("(pointer: coarse)").matches) {
-    document.body.style.cursor = 'auto';
-    return;
-  }
-  
   const cursorDot = document.querySelector('.cursor-dot');
   const cursorOutline = document.querySelector('.cursor-outline');
-  
+
   if (!cursorDot || !cursorOutline) return;
-  
+
+  // Only activate if we are on a desktop (not touch)
+  if (!window.matchMedia || !window.matchMedia("(pointer: fine)").matches) return;
+
+  // Reveal the cursor (in case CSS hides it)
+  cursorDot.style.opacity = '1';
+  cursorOutline.style.opacity = '1';
+
   let mouseX = 0, mouseY = 0;
   let outlineX = 0, outlineY = 0;
-  
-  // Update cursor position on mouse move
+
+  // Move the small dot instantly
   document.addEventListener('mousemove', (e) => {
     mouseX = e.clientX;
     mouseY = e.clientY;
-    
-    // Immediate update for dot
-    cursorDot.style.left = mouseX + 'px';
-    cursorDot.style.top = mouseY + 'px';
+
+    cursorDot.style.left = `${mouseX}px`;
+    cursorDot.style.top = `${mouseY}px`;
+
+    // Interaction when hovering over links/buttons
+    const target = e.target;
+    if (target && (target.tagName === 'A' || target.tagName === 'BUTTON' || target.closest('a') || target.closest('button'))) {
+      cursorOutline.style.transform = 'translate(-50%, -50%) scale(1.5)';
+      cursorOutline.style.backgroundColor = 'rgba(99, 102, 241, 0.1)';
+    } else {
+      cursorOutline.style.transform = 'translate(-50%, -50%) scale(1)';
+      cursorOutline.style.backgroundColor = 'transparent';
+    }
   });
-  
-  // Smooth follow effect for outline
+
+  // Animate the outline with a delay (lag effect)
   function animateOutline() {
     const dx = mouseX - outlineX;
     const dy = mouseY - outlineY;
-    
-    outlineX += dx * 0.2;
-    outlineY += dy * 0.2;
-    
-    cursorOutline.style.left = outlineX + 'px';
-    cursorOutline.style.top = outlineY + 'px';
-    
+
+    outlineX += dx * 0.15;
+    outlineY += dy * 0.15;
+
+    cursorOutline.style.left = `${outlineX}px`;
+    cursorOutline.style.top = `${outlineY}px`;
+
     requestAnimationFrame(animateOutline);
   }
-  
+
   animateOutline();
-  
-  // Add hover effects for interactive elements
+
+  // Add hover effects for interactive elements (scoped to this function)
   const interactiveElements = document.querySelectorAll('a, button, .skill-card, .project-card-modern, .cert-card-elite');
-  
+
   interactiveElements.forEach(el => {
     el.addEventListener('mouseenter', () => {
       cursorOutline.style.width = '70px';
@@ -70,7 +78,7 @@ function initCustomCursor() {
       cursorOutline.style.borderColor = 'var(--primary)';
       cursorOutline.style.background = 'rgba(99, 102, 241, 0.1)';
     });
-    
+
     el.addEventListener('mouseleave', () => {
       cursorOutline.style.width = '40px';
       cursorOutline.style.height = '40px';
