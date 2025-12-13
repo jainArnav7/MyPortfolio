@@ -58,7 +58,8 @@
 }
 
 /* Dark Theme */
-[data-theme="dark"] {
+:root[data-theme="dark"], 
+html[data-theme="dark"] {
     --text-primary: #f1f5f9;
     --text-secondary: #cbd5e1;
     --text-muted: #94a3b8;
@@ -1875,3 +1876,4 @@ footer {
         flex-direction: column;
     }
 }
+
