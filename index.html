@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;900&family=Inter:wght@300;400;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <title>Arnav Jain - Elite Developer</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <!-- Custom Cursor -->
+  <div class="cursor-dot"></div>
+  <div class="cursor-outline"></div>
+
+  <!-- Particle Background -->
+  <div class="particles-container" id="particles"></div>
+  
+  <!-- Scroll Progress Bar -->
+  <div class="scroll-progress"></div>
+
+  <!-- Navbar -->
+  <nav id="navbar">
+    <div class="nav-container">
+      <a href="#" class="logo">
+        <span class="logo-bracket">&lt;</span>
+        Arnav
+        <span class="logo-bracket">/&gt;</span>
+      </a>
+      
+      <ul class="nav-links">
+        <li><a href="#about"><span class="nav-number">01.</span> About</a></li>
+        <li><a href="#skills"><span class="nav-number">02.</span> Skills</a></li>
+        <li><a href="#projects"><span class="nav-number">03.</span> Projects</a></li>
+        <li><a href="#certifications"><span class="nav-number">04.</span> Certifications</a></li>
+        <li><a href="#contact"><span class="nav-number">05.</span> Contact</a></li>
+      </ul>
+
+      <div class="nav-social">
+        <a href="https://github.com/jainArnav7" target="_blank" class="social-icon"><i class="fa-brands fa-github"></i></a>
+        <a href="https://www.linkedin.com/in/arnav-jain-b63069354" target="_blank" class="social-icon"><i class="fa-brands fa-linkedin"></i></a>
+        <a href="mailto:arnavjain711@gmail.com" class="social-icon"><i class="fa-solid fa-envelope"></i></a>
+        <button class="theme-toggle" id="themeToggle">
+          <i class="fa-solid fa-moon"></i>
+        </button>
+      </div>
+
+      <div class="hamburger" id="hamburger">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Mobile Menu -->
+  <div class="mobile-menu" id="mobileMenu">
+    <ul>
+      <li><a href="#" class="mobile-link"><span>01.</span> Home</a></li>
+      <li><a href="#about" class="mobile-link"><span>02.</span> About</a></li>
+      <li><a href="#skills" class="mobile-link"><span>03.</span> Skills</a></li>
+      <li><a href="#projects" class="mobile-link"><span>04.</span> Projects</a></li>
+      <li><a href="#certifications" class="mobile-link"><span>05.</span> Certifications</a></li>
+      <li><a href="#contact" class="mobile-link"><span>06.</span> Contact</a></li>
+    </ul>
+    <div class="mobile-social">
+      <a href="https://github.com/jainArnav7" target="_blank"><i class="fa-brands fa-github"></i></a>
+      <a href="https://www.linkedin.com/in/arnav-jain-b63069354" target="_blank"><i class="fa-brands fa-linkedin"></i></a>
+      <a href="mailto:arnavjain711@gmail.com"><i class="fa-solid fa-envelope"></i></a>
+    </div>
+  </div>
+
+  <main>
+    <!-- Hero Section -->
+    <section class="hero-section">
+      <div class="hero-content">
+        <div class="hero-badge">
+          <span class="badge-dot"></span>
+          Available for opportunities
+        </div>
+        <h1 class="hero-title">
+          <span class="hero-greeting">Hi, I'm</span>
+          <span class="hero-name">Arnav Jain</span>
+          <span class="hero-tagline">I Build <span class="rotating-text" id="rotatingText">The Future</span></span>
+        </h1>
+        <p class="hero-description">Elite developer specializing in <strong>AI-powered solutions</strong>, with expertise in Python, web technologies, and hardware integration. I don't just write code—I architect experiences that solve real problems.</p>
+        
+        <div class="hero-stats">
+          <div class="stat-item">
+            <div class="stat-number" data-target="5">0</div>
+            <div class="stat-label">Projects Completed</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-number" data-target="3">0</div>
+            <div class="stat-label">Certifications</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-number" data-target="100">0</div>
+            <div class="stat-label">% Dedication</div>
+          </div>
+        </div>
+
+        <div class="hero-buttons">
+          <a href="#contact" class="btn btn-primary">
+            <span>Let's Collaborate</span>
+            <i class="fa-solid fa-arrow-right"></i>
+          </a>
+          <a href="#projects" class="btn btn-secondary">
+            <span>View My Work</span>
+            <i class="fa-solid fa-code"></i>
+          </a>
+        </div>
+      </div>
+      
+      <div class="hero-visual">
+        <div class="hero-image-container">
+          <div class="image-glow"></div>
+          <img src="images/hero-headshot.webp" alt="Arnav Jain" class="hero-image">
+          <div class="orbit-ring ring-1"></div>
+          <div class="orbit-ring ring-2"></div>
+          <div class="orbit-ring ring-3"></div>
+        </div>
+        <div class="floating-card card-1">
+          <i class="fa-brands fa-python"></i>
+          <span>Python Expert</span>
+        </div>
+        <div class="floating-card card-2">
+          <i class="fa-solid fa-brain"></i>
+          <span>AI/ML</span>
+        </div>
+        <div class="floating-card card-3">
+          <i class="fa-brands fa-raspberry-pi"></i>
+          <span>IoT</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="about-section">
+      <div class="section-header">
+        <span class="section-number">01.</span>
+        <h2 class="section-title">About Me</h2>
+        <div class="section-line"></div>
+      </div>
+      
+      <div class="about-content">
+        <div class="about-text">
+          <p>I'm a <span class="highlight">developer who thinks differently</span>. While others see problems, I see opportunities to innovate. My journey started with curiosity about how computers work, and evolved into a passion for creating intelligent systems that make life better.</p>
+          
+          <p>From building <span class="highlight">AI-powered planners</span> to working with <span class="highlight">Raspberry Pi</span> in Linux environments, I thrive on challenges that push the boundaries of what's possible. My strong mathematics background gives me an edge in algorithmic thinking and problem-solving.</p>
+
+          <div class="about-highlights">
+            <div class="highlight-item">
+              <i class="fa-solid fa-bolt"></i>
+              <span>Fast Learner</span>
+            </div>
+            <div class="highlight-item">
+              <i class="fa-solid fa-lightbulb"></i>
+              <span>Innovative Thinker</span>
+            </div>
+            <div class="highlight-item">
+              <i class="fa-solid fa-trophy"></i>
+              <span>Competition Winner</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="about-cards">
+          <div class="expertise-card">
+            <div class="card-icon">
+              <i class="fa-solid fa-laptop-code"></i>
+            </div>
+            <h3>Full-Stack Development</h3>
+            <p>Crafting seamless experiences from front-end to back-end with modern technologies and best practices.</p>
+          </div>
+          
+          <div class="expertise-card">
+            <div class="card-icon">
+              <i class="fa-solid fa-robot"></i>
+            </div>
+            <h3>AI & Automation</h3>
+            <p>Building intelligent systems that learn, adapt, and automate complex workflows efficiently.</p>
+          </div>
+          
+          <div class="expertise-card">
+            <div class="card-icon">
+              <i class="fa-solid fa-microchip"></i>
+            </div>
+            <h3>Hardware Integration</h3>
+            <p>Bridging software and hardware through IoT projects with Raspberry Pi and embedded systems.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Skills Section -->
+    <section id="skills" class="skills-section">
+      <div class="section-header">
+        <span class="section-number">02.</span>
+        <h2 class="section-title">Technical Arsenal</h2>
+        <div class="section-line"></div>
+      </div>
+      
+      <div class="skills-container">
+        <div class="skills-grid">
+          <div class="skill-card" data-skill="python">
+            <div class="skill-icon-wrapper">
+              <i class="fa-brands fa-python"></i>
+              <div class="skill-glow"></div>
+            </div>
+            <h3>Python</h3>
+            <div class="skill-level">
+              <div class="level-bar" style="--level: 88%"></div>
+            </div>
+            <span class="skill-percent">88%</span>
+            <p>AI/ML • Automation • Backend</p>
+          </div>
+
+          <div class="skill-card" data-skill="html">
+            <div class="skill-icon-wrapper">
+              <i class="fa-brands fa-html5"></i>
+              <div class="skill-glow"></div>
+            </div>
+            <h3>HTML5</h3>
+            <div class="skill-level">
+              <div class="level-bar" style="--level: 90%"></div>
+            </div>
+            <span class="skill-percent">90%</span>
+            <p>Semantic • Accessible • Modern</p>
+          </div>
+
+          <div class="skill-card" data-skill="css">
+            <div class="skill-icon-wrapper">
+              <i class="fa-brands fa-css3-alt"></i>
+              <div class="skill-glow"></div>
+            </div>
+            <h3>CSS3</h3>
+            <div class="skill-level">
+              <div class="level-bar" style="--level: 85%"></div>
+            </div>
+            <span class="skill-percent">85%</span>
+            <p>Animations • Responsive • Design</p>
+          </div>
+
+          <div class="skill-card" data-skill="javascript">
+            <div class="skill-icon-wrapper">
+              <i class="fa-brands fa-js"></i>
+              <div class="skill-glow"></div>
+            </div>
+            <h3>JavaScript</h3>
+            <div class="skill-level">
+              <div class="level-bar" style="--level: 75%"></div>
+            </div>
+            <span class="skill-percent">75%</span>
+            <p>ES6+ • Interactive • Dynamic</p>
+          </div>
+
+          <div class="skill-card" data-skill="raspberry">
+            <div class="skill-icon-wrapper">
+              <i class="fa-brands fa-raspberry-pi"></i>
+              <div class="skill-glow"></div>
+            </div>
+            <h3>Raspberry Pi</h3>
+            <div class="skill-level">
+              <div class="level-bar" style="--level: 80%"></div>
+            </div>
+            <span class="skill-percent">80%</span>
+            <p>IoT • Hardware • Projects</p>
+          </div>
+
+          <div class="skill-card" data-skill="linux">
+            <div class="skill-icon-wrapper">
+              <i class="fa-brands fa-linux"></i>
+              <div class="skill-glow"></div>
+            </div>
+            <h3>Linux</h3>
+            <div class="skill-level">
+              <div class="level-bar" style="--level: 82%"></div>
+            </div>
+            <span class="skill-percent">82%</span>
+            <p>Shell • Admin • Optimization</p>
+          </div>
+        </div>
+
+        <div class="skills-extra">
+          <h3>Additional Expertise</h3>
+          <div class="extra-skills">
+            <span class="extra-tag">Git & GitHub</span>
+            <span class="extra-tag">Problem Solving</span>
+            <span class="extra-tag">Algorithm Design</span>
+            <span class="extra-tag">Data Structures</span>
+            <span class="extra-tag">Mathematics</span>
+            <span class="extra-tag">System Design</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section id="projects" class="projects-section">
+      <div class="section-header">
+        <span class="section-number">03.</span>
+        <h2 class="section-title">Featured Projects</h2>
+        <div class="section-line"></div>
+      </div>
+
+      <div class="projects-showcase">
+        <div class="project-featured">
+          <div class="project-visual">
+            <div class="project-mockup">
+              <i class="fa-solid fa-brain"></i>
+              <div class="mockup-glow"></div>
+            </div>
+          </div>
+          <div class="project-details">
+            <span class="project-label">Featured Project</span>
+            <h3>AI Task Planner Pro</h3>
+            <div class="project-description">
+              <p>An intelligent task management system powered by custom AI algorithms that learns from your habits, prioritizes your workload, and maximizes productivity. Features include smart scheduling, deadline prediction, and automated workflow optimization.</p>
+            </div>
+            <div class="project-tech">
+              <span>Python</span>
+              <span>Machine Learning</span>
+              <span>Algorithm Design</span>
+              <span>Data Analysis</span>
+            </div>
+            <div class="project-actions">
+              <a href="#" class="project-link">
+                <i class="fa-brands fa-github"></i>
+                <span>View Code</span>
+              </a>
+              <a href="#" class="project-link">
+                <i class="fa-solid fa-external-link-alt"></i>
+                <span>Live Demo</span>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <div class="projects-grid">
+          <div class="project-card-modern">
+            <div class="project-card-header">
+              <i class="fa-brands fa-raspberry-pi"></i>
+              <div class="project-card-actions">
+                <a href="#"><i class="fa-brands fa-github"></i></a>
+                <a href="#"><i class="fa-solid fa-external-link-alt"></i></a>
+              </div>
+            </div>
+            <h3>Smart IoT System</h3>
+            <p>Advanced home automation system built with Raspberry Pi, featuring real-time monitoring, remote control, and intelligent automation based on user patterns.</p>
+            <div class="project-tags-modern">
+              <span>Raspberry Pi</span>
+              <span>Python</span>
+              <span>IoT</span>
+            </div>
+          </div>
+
+          <div class="project-card-modern">
+            <div class="project-card-header">
+              <i class="fa-solid fa-code"></i>
+              <div class="project-card-actions">
+                <a href="#"><i class="fa-brands fa-github"></i></a>
+                <a href="#"><i class="fa-solid fa-external-link-alt"></i></a>
+              </div>
+            </div>
+            <h3>Elite Portfolio</h3>
+            <p>This cutting-edge portfolio website showcasing modern web design principles, smooth animations, and an immersive user experience that leaves a lasting impression.</p>
+            <div class="project-tags-modern">
+              <span>HTML5</span>
+              <span>CSS3</span>
+              <span>JavaScript</span>
+            </div>
+          </div>
+
+          <div class="project-card-modern">
+            <div class="project-card-header">
+              <i class="fa-solid fa-chart-line"></i>
+              <div class="project-card-actions">
+                <a href="#"><i class="fa-brands fa-github"></i></a>
+                <a href="#"><i class="fa-solid fa-external-link-alt"></i></a>
+              </div>
+            </div>
+            <h3>Math Competition Solver</h3>
+            <p>Algorithmic problem solver developed for mathematics competitions, featuring advanced optimization techniques and visual solution explanations.</p>
+            <div class="project-tags-modern">
+              <span>Python</span>
+              <span>Algorithms</span>
+              <span>Math</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Certifications Section -->
+    <section id="certifications" class="certifications-section">
+      <div class="section-header">
+        <span class="section-number">04.</span>
+        <h2 class="section-title">Credentials & Achievements</h2>
+        <div class="section-line"></div>
+      </div>
+
+      <div class="certs-container">
+        <div class="cert-card-elite">
+          <div class="cert-badge-wrapper">
+            <div class="cert-badge-bg"></div>
+            <i class="fa-brands fa-python"></i>
+          </div>
+          <h3>Python Certified Developer</h3>
+          <p>Professional certification demonstrating advanced proficiency in Python programming, including OOP, data structures, and algorithm implementation.</p>
+          <div class="cert-meta">
+            <span class="cert-status"><i class="fa-solid fa-certificate"></i> Verified</span>
+          </div>
+        </div>
+
+        <div class="cert-card-elite">
+          <div class="cert-badge-wrapper">
+            <div class="cert-badge-bg"></div>
+            <i class="fa-solid fa-square-root-variable"></i>
+          </div>
+          <h3>Advanced Algebra Certification</h3>
+          <p>Certified in advanced algebraic concepts, providing a strong mathematical foundation for algorithmic problem-solving and computational thinking.</p>
+          <div class="cert-meta">
+            <span class="cert-status"><i class="fa-solid fa-certificate"></i> Verified</span>
+          </div>
+        </div>
+
+        <div class="cert-card-elite highlight-cert">
+          <div class="cert-badge-wrapper">
+            <div class="cert-badge-bg"></div>
+            <i class="fa-solid fa-award"></i>
+          </div>
+          <h3>National Junior Honor Society</h3>
+          <p>Inducted member of NJHS, recognizing outstanding scholarship, leadership, service, character, and citizenship.</p>
+          <div class="cert-meta">
+            <span class="cert-status"><i class="fa-solid fa-star"></i> Active Member</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="competitions-section">
+        <h3>Competition Highlights</h3>
+        <div class="competitions-grid">
+          <div class="competition-badge">AMC 8</div>
+          <div class="competition-badge">AMC 10</div>
+          <div class="competition-badge">UNC Math Competition</div>
+          <div class="competition-badge">Colorado Math Olympiad</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="contact-section">
+      <div class="section-header">
+        <span class="section-number">05.</span>
+        <h2 class="section-title">Let's Build Something Great</h2>
+        <div class="section-line"></div>
+      </div>
+
+      <div class="contact-wrapper">
+        <div class="contact-cta">
+          <h3>Ready to Collaborate?</h3>
+          <p>Whether you have a project in mind, need a problem solved, or just want to connect—I'm always open to discussing new opportunities and innovative ideas.</p>
+          
+          <div class="contact-methods">
+            <a href="mailto:arnavjain711@gmail.com" class="contact-method-card">
+              <div class="method-icon">
+                <i class="fa-solid fa-envelope"></i>
+              </div>
+              <div class="method-info">
+                <h4>Email Me</h4>
+                <p>arnavjain711@gmail.com</p>
+              </div>
+              <i class="fa-solid fa-arrow-right method-arrow"></i>
+            </a>
+
+            <a href="https://github.com/jainArnav7" target="_blank" class="contact-method-card">
+              <div class="method-icon">
+                <i class="fa-brands fa-github"></i>
+              </div>
+              <div class="method-info">
+                <h4>GitHub</h4>
+                <p>Check out my repositories</p>
+              </div>
+              <i class="fa-solid fa-arrow-right method-arrow"></i>
+            </a>
+
+            <a href="https://www.linkedin.com/in/arnav-jain-b63069354" target="_blank" class="contact-method-card">
+              <div class="method-icon">
+                <i class="fa-brands fa-linkedin"></i>
+              </div>
+              <div class="method-info">
+                <h4>LinkedIn</h4>
+                <p>Let's connect professionally</p>
+              </div>
+              <i class="fa-solid fa-arrow-right method-arrow"></i>
+            </a>
+          </div>
+        </div>
+
+        <form class="contact-form-modern" id="contactForm">
+          <div class="form-header">
+            <h3>Send a Message</h3>
+            <p>Fill out the form and I'll get back to you within 24 hours</p>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group-modern">
+              <label for="name">Your Name</label>
+              <input type="text" id="name" placeholder="John Doe" required>
+              <span class="form-line"></span>
+            </div>
+            <div class="form-group-modern">
+              <label for="email">Your Email</label>
+              <input type="email" id="email" placeholder="john@example.com" required>
+              <span class="form-line"></span>
+            </div>
+          </div>
+
+          <div class="form-group-modern">
+            <label for="subject">Subject</label>
+            <input type="text" id="subject" placeholder="Let's work together" required>
+            <span class="form-line"></span>
+          </div>
+
+          <div class="form-group-modern">
+            <label for="message">Message</label>
+            <textarea id="message" rows="5" placeholder="Tell me about your project..." required></textarea>
+            <span class="form-line"></span>
+          </div>
+
+          <button type="submit" class="btn btn-primary btn-large">
+            <span>Send Message</span>
+            <i class="fa-solid fa-paper-plane"></i>
+          </button>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="footer-content">
+      <div class="footer-text">
+        <p>Designed & Built by <span class="highlight">Arnav Jain</span></p>
+        <p>&copy; 2025 All rights reserved.</p>
+      </div>
+      <div class="footer-links">
+        <a href="https://github.com/jainArnav7" target="_blank"><i class="fa-brands fa-github"></i></a>
+        <a href="https://www.linkedin.com/in/arnav-jain-b63069354" target="_blank"><i class="fa-brands fa-linkedin"></i></a>
+        <a href="mailto:arnavjain711@gmail.com"><i class="fa-solid fa-envelope"></i></a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
