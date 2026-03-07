@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Journey | Arnav Jain</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=JetBrains+Mono:wght@400;600&family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    .journey-page { padding: 9rem 2rem 6rem; max-width: 900px; margin: 0 auto; }
+    .journey-page .section-header { margin-bottom: 3.5rem; }
+    .timeline { position: relative; padding-left: 2rem; }
+    .timeline::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 2px; background: linear-gradient(to bottom, var(--primary), var(--secondary), transparent); border-radius: 999px; }
+    .tl-item { position: relative; padding: 0 0 3rem 2.5rem; opacity: 0; transform: translateX(-20px); transition: all 0.6s ease; }
+    .tl-item.visible { opacity: 1; transform: translateX(0); }
+    .tl-dot { position: absolute; left: -2.1rem; top: 0.15rem; width: 18px; height: 18px; border-radius: 50%; background: var(--gradient-primary); border: 3px solid var(--bg-primary); box-shadow: 0 0 12px rgba(0,217,255,0.5); }
+    .tl-date { font-family: 'JetBrains Mono', monospace; font-size: 0.8rem; color: var(--primary); margin-bottom: 0.5rem; }
+    .tl-card { background: var(--bg-card); border: 1px solid rgba(0,217,255,0.1); border-radius: var(--radius-md); padding: 1.5rem 1.75rem; transition: border-color 0.3s, transform 0.3s; }
+    .tl-card:hover { border-color: rgba(0,217,255,0.3); transform: translateX(6px); }
+    .tl-card h3 { font-size: 1.1rem; color: var(--text-primary); margin-bottom: 0.4rem; }
+    .tl-card p { color: var(--text-secondary); font-size: 0.9rem; line-height: 1.7; margin: 0; }
+    .tl-tag { display: inline-block; font-size: 0.75rem; padding: 0.2rem 0.7rem; border-radius: 999px; margin-top: 0.75rem; }
+    .tl-tag.milestone { background: rgba(0,217,255,0.1); color: var(--primary); border: 1px solid rgba(0,217,255,0.2); }
+    .tl-tag.project { background: rgba(124,58,237,0.1); color: var(--secondary); border: 1px solid rgba(124,58,237,0.2); }
+    .tl-tag.cert { background: rgba(6,219,168,0.1); color: var(--success); border: 1px solid rgba(6,219,168,0.2); }
+  </style>
+</head>
+<body>
+  <div class="scroll-progress"></div>
+  <nav id="navbar">
+    <div class="nav-container">
+      <a href="index.html" class="logo"><span class="logo-bracket">&lt;</span>Arnav<span class="logo-bracket">/&gt;</span></a>
+      <ul class="nav-links">
+        <li><a href="aboutme.html"><span class="nav-number">01.</span> About</a></li>
+        <li><a href="skills.html"><span class="nav-number">02.</span> Skills</a></li>
+        <li><a href="projects.html"><span class="nav-number">03.</span> Projects</a></li>
+        <li><a href="certifications.html"><span class="nav-number">04.</span> Certifications</a></li>
+        <li><a href="timeline.html"><span class="nav-number">05.</span> Journey</a></li>
+        <li><a href="contact.html"><span class="nav-number">06.</span> Contact</a></li>
+      </ul>
+      <div class="nav-social">
+        <a href="https://github.com/jainArnav7" target="_blank" class="social-icon"><i class="fa-brands fa-github"></i></a>
+        <a href="https://www.linkedin.com/in/arnav-jain-b63069354" target="_blank" class="social-icon"><i class="fa-brands fa-linkedin"></i></a>
+        <button class="theme-toggle" id="themeToggle"><i class="fa-solid fa-moon"></i></button>
+        <div class="hamburger" id="hamburger"><span></span><span></span><span></span></div>
+      </div>
+    </div>
+  </nav>
+  <div class="mobile-menu" id="mobileMenu">
+    <ul>
+      <li><a href="index.html" class="mobile-link"><span>01.</span> Home</a></li>
+      <li><a href="aboutme.html" class="mobile-link"><span>02.</span> About</a></li>
+      <li><a href="skills.html" class="mobile-link"><span>03.</span> Skills</a></li>
+      <li><a href="projects.html" class="mobile-link"><span>04.</span> Projects</a></li>
+      <li><a href="certifications.html" class="mobile-link"><span>05.</span> Certifications</a></li>
+      <li><a href="timeline.html" class="mobile-link"><span>06.</span> Journey</a></li>
+      <li><a href="contact.html" class="mobile-link"><span>07.</span> Contact</a></li>
+    </ul>
+  </div>
+
+  <main class="journey-page">
+    <div class="section-header">
+      <span class="section-number">05.</span>
+      <h1 class="section-title">My Journey</h1>
+      <div class="section-line"></div>
+    </div>
+
+    <div class="timeline">
+      <!-- ✏️ EDIT YOUR TIMELINE ENTRIES BELOW -->
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-date">2023 — Beginning</div>
+        <div class="tl-card">
+          <h3>First Line of Code</h3>
+          <p>Started with Python basics out of pure curiosity. Wrote my first scripts, broke a lot of things, and fell in love with the process of debugging and figuring things out.</p>
+          <span class="tl-tag milestone">Milestone</span>
+        </div>
+      </div>
+
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-date">2023 — Mid Year</div>
+        <div class="tl-card">
+          <h3>Discovered AI & ML</h3>
+          <p>Dove into machine learning concepts and AI tools. Started integrating AI APIs into small projects and realized the incredible potential of combining code with intelligence.</p>
+          <span class="tl-tag milestone">Milestone</span>
+        </div>
+      </div>
+
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-date">2024 — Early</div>
+        <div class="tl-card">
+          <h3>Built First Real Project — AI Task Planner</h3>
+          <p>Created an intelligent task management system using Python and ML algorithms. First time shipping something that actually does something useful.</p>
+          <span class="tl-tag project">Project</span>
+        </div>
+      </div>
+
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-date">2024 — Mid Year</div>
+        <div class="tl-card">
+          <h3>IoT & Raspberry Pi Exploration</h3>
+          <p>Got a Raspberry Pi and started experimenting with home automation, sensors, and MQTT. Built the Smart IoT System project — learned hardware meets software in the most exciting way.</p>
+          <span class="tl-tag project">Project</span>
+        </div>
+      </div>
+
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-date">2024 — Late</div>
+        <div class="tl-card">
+          <h3>First Certifications Earned</h3>
+          <p>Completed formal certifications to back up my self-taught knowledge. Validated skills in Python and AI fundamentals.</p>
+          <span class="tl-tag cert">Certification</span>
+        </div>
+      </div>
+
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-date">2025 — Now</div>
+        <div class="tl-card">
+          <h3>Portfolio & Open to Opportunities</h3>
+          <p>Launched this portfolio, continuing to build, learn, and look for collaborations, internships, and exciting projects. The journey is just getting started.</p>
+          <span class="tl-tag milestone">Present</span>
+        </div>
+      </div>
+      <!-- ✏️ ADD NEW ENTRIES ABOVE THIS LINE (copy one tl-item block) -->
+    </div>
+  </main>
+
+  <footer>
+    <div class="footer-content">
+      <div class="footer-text">
+        <p>Designed & Built by <span class="highlight">Arnav Jain</span></p>
+        <p>&copy; 2025 All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+  <script src="scripts.js"></script>
+  <script>
+    const items = document.querySelectorAll('.tl-item');
+    const obs = new IntersectionObserver(entries => {
+      entries.forEach(e => { if(e.isIntersecting) { e.target.classList.add('visible'); } });
+    }, { threshold: 0.15 });
+    items.forEach(i => obs.observe(i));
+  </script>
+</body>
+</html>

@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Certifications | Arnav Jain</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=JetBrains+Mono:wght@400;600&family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    .certs-page { padding: 9rem 2rem 6rem; max-width: 1100px; margin: 0 auto; }
+    .certs-page .section-header { margin-bottom: 3rem; }
+    .certs-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 1.75rem; }
+    .cert-card { background: var(--bg-card); border: 1px solid rgba(0,217,255,0.12); border-radius: var(--radius-lg); padding: 2rem; position: relative; overflow: hidden; transition: all 0.3s; }
+    .cert-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: var(--gradient-primary); }
+    .cert-card:hover { border-color: rgba(0,217,255,0.3); transform: translateY(-6px); box-shadow: 0 12px 40px rgba(0,217,255,0.12); }
+    .cert-badge { width: 56px; height: 56px; border-radius: var(--radius-md); display: flex; align-items: center; justify-content: center; font-size: 1.5rem; margin-bottom: 1.25rem; }
+    .cert-badge.blue { background: rgba(0,217,255,0.12); }
+    .cert-badge.purple { background: rgba(124,58,237,0.12); }
+    .cert-badge.green { background: rgba(6,219,168,0.12); }
+    .cert-badge.orange { background: rgba(255,160,0,0.12); }
+    .cert-card h3 { font-size: 1.05rem; color: var(--text-primary); margin-bottom: 0.4rem; }
+    .cert-issuer { font-size: 0.85rem; color: var(--primary); font-family: 'JetBrains Mono', monospace; margin-bottom: 0.75rem; }
+    .cert-desc { font-size: 0.88rem; color: var(--text-secondary); line-height: 1.6; margin-bottom: 1.25rem; }
+    .cert-meta { display: flex; align-items: center; justify-content: space-between; }
+    .cert-date { font-size: 0.8rem; color: var(--text-muted); display: flex; align-items: center; gap: 0.4rem; }
+    .cert-link { font-size: 0.82rem; color: var(--primary); text-decoration: none; display: flex; align-items: center; gap: 0.4rem; transition: gap 0.2s; }
+    .cert-link:hover { gap: 0.7rem; }
+    .certs-coming { margin-top: 3rem; text-align: center; background: var(--bg-card); border: 1px dashed rgba(0,217,255,0.2); border-radius: var(--radius-lg); padding: 3rem; color: var(--text-muted); }
+    .certs-coming i { font-size: 2rem; color: var(--primary); opacity: 0.4; margin-bottom: 1rem; display: block; }
+    @media (max-width: 600px) { .certs-grid { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+  <div class="scroll-progress"></div>
+  <nav id="navbar">
+    <div class="nav-container">
+      <a href="index.html" class="logo"><span class="logo-bracket">&lt;</span>Arnav<span class="logo-bracket">/&gt;</span></a>
+      <ul class="nav-links">
+        <li><a href="aboutme.html"><span class="nav-number">01.</span> About</a></li>
+        <li><a href="skills.html"><span class="nav-number">02.</span> Skills</a></li>
+        <li><a href="projects.html"><span class="nav-number">03.</span> Projects</a></li>
+        <li><a href="certifications.html"><span class="nav-number">04.</span> Certifications</a></li>
+        <li><a href="timeline.html"><span class="nav-number">05.</span> Journey</a></li>
+        <li><a href="contact.html"><span class="nav-number">06.</span> Contact</a></li>
+      </ul>
+      <div class="nav-social">
+        <a href="https://github.com/jainArnav7" target="_blank" class="social-icon"><i class="fa-brands fa-github"></i></a>
+        <button class="theme-toggle" id="themeToggle"><i class="fa-solid fa-moon"></i></button>
+        <div class="hamburger" id="hamburger"><span></span><span></span><span></span></div>
+      </div>
+    </div>
+  </nav>
+  <div class="mobile-menu" id="mobileMenu">
+    <ul>
+      <li><a href="index.html" class="mobile-link"><span>01.</span> Home</a></li>
+      <li><a href="aboutme.html" class="mobile-link"><span>02.</span> About</a></li>
+      <li><a href="skills.html" class="mobile-link"><span>03.</span> Skills</a></li>
+      <li><a href="projects.html" class="mobile-link"><span>04.</span> Projects</a></li>
+      <li><a href="certifications.html" class="mobile-link"><span>05.</span> Certifications</a></li>
+      <li><a href="timeline.html" class="mobile-link"><span>06.</span> Journey</a></li>
+      <li><a href="contact.html" class="mobile-link"><span>07.</span> Contact</a></li>
+    </ul>
+  </div>
+
+  <main class="certs-page">
+    <div class="section-header">
+      <span class="section-number">04.</span>
+      <h1 class="section-title">Certifications</h1>
+      <div class="section-line"></div>
+    </div>
+
+    <div class="certs-grid">
+      <!-- ✏️ EDIT CERTIFICATIONS BELOW — copy a cert-card block to add more -->
+      <div class="cert-card">
+        <div class="cert-badge blue">🐍</div>
+        <h3>Python for Everybody</h3>
+        <div class="cert-issuer">Coursera / University of Michigan</div>
+        <p class="cert-desc">Fundamentals of Python programming including data structures, web scraping, databases, and basic data visualization.</p>
+        <div class="cert-meta">
+          <span class="cert-date"><i class="fa-solid fa-calendar"></i> 2024</span>
+          <a href="#" class="cert-link">View <i class="fa-solid fa-arrow-right"></i></a>
+        </div>
+      </div>
+
+      <div class="cert-card">
+        <div class="cert-badge purple">🤖</div>
+        <h3>AI For Everyone</h3>
+        <div class="cert-issuer">Coursera / DeepLearning.AI</div>
+        <p class="cert-desc">Understanding AI concepts, machine learning workflows, and how to integrate AI into projects as a non-specialist.</p>
+        <div class="cert-meta">
+          <span class="cert-date"><i class="fa-solid fa-calendar"></i> 2024</span>
+          <a href="#" class="cert-link">View <i class="fa-solid fa-arrow-right"></i></a>
+        </div>
+      </div>
+      <!-- ✏️ ADD NEW CERT CARDS ABOVE THIS COMMENT -->
+    </div>
+
+    <div class="certs-coming">
+      <i class="fa-solid fa-hourglass-half"></i>
+      <p>More certifications in progress — check back soon!</p>
+    </div>
+  </main>
+
+  <footer>
+    <div class="footer-content">
+      <div class="footer-text">
+        <p>Designed & Built by <span class="highlight">Arnav Jain</span></p>
+        <p>&copy; 2025 All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+  <script src="scripts.js"></script>
+</body>
+</html>

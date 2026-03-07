@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Projects | Arnav Jain</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=JetBrains+Mono:wght@400;600&family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    .projects-page { padding: 9rem 2rem 6rem; max-width: 1100px; margin: 0 auto; }
+    .projects-page .section-header { margin-bottom: 3rem; }
+    .project-cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 1.75rem; }
+    .project-card { background: var(--bg-card); border: 1px solid rgba(0,217,255,0.1); border-radius: var(--radius-lg); padding: 2rem; display: flex; flex-direction: column; transition: all 0.3s; position: relative; overflow: hidden; }
+    .project-card::after { content: ''; position: absolute; inset: 0; background: var(--gradient-primary); opacity: 0; transition: opacity 0.3s; z-index: 0; pointer-events: none; border-radius: var(--radius-lg); }
+    .project-card:hover { border-color: rgba(0,217,255,0.35); transform: translateY(-8px); box-shadow: 0 16px 50px rgba(0,217,255,0.15); }
+    .project-card > * { position: relative; z-index: 1; }
+    .project-card-top { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 1.25rem; }
+    .folder-icon-wrap { width: 48px; height: 48px; background: rgba(0,217,255,0.1); border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: center; }
+    .folder-icon-wrap i { color: var(--primary); font-size: 1.2rem; }
+    .card-links { display: flex; gap: 0.75rem; }
+    .card-links a { color: var(--text-muted); font-size: 1rem; transition: color 0.2s, transform 0.2s; }
+    .card-links a:hover { color: var(--primary); transform: translateY(-2px); }
+    .project-card h3 { font-size: 1.1rem; color: var(--text-primary); margin-bottom: 0.75rem; }
+    .project-card > p { color: var(--text-secondary); font-size: 0.88rem; line-height: 1.65; flex: 1; margin-bottom: 1.5rem; }
+    .tech-pills { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: auto; }
+    .tech-pill { font-size: 0.75rem; font-family: 'JetBrains Mono', monospace; padding: 0.25rem 0.65rem; border-radius: 999px; background: rgba(0,217,255,0.08); color: var(--primary); border: 1px solid rgba(0,217,255,0.15); }
+    .project-status { display: inline-flex; align-items: center; gap: 0.4rem; font-size: 0.72rem; padding: 0.2rem 0.6rem; border-radius: 999px; margin-bottom: 0.75rem; }
+    .status-done { background: rgba(6,219,168,0.1); color: var(--success); border: 1px solid rgba(6,219,168,0.2); }
+    .status-wip { background: rgba(255,160,0,0.1); color: #ffa000; border: 1px solid rgba(255,160,0,0.2); }
+    .status-dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+    @media (max-width: 500px) { .project-cards { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+  <div class="scroll-progress"></div>
+  <nav id="navbar">
+    <div class="nav-container">
+      <a href="index.html" class="logo"><span class="logo-bracket">&lt;</span>Arnav<span class="logo-bracket">/&gt;</span></a>
+      <ul class="nav-links">
+        <li><a href="aboutme.html"><span class="nav-number">01.</span> About</a></li>
+        <li><a href="skills.html"><span class="nav-number">02.</span> Skills</a></li>
+        <li><a href="projects.html"><span class="nav-number">03.</span> Projects</a></li>
+        <li><a href="certifications.html"><span class="nav-number">04.</span> Certifications</a></li>
+        <li><a href="timeline.html"><span class="nav-number">05.</span> Journey</a></li>
+        <li><a href="contact.html"><span class="nav-number">06.</span> Contact</a></li>
+      </ul>
+      <div class="nav-social">
+        <a href="https://github.com/jainArnav7" target="_blank" class="social-icon"><i class="fa-brands fa-github"></i></a>
+        <button class="theme-toggle" id="themeToggle"><i class="fa-solid fa-moon"></i></button>
+        <div class="hamburger" id="hamburger"><span></span><span></span><span></span></div>
+      </div>
+    </div>
+  </nav>
+  <div class="mobile-menu" id="mobileMenu">
+    <ul>
+      <li><a href="index.html" class="mobile-link"><span>01.</span> Home</a></li>
+      <li><a href="aboutme.html" class="mobile-link"><span>02.</span> About</a></li>
+      <li><a href="skills.html" class="mobile-link"><span>03.</span> Skills</a></li>
+      <li><a href="projects.html" class="mobile-link"><span>04.</span> Projects</a></li>
+      <li><a href="certifications.html" class="mobile-link"><span>05.</span> Certifications</a></li>
+      <li><a href="timeline.html" class="mobile-link"><span>06.</span> Journey</a></li>
+      <li><a href="contact.html" class="mobile-link"><span>07.</span> Contact</a></li>
+    </ul>
+  </div>
+
+  <main class="projects-page">
+    <div class="section-header">
+      <span class="section-number">03.</span>
+      <h1 class="section-title">Selected Works</h1>
+      <div class="section-line"></div>
+    </div>
+
+    <div class="project-cards">
+      <div class="project-card">
+        <div class="project-card-top">
+          <div class="folder-icon-wrap"><i class="fa-solid fa-folder-open"></i></div>
+          <div class="card-links">
+            <a href="https://github.com/jainArnav7" target="_blank" title="GitHub"><i class="fa-brands fa-github"></i></a>
+            <a href="#" title="Live Demo"><i class="fa-solid fa-arrow-up-right-from-square"></i></a>
+          </div>
+        </div>
+        <span class="project-status status-done"><span class="status-dot"></span> Completed</span>
+        <h3>AI Task Planner Pro</h3>
+        <p>An intelligent task management system powered by custom AI algorithms that learns from your habits and optimizes your schedule automatically.</p>
+        <div class="tech-pills">
+          <span class="tech-pill">Python</span>
+          <span class="tech-pill">ML</span>
+          <span class="tech-pill">Data Analysis</span>
+        </div>
+      </div>
+
+      <div class="project-card">
+        <div class="project-card-top">
+          <div class="folder-icon-wrap"><i class="fa-solid fa-folder-open"></i></div>
+          <div class="card-links">
+            <a href="https://github.com/jainArnav7" target="_blank"><i class="fa-brands fa-github"></i></a>
+          </div>
+        </div>
+        <span class="project-status status-done"><span class="status-dot"></span> Completed</span>
+        <h3>Smart IoT System</h3>
+        <p>Advanced home automation built with Raspberry Pi featuring real-time monitoring, sensor integration, and MQTT-based device communication.</p>
+        <div class="tech-pills">
+          <span class="tech-pill">Raspberry Pi</span>
+          <span class="tech-pill">Python</span>
+          <span class="tech-pill">MQTT</span>
+        </div>
+      </div>
+
+      <div class="project-card">
+        <div class="project-card-top">
+          <div class="folder-icon-wrap"><i class="fa-solid fa-folder-open"></i></div>
+          <div class="card-links">
+            <a href="https://github.com/jainArnav7" target="_blank"><i class="fa-brands fa-github"></i></a>
+          </div>
+        </div>
+        <span class="project-status status-done"><span class="status-dot"></span> Completed</span>
+        <h3>Elite Portfolio</h3>
+        <p>This very portfolio — showcasing modern design principles, smooth animations, and a fully custom multi-page architecture built from scratch.</p>
+        <div class="tech-pills">
+          <span class="tech-pill">HTML5</span>
+          <span class="tech-pill">CSS3</span>
+          <span class="tech-pill">JavaScript</span>
+        </div>
+      </div>
+
+      <div class="project-card">
+        <div class="project-card-top">
+          <div class="folder-icon-wrap"><i class="fa-solid fa-folder-open"></i></div>
+          <div class="card-links">
+            <a href="https://github.com/jainArnav7" target="_blank"><i class="fa-brands fa-github"></i></a>
+          </div>
+        </div>
+        <span class="project-status status-wip"><span class="status-dot"></span> In Progress</span>
+        <h3>Math Competition Solver</h3>
+        <p>Algorithmic problem solver for competition-style problems, with step-by-step visual explanations and multiple optimization strategies.</p>
+        <div class="tech-pills">
+          <span class="tech-pill">Python</span>
+          <span class="tech-pill">Algorithms</span>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <div class="footer-content">
+      <div class="footer-text">
+        <p>Designed & Built by <span class="highlight">Arnav Jain</span></p>
+        <p>&copy; 2025 All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+  <script src="scripts.js"></script>
+</body>
+</html>
