@@ -129,21 +129,47 @@ function initRotatingText() {
 function initFormHandling() {
   const form = document.getElementById('contactForm');
   if (!form) return;
-  form.addEventListener('submit', e => {
+
+  form.addEventListener('submit', async (e) => {
     e.preventDefault();
-    const name = document.getElementById('name')?.value || '';
-    const email = document.getElementById('email')?.value || '';
-    const subject = document.getElementById('subject')?.value || 'Portfolio Contact';
-    const message = document.getElementById('message')?.value || '';
-    window.location.href = `mailto:arnavjain711@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent('From: '+name+' ('+email+')\n\n'+message)}`;
     const btn = form.querySelector('button[type="submit"]');
+    const origHTML = btn ? btn.innerHTML : '';
+
     if (btn) {
-      const orig = btn.innerHTML;
-      btn.innerHTML = '<i class="fa-solid fa-check"></i> <span>Message Sent!</span>';
-      btn.style.background = 'linear-gradient(135deg,#10b981,#059669)';
-      setTimeout(() => { btn.innerHTML = orig; btn.style.background = ''; form.reset(); }, 3000);
+      btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> <span>Sending...</span>';
+      btn.disabled = true;
+    }
+
+    const formData = new FormData(form);
+
+    try {
+      const res = await fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        body: formData
+      });
+      const data = await res.json();
+
+      if (data.success) {
+        if (btn) {
+          btn.innerHTML = '<i class="fa-solid fa-check"></i> <span>Message Sent!</span>';
+          btn.style.background = 'linear-gradient(135deg,#10b981,#059669)';
+        }
+        form.reset();
+        setTimeout(() => {
+          if (btn) { btn.innerHTML = origHTML; btn.style.background = ''; btn.disabled = false; }
+        }, 4000);
+      } else {
+        throw new Error(data.message || 'Submission failed');
+      }
+    } catch (err) {
+      if (btn) {
+        btn.innerHTML = '<i class="fa-solid fa-exclamation-circle"></i> <span>Failed – try email directly</span>';
+        btn.style.background = 'linear-gradient(135deg,#ef4444,#dc2626)';
+        setTimeout(() => { btn.innerHTML = origHTML; btn.style.background = ''; btn.disabled = false; }, 4000);
+      }
     }
   });
+
   document.querySelectorAll('.form-group-modern input, .form-group-modern textarea').forEach(input => {
     input.addEventListener('focus', () => input.parentElement.classList.add('focused'));
     input.addEventListener('blur', () => { if (!input.value) input.parentElement.classList.remove('focused'); });
