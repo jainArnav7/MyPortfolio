@@ -8,27 +8,272 @@
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=JetBrains+Mono:wght@400;600&family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
   <style>
-    .certs-page { padding: 9rem 2rem 6rem; max-width: 1100px; margin: 0 auto; }
-    .certs-page .section-header { margin-bottom: 3rem; }
-    .certs-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 1.75rem; }
-    .cert-card { background: var(--bg-card); border: 1px solid rgba(0,217,255,0.12); border-radius: var(--radius-lg); padding: 2rem; position: relative; overflow: hidden; transition: all 0.3s; }
-    .cert-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: var(--gradient-primary); }
-    .cert-card:hover { border-color: rgba(0,217,255,0.3); transform: translateY(-6px); box-shadow: 0 12px 40px rgba(0,217,255,0.12); }
-    .cert-badge { width: 56px; height: 56px; border-radius: var(--radius-md); display: flex; align-items: center; justify-content: center; font-size: 1.5rem; margin-bottom: 1.25rem; }
-    .cert-badge.blue { background: rgba(0,217,255,0.12); }
+    /* ─── Page Layout ─── */
+    .certs-page {
+      padding: 9rem 2rem 6rem;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    /* ─── Section Divider ─── */
+    .page-section { margin-bottom: 5rem; }
+    .page-section .section-header { margin-bottom: 2.5rem; }
+
+    /* ─── Certifications Grid ─── */
+    .certs-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 1.75rem;
+    }
+
+    .cert-card {
+      background: var(--bg-card);
+      border: 1px solid rgba(0,217,255,0.12);
+      border-radius: var(--radius-lg);
+      padding: 2rem;
+      position: relative;
+      overflow: hidden;
+      transition: all 0.3s;
+    }
+    .cert-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      background: var(--gradient-primary);
+    }
+    .cert-card:hover {
+      border-color: rgba(0,217,255,0.3);
+      transform: translateY(-6px);
+      box-shadow: 0 12px 40px rgba(0,217,255,0.12);
+    }
+    .cert-badge {
+      width: 56px; height: 56px;
+      border-radius: var(--radius-md);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.5rem;
+      margin-bottom: 1.25rem;
+    }
+    .cert-badge.blue   { background: rgba(0,217,255,0.12); }
     .cert-badge.purple { background: rgba(124,58,237,0.12); }
-    .cert-badge.green { background: rgba(6,219,168,0.12); }
+    .cert-badge.green  { background: rgba(6,219,168,0.12); }
     .cert-badge.orange { background: rgba(255,160,0,0.12); }
-    .cert-card h3 { font-size: 1.05rem; color: var(--text-primary); margin-bottom: 0.4rem; }
-    .cert-issuer { font-size: 0.85rem; color: var(--primary); font-family: 'JetBrains Mono', monospace; margin-bottom: 0.75rem; }
-    .cert-desc { font-size: 0.88rem; color: var(--text-secondary); line-height: 1.6; margin-bottom: 1.25rem; }
-    .cert-meta { display: flex; align-items: center; justify-content: space-between; }
-    .cert-date { font-size: 0.8rem; color: var(--text-muted); display: flex; align-items: center; gap: 0.4rem; }
-    .cert-link { font-size: 0.82rem; color: var(--primary); text-decoration: none; display: flex; align-items: center; gap: 0.4rem; transition: gap 0.2s; }
-    .cert-link:hover { gap: 0.7rem; }
-    .certs-coming { margin-top: 3rem; text-align: center; background: var(--bg-card); border: 1px dashed rgba(0,217,255,0.2); border-radius: var(--radius-lg); padding: 3rem; color: var(--text-muted); }
-    .certs-coming i { font-size: 2rem; color: var(--primary); opacity: 0.4; margin-bottom: 1rem; display: block; }
-    @media (max-width: 600px) { .certs-grid { grid-template-columns: 1fr; } }
+    .cert-card h3      { font-size: 1.05rem; color: var(--text-primary); margin-bottom: 0.4rem; }
+    .cert-issuer       { font-size: 0.85rem; color: var(--primary); font-family: 'JetBrains Mono', monospace; margin-bottom: 0.75rem; }
+    .cert-desc         { font-size: 0.88rem; color: var(--text-secondary); line-height: 1.6; margin-bottom: 1.25rem; }
+    .cert-meta         { display: flex; align-items: center; justify-content: space-between; }
+    .cert-date         { font-size: 0.8rem; color: var(--text-muted); display: flex; align-items: center; gap: 0.4rem; }
+    .cert-link         { font-size: 0.82rem; color: var(--primary); text-decoration: none; display: flex; align-items: center; gap: 0.4rem; transition: gap 0.2s; }
+    .cert-link:hover   { gap: 0.7rem; }
+
+    /* ─── In Progress Badge ─── */
+    .in-progress-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      background: rgba(255,160,0,0.1);
+      border: 1px solid rgba(255,160,0,0.3);
+      border-radius: 999px;
+      padding: 0.25rem 0.7rem;
+      font-size: 0.72rem;
+      font-family: 'JetBrains Mono', monospace;
+      color: #ffa000;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      margin-bottom: 0.85rem;
+    }
+    .in-progress-badge .dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: #ffa000;
+      animation: blink 1.4s ease-in-out infinite;
+    }
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50%       { opacity: 0.2; }
+    }
+
+    /* ─── Achievements Section Separator ─── */
+    .section-separator {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin: 5rem 0 3rem;
+    }
+    .section-separator::before,
+    .section-separator::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: rgba(0,217,255,0.15);
+    }
+    .section-separator-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.75rem;
+      color: var(--primary);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+
+    /* ─── Featured Achievement ─── */
+    .featured-achievement {
+      position: relative;
+      background: var(--bg-card);
+      border: 1px solid rgba(0,217,255,0.2);
+      border-radius: var(--radius-lg);
+      padding: 0;
+      overflow: hidden;
+      margin-bottom: 2rem;
+      transition: all 0.3s;
+    }
+    .featured-achievement:hover {
+      border-color: rgba(0,217,255,0.4);
+      box-shadow: 0 16px 60px rgba(0,217,255,0.14);
+      transform: translateY(-4px);
+    }
+    .featured-achievement-inner {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      align-items: center;
+      gap: 2rem;
+      padding: 2.25rem 2.5rem;
+    }
+    /* Animated gradient bar on left */
+    .featured-achievement::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 0; bottom: 0;
+      width: 4px;
+      background: linear-gradient(180deg, #00d9ff, #7c3aed, #06dbaa);
+      background-size: 100% 300%;
+      animation: featuredPulse 4s ease-in-out infinite;
+    }
+    @keyframes featuredPulse {
+      0%, 100% { background-position: 0% 0%; }
+      50%       { background-position: 0% 100%; }
+    }
+    /* "Featured" badge */
+    .featured-badge {
+      position: absolute;
+      top: 1rem; right: 1rem;
+      background: linear-gradient(135deg, rgba(0,217,255,0.15), rgba(124,58,237,0.15));
+      border: 1px solid rgba(0,217,255,0.25);
+      border-radius: 999px;
+      padding: 0.3rem 0.85rem;
+      font-size: 0.72rem;
+      font-family: 'JetBrains Mono', monospace;
+      color: var(--primary);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+    .featured-badge i { font-size: 0.65rem; color: #ffd700; }
+
+    .featured-content { padding-left: 0.5rem; }
+    .featured-content .cert-badge {
+      width: 64px; height: 64px;
+      font-size: 1.75rem;
+      margin-bottom: 1rem;
+    }
+    .featured-content h3 {
+      font-size: 1.3rem;
+      color: var(--text-primary);
+      margin-bottom: 0.35rem;
+    }
+    .featured-content .cert-issuer { margin-bottom: 0.85rem; }
+    .featured-content .cert-desc   { max-width: 600px; margin-bottom: 1.25rem; }
+
+    /* Stats strip inside featured */
+    .featured-stats {
+      display: flex;
+      gap: 2rem;
+      margin-top: 1rem;
+    }
+    .feat-stat {
+      display: flex;
+      flex-direction: column;
+      gap: 0.2rem;
+    }
+    .feat-stat-value {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: var(--primary);
+    }
+    .feat-stat-label {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+    }
+
+    /* Decorative glow blob */
+    .featured-glow {
+      position: absolute;
+      right: -60px; top: 50%;
+      transform: translateY(-50%);
+      width: 220px; height: 220px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(0,217,255,0.07) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    /* ─── Achievements Grid ─── */
+    .achievements-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 1.75rem;
+    }
+
+    .achievement-card {
+      background: var(--bg-card);
+      border: 1px solid rgba(124,58,237,0.15);
+      border-radius: var(--radius-lg);
+      padding: 2rem;
+      position: relative;
+      overflow: hidden;
+      transition: all 0.3s;
+    }
+    .achievement-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, #7c3aed, #00d9ff);
+    }
+    .achievement-card:hover {
+      border-color: rgba(124,58,237,0.35);
+      transform: translateY(-6px);
+      box-shadow: 0 12px 40px rgba(124,58,237,0.12);
+    }
+
+    /* ─── Coming Soon ─── */
+    .certs-coming {
+      margin-top: 3rem;
+      text-align: center;
+      background: var(--bg-card);
+      border: 1px dashed rgba(0,217,255,0.2);
+      border-radius: var(--radius-lg);
+      padding: 3rem;
+      color: var(--text-muted);
+    }
+    .certs-coming i {
+      font-size: 2rem;
+      color: var(--primary);
+      opacity: 0.4;
+      margin-bottom: 1rem;
+      display: block;
+    }
+
+    /* ─── Responsive ─── */
+    @media (max-width: 700px) {
+      .certs-grid, .achievements-grid { grid-template-columns: 1fr; }
+      .featured-achievement-inner { grid-template-columns: 1fr; }
+      .featured-stats { flex-wrap: wrap; gap: 1rem; }
+    }
   </style>
 </head>
 <body>
@@ -52,74 +297,134 @@
       <div class="hamburger" id="hamburger"><span></span><span></span><span></span></div>
     </div>
   </nav>
+
   <div class="mobile-menu" id="mobileMenu">
     <ul>
-      <li><a href="index.html" class="mobile-link"><span>01.</span> Home</a></li>
-      <li><a href="aboutme.html" class="mobile-link"><span>02.</span> About</a></li>
-      <li><a href="skills.html" class="mobile-link"><span>03.</span> Skills</a></li>
-      <li><a href="projects.html" class="mobile-link"><span>04.</span> Projects</a></li>
-      <li><a href="certifications.html" class="mobile-link"><span>05.</span> Certifications</a></li>
-      <li><a href="timeline.html" class="mobile-link"><span>06.</span> Journey</a></li>
-      <li><a href="contact.html" class="mobile-link"><span>07.</span> Contact</a></li>
-      <li><a href="blog.html" class="mobile-link"><span>08.</span> Blog</a></li>
+      <li><a href="index.html"           class="mobile-link"><span>01.</span> Home</a></li>
+      <li><a href="aboutme.html"         class="mobile-link"><span>02.</span> About</a></li>
+      <li><a href="skills.html"          class="mobile-link"><span>03.</span> Skills</a></li>
+      <li><a href="projects.html"        class="mobile-link"><span>04.</span> Projects</a></li>
+      <li><a href="certifications.html"  class="mobile-link"><span>05.</span> Certifications</a></li>
+      <li><a href="timeline.html"        class="mobile-link"><span>06.</span> Journey</a></li>
+      <li><a href="contact.html"         class="mobile-link"><span>07.</span> Contact</a></li>
+      <li><a href="blog.html"            class="mobile-link"><span>08.</span> Blog</a></li>
     </ul>
   </div>
 
   <main class="certs-page">
-    <div class="section-header">
-      <span class="section-number">04.</span>
-      <h1 class="section-title">Certifications & Achievements</h1>
-      <div class="section-line"></div>
+
+    <!-- ══════════════════════════════
+         SECTION 1 — CERTIFICATIONS
+    ══════════════════════════════ -->
+    <div class="page-section">
+      <div class="section-header">
+        <span class="section-number">04.</span>
+        <h1 class="section-title">Certifications</h1>
+        <div class="section-line"></div>
+      </div>
+
+      <div class="certs-grid">
+        <div class="cert-card">
+          <div class="cert-badge blue">🐍</div>
+          <h3>Certified Entry-Level Python Programmer</h3>
+          <div class="cert-issuer">PCEP™</div>
+          <p class="cert-desc">Certified Entry-Level Python Programmer certification shows familiarity with universal computer programming concepts like data types, containers, functions, conditions, loops, as well as Python syntax, semantics, and the runtime environment.</p>
+          <div class="cert-meta">
+            <span class="cert-date"><i class="fa-solid fa-calendar"></i> 2026</span>
+            <a href="https://pythoninstitute.org/pcep" class="cert-link">View <i class="fa-solid fa-arrow-right"></i></a>
+          </div>
+        </div>
+
+        <div class="cert-card">
+          <div class="cert-badge purple">#</div>
+          <h3>Foundational C#</h3>
+          <div class="cert-issuer">Microsoft Learn / freeCodeCamp</div>
+          <div class="in-progress-badge"><span class="dot"></span> In Progress</div>
+          <p class="cert-desc">Introduction to C# programming, covering its core concepts, syntax, and practical application in software development.</p>
+          <div class="cert-meta">
+            <span class="cert-date"><i class="fa-solid fa-calendar"></i> 2026</span>
+            <a href="https://www.freecodecamp.org/learn/foundational-c-sharp-with-microsoft/" class="cert-link">View <i class="fa-solid fa-arrow-right"></i></a>
+          </div>
+        </div>
+      </div>
     </div>
 
-    <div class="certs-grid">
-      <!-- ✏️ EDIT CERTIFICATIONS BELOW — copy a cert-card block to add more -->
-      <div class="cert-card">
-        <div class="cert-badge blue">🐍</div>
-        <h3>Certified Entry-Level Python Programmer</h3>
-        <div class="cert-issuer">PCEP™</div>
-        <p class="cert-desc">Certified Entry-Level Python Programmer certification shows that the individual is familiar with universal computer programming concepts like data types, containers, functions, conditions, loops, as well as Python programming language syntax, semantics, and the runtime environment.</p>
-        <div class="cert-meta">
-          <span class="cert-date"><i class="fa-solid fa-calendar"></i> 2026</span>
-          <a href="https://pythoninstitute.org/pcep" class="cert-link">View <i class="fa-solid fa-arrow-right"></i></a>
-        </div>
-      </div>
-
-      <div class="cert-card">
-        <div class="cert-badge purple">#</div>
-        <h3>Foundational C#</h3>
-        <div class="cert-issuer">Microsoft Learn / freeCodeCamp</div>
-        <p class="cert-desc">Introduction to C# programming, covering its core concepts, syntax, and practical application in software development.</p>
-        <div class="cert-meta">
-          <span class="cert-date"><i class="fa-solid fa-calendar"></i> 2026</span>
-          <a href="https://www.freecodecamp.org/learn/foundational-c-sharp-with-microsoft/" class="cert-link">View <i class="fa-solid fa-arrow-right"></i></a>
-        </div>
-      </div>
-      
-      <div class="cert-card">
-        <div class="cert-badge purple">🤖</div>
-        <h3>TSA (Technology Student Association)</h3>
-        <div class="cert-issuer">National Organization / Veteran Member</div>
-        <p class="cert-desc">Non-profit career and technical student organization (CTSO) of over 300,000 middle and high school student members engaged in science, technology, engineering, and mathematics (STEM).</p>
-        <div class="cert-meta">
-          <span class="cert-date"><i class="fa-solid fa-calendar"></i> 2026</span>
-          <a href="#" class="cert-link">View <i class="fa-solid fa-arrow-right"></i></a>
-        </div>
-      </div>
-      <!-- ✏️ ADD NEW CERT CARDS ABOVE THIS COMMENT -->
+    <!-- ══════════════════════════════
+         SECTION 2 — ACHIEVEMENTS
+    ══════════════════════════════ -->
+    <div class="section-separator">
+      <span class="section-separator-label">✦ Achievements</span>
     </div>
 
+    <div class="page-section">
+      <div class="section-header">
+        <span class="section-number">05.</span>
+        <h1 class="section-title">Achievements</h1>
+        <div class="section-line"></div>
+      </div>
+
+      <!-- ★ Featured Achievement ★ -->
+      <div class="featured-achievement">
+        <div class="featured-badge"><i class="fa-solid fa-star"></i> Featured</div>
+        <div class="featured-glow"></div>
+        <div class="featured-achievement-inner">
+          <div class="featured-content">
+            <div class="cert-badge purple">🤖</div>
+            <h3>TSA — Technology Student Association</h3>
+            <div class="cert-issuer">National Organization · Veteran Member</div>
+            <p class="cert-desc">Non-profit CTSO of over 300,000 middle and high school student members engaged in STEM. As a veteran member, I've competed and collaborated in technology-focused challenges at the chapter, state, and national levels.</p>
+            <div class="featured-stats">
+              <div class="feat-stat">
+                <span class="feat-stat-value">300K+</span>
+                <span class="feat-stat-label">Members Nationwide</span>
+              </div>
+              <div class="feat-stat">
+                <span class="feat-stat-value">Veteran</span>
+                <span class="feat-stat-label">Member Status</span>
+              </div>
+              <div class="feat-stat">
+                <span class="feat-stat-value">2026</span>
+                <span class="feat-stat-label">Active Year</span>
+              </div>
+            </div>
+            <div class="cert-meta" style="margin-top: 1.5rem;">
+              <span class="cert-date"><i class="fa-solid fa-calendar"></i> 2026</span>
+              <a href="blog-tsa-2025.html" target="_blank" class="cert-link">Visit Blog <i class="fa-solid fa-arrow-right"></i></a>
+              <a href="https://tsaweb.org" target="_blank" class="cert-link">Visit TSA <i class="fa-solid fa-arrow-right"></i></a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Additional achievement cards go here -->
+  <div class="achievement-card">
+  <div class="cert-badge purple">🎖️</div>
+  <h3>NJHS (National Junior Honor Society)</h3>
+  <div class="cert-issuer">Organization / Member</div>
+  <p class="cert-desc">A premier organization for 6th–9th grade students, 
+    recognizing excellence in scholarship, leadership, service, character, and citizenship. Founded in 1929, it encourages community involvement and leadership development, often requiring a 3.0–3.75+ GPA, service hours, and faculty recommendations.</p>
+  <div class="cert-meta">
+    <span class="cert-date"><i class="fa-solid fa-calendar"></i> 2024-2025</span>
+    <a href="https://www.njhs.us/" class="cert-link">View <i class="fa-solid fa-arrow-right"></i></a>
+  </div>
+</div>
+        <!-- ✏️ ADD MORE ACHIEVEMENT CARDS HERE — copy a cert-card block and swap the border color to purple via achievement-card -->
+      </div>
+    </div>
+
+    <!-- Coming Soon -->
     <div class="certs-coming">
       <i class="fa-solid fa-hourglass-half"></i>
-      <p>More certifications in progress — check back soon!</p>
+      <p>More certifications & achievements in progress — check back soon!</p>
     </div>
+
   </main>
 
   <footer>
     <div class="footer-content">
       <div class="footer-text">
         <p>Designed & Built by <span class="highlight">Arnav Jain</span></p>
-        <p>&copy; 2025 All rights reserved.</p>
+        <p>&copy; 2026 All rights reserved.</p>
       </div>
     </div>
   </footer>
