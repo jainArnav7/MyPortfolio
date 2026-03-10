@@ -9,9 +9,139 @@
   <link rel="stylesheet" href="styles.css">
   <style>
 
+    /* ── Orange accent overrides for this post ───────────── */
+    /* This post uses orange as its accent instead of cyan    */
+    :root {
+      --accent:       #ff8c00;
+      --accent-light: #ffa733;
+      --accent-dim:   rgba(255,140,0,0.12);
+      --accent-border:rgba(255,140,0,0.25);
+    }
+
+    /* ── Hero Banner ─────────────────────────────────────── */
+    .post-hero {
+      position: relative;
+      width: 100%;
+      height: 440px;
+      overflow: hidden;
+      margin-top: 70px;
+    }
+    .post-hero-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      filter: brightness(0.4) saturate(1.2);
+    }
+    .post-hero-fallback {
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, #1a0f00 0%, #2d1800 45%, #1a0f00 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .hero-bg-pattern {
+      position: absolute;
+      inset: 0;
+      background-image:
+        radial-gradient(circle at 20% 50%, rgba(255,140,0,0.06) 0%, transparent 50%),
+        radial-gradient(circle at 80% 30%, rgba(255,160,0,0.04) 0%, transparent 40%);
+    }
+    .post-hero-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        to bottom,
+        rgba(10,6,0,0.2)  0%,
+        rgba(10,6,0,0.45) 50%,
+        rgba(10,6,0,0.88) 100%
+      );
+    }
+    .post-hero-content {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      padding: 2.5rem 3rem;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    .post-hero-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.72rem;
+      font-family: 'JetBrains Mono', monospace;
+      color: var(--accent);
+      background: var(--accent-dim);
+      border: 1px solid var(--accent-border);
+      padding: 0.25rem 0.75rem;
+      border-radius: 999px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 0.9rem;
+    }
+    .post-hero h1 {
+      font-family: 'Lora', Georgia, serif;
+      font-size: clamp(1.8rem, 4vw, 3rem);
+      font-weight: 600;
+      color: #ffffff;
+      line-height: 1.2;
+      margin-bottom: 0.6rem;
+      text-shadow: 0 2px 20px rgba(0,0,0,0.6);
+    }
+    /* Highlight "Year Two" in orange */
+    .post-hero h1 span { color: var(--accent); }
+    .post-hero-sub {
+      font-size: 1rem;
+      color: rgba(255,255,255,0.7);
+      margin-bottom: 1rem;
+      font-style: italic;
+    }
+    .post-hero-meta {
+      display: flex;
+      align-items: center;
+      gap: 1.25rem;
+      flex-wrap: wrap;
+    }
+    .post-hero-meta span {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.8rem;
+      color: rgba(255,255,255,0.5);
+      font-family: 'JetBrains Mono', monospace;
+    }
+    .post-hero-meta i { color: var(--accent); }
+
+    /* ── In-progress banner ──────────────────────────────── */
+    .wip-banner {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.85rem 1.25rem;
+      background: rgba(255,140,0,0.07);
+      border: 1px solid rgba(255,140,0,0.22);
+      border-radius: var(--radius-md);
+      font-family: 'Inter', sans-serif;
+      font-size: 0.88rem;
+      color: #ffa733;
+      margin-bottom: 2rem;
+    }
+    .wip-dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: var(--accent);
+      flex-shrink: 0;
+      animation: wip-pulse 1.6s ease-in-out infinite;
+    }
+    @keyframes wip-pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50%       { opacity: 0.3; transform: scale(0.7); }
+    }
+
     /* ── Layout ─────────────────────────────────────────── */
     .post-shell {
-      padding: 8rem 2rem 6rem;
+      padding: 3rem 2rem 6rem;
       max-width: 1200px;
       margin: 0 auto;
       display: grid;
@@ -19,8 +149,6 @@
       gap: 4rem;
       align-items: start;
     }
-
-    /* ── Article ─────────────────────────────────────────── */
 
     /* Back link */
     .post-back {
@@ -31,84 +159,261 @@
       text-decoration: none;
       font-size: 0.85rem;
       font-family: 'JetBrains Mono', monospace;
-      margin-bottom: 2.5rem;
+      margin-bottom: 2rem;
       transition: color 0.2s, gap 0.2s;
     }
-    .post-back:hover { color: var(--primary); gap: 0.8rem; }
+    .post-back:hover { color: var(--accent); gap: 0.8rem; }
     .post-back i { transform: rotate(180deg); }
-
-    /* Header */
-    .post-header { margin-bottom: 3rem; }
-
-    .post-tags-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.5rem;
-      margin-bottom: 1.25rem;
-    }
-    .post-tag-pill {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.35rem;
-      font-size: 0.72rem;
-      font-family: 'JetBrains Mono', monospace;
-      padding: 0.25rem 0.75rem;
-      border-radius: 999px;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-    }
-    .pill-tsa    { background: rgba(255,160,0,0.1);  color: #ffa000;           border: 1px solid rgba(255,160,0,0.25); }
-    .pill-ai     { background: rgba(0,217,255,0.1);  color: var(--primary);    border: 1px solid rgba(0,217,255,0.25); }
-    .pill-python { background: rgba(6,219,168,0.1);  color: var(--success);    border: 1px solid rgba(6,219,168,0.25); }
-    .pill-web    { background: rgba(124,58,237,0.1); color: var(--secondary);  border: 1px solid rgba(124,58,237,0.25); }
-
-    .post-title {
-      font-family: 'Lora', Georgia, serif;
-      font-size: clamp(1.9rem, 4vw, 2.8rem);
-      font-weight: 600;
-      line-height: 1.25;
-      color: var(--text-primary);
-      margin-bottom: 1.25rem;
-    }
-
-    .post-subtitle {
-      font-size: 1.1rem;
-      color: var(--text-secondary);
-      line-height: 1.7;
-      margin-bottom: 1.75rem;
-      font-style: italic;
-    }
-
-    .post-meta-row {
-      display: flex;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 1.5rem;
-      padding: 1.25rem 1.5rem;
-      background: var(--bg-card);
-      border: 1px solid rgba(0,217,255,0.1);
-      border-radius: var(--radius-md);
-    }
-    .meta-item {
-      display: flex;
-      align-items: center;
-      gap: 0.45rem;
-      font-size: 0.82rem;
-      color: var(--text-muted);
-    }
-    .meta-item i { color: var(--primary); font-size: 0.75rem; }
-    .meta-divider { width: 1px; height: 18px; background: rgba(255,255,255,0.08); }
 
     /* Separator */
     .post-divider {
       width: 100%;
       height: 1px;
-      background: linear-gradient(to right, var(--primary), var(--secondary), transparent);
-      margin: 2.5rem 0;
-      opacity: 0.3;
+      background: linear-gradient(to right, var(--accent), rgba(255,140,0,0.2), transparent);
+      margin: 2rem 0;
+      opacity: 0.5;
     }
 
-    /* Body prose */
+    /* ── Quick Stats ─────────────────────────────────────── */
+    .quick-stats {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1rem;
+      margin: 2rem 0 2.5rem;
+    }
+    .stat-card {
+      background: var(--bg-card);
+      border: 1px solid var(--accent-border);
+      border-radius: var(--radius-md);
+      padding: 1.1rem 1rem;
+      text-align: center;
+      transition: border-color 0.2s, transform 0.2s;
+    }
+    .stat-card:hover { border-color: rgba(255,140,0,0.5); transform: translateY(-3px); }
+    .stat-icon { font-size: 1.2rem; color: var(--accent); margin-bottom: 0.5rem; }
+    .stat-value {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      line-height: 1.1;
+      margin-bottom: 0.3rem;
+    }
+    .stat-label {
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    /* ── Prep Timeline ───────────────────────────────────── */
+    .prep-timeline {
+      position: relative;
+      margin: 1.5rem 0 2rem;
+      padding-left: 2rem;
+    }
+    .prep-timeline::before {
+      content: '';
+      position: absolute;
+      left: 7px; top: 0; bottom: 0;
+      width: 2px;
+      background: linear-gradient(to bottom, var(--accent), rgba(255,140,0,0.1));
+    }
+    .timeline-item {
+      position: relative;
+      padding: 0 0 1.5rem 1.5rem;
+    }
+    .timeline-item:last-child { padding-bottom: 0; }
+    .timeline-dot {
+      position: absolute;
+      left: -1.55rem;
+      top: 0.35rem;
+      width: 12px; height: 12px;
+      border-radius: 50%;
+      background: var(--bg-card);
+      border: 2px solid var(--accent);
+      transition: background 0.2s;
+    }
+    .timeline-item:hover .timeline-dot { background: var(--accent); }
+    .timeline-month {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.72rem;
+      color: var(--accent);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 0.2rem;
+    }
+    .timeline-title {
+      font-family: 'Poppins', sans-serif;
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 0.2rem;
+    }
+    .timeline-desc {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+
+    /* ── Event photo ─────────────────────────────────────── */
+    .event-photo {
+      margin: 1.5rem 0;
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid var(--accent-border);
+    }
+    .event-photo img {
+      width: 100%;
+      max-height: 280px;
+      object-fit: cover;
+      display: block;
+    }
+    .event-photo-placeholder {
+      width: 100%;
+      height: 180px;
+      background: var(--bg-card);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 0.6rem;
+      color: var(--text-muted);
+      font-size: 0.82rem;
+      font-family: 'JetBrains Mono', monospace;
+    }
+    .event-photo-placeholder i { font-size: 2rem; color: var(--accent); opacity: 0.2; }
+    .event-photo figcaption {
+      padding: 0.6rem 1rem;
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      font-family: 'Inter', sans-serif;
+      font-style: italic;
+      background: var(--bg-card);
+      border-top: 1px solid rgba(255,140,0,0.08);
+    }
+
+    /* ── Event difficulty stars ──────────────────────────── */
+    .difficulty-row {
+      display: flex;
+      align-items: center;
+      gap: 0.65rem;
+      margin: 0.4rem 0 1rem;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.82rem;
+    }
+    .diff-label { color: var(--text-muted); }
+    .diff-stars { color: var(--accent); letter-spacing: 0.05em; }
+    .diff-stars .empty { color: rgba(255,140,0,0.2); }
+
+    /* ── Placement progress bars ─────────────────────────── */
+    .placement-bars { margin: 1.5rem 0; display: flex; flex-direction: column; gap: 1rem; }
+    .placement-item {}
+    .placement-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.4rem;
+    }
+    .placement-event { font-family: 'Inter', sans-serif; font-size: 0.88rem; font-weight: 600; color: var(--text-primary); }
+    .placement-rank  { font-family: 'JetBrains Mono', monospace; font-size: 0.8rem; color: var(--accent); }
+    .placement-track {
+      width: 100%;
+      height: 8px;
+      background: rgba(255,140,0,0.1);
+      border-radius: 999px;
+      overflow: hidden;
+      border: 1px solid rgba(255,140,0,0.12);
+    }
+    .placement-fill {
+      height: 100%;
+      border-radius: 999px;
+      background: linear-gradient(90deg, var(--accent), var(--accent-light));
+      width: 0;
+      transition: width 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    /* ── Mistakes section ────────────────────────────────── */
+    .mistakes-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      margin: 1rem 0 1.5rem;
+    }
+    .mistake-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.75rem;
+      padding: 0.85rem 1rem;
+      background: rgba(255,60,60,0.05);
+      border: 1px solid rgba(255,60,60,0.12);
+      border-radius: var(--radius-md);
+      font-family: 'Inter', sans-serif;
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+      line-height: 1.55;
+    }
+    .mistake-item i { color: #ff6060; flex-shrink: 0; margin-top: 0.15rem; }
+
+    /* ── Next year strategy ──────────────────────────────── */
+    .strategy-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      margin: 1rem 0 1.5rem;
+      counter-reset: strategy;
+    }
+    .strategy-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 1rem;
+      padding: 0.9rem 1rem;
+      background: rgba(255,140,0,0.05);
+      border: 1px solid rgba(255,140,0,0.14);
+      border-radius: var(--radius-md);
+      font-family: 'Inter', sans-serif;
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+      line-height: 1.55;
+      counter-increment: strategy;
+    }
+    .strategy-num {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--accent);
+      background: var(--accent-dim);
+      border: 1px solid var(--accent-border);
+      border-radius: 50%;
+      width: 24px; height: 24px;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+
+    /* ── Tools tags ──────────────────────────────────────── */
+    .tools-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.65rem;
+      margin: 1rem 0 1.5rem;
+    }
+    .tool-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.8rem;
+      font-family: 'JetBrains Mono', monospace;
+      padding: 0.3rem 0.85rem;
+      border-radius: 999px;
+      background: var(--accent-dim);
+      color: var(--accent);
+      border: 1px solid var(--accent-border);
+      transition: all 0.2s;
+    }
+    .tool-tag:hover { background: rgba(255,140,0,0.2); border-color: rgba(255,140,0,0.4); }
+
+    /* ── Body prose ──────────────────────────────────────── */
     .post-body {
       font-family: 'Lora', Georgia, serif;
       font-size: 1.05rem;
@@ -122,7 +427,7 @@
       color: var(--text-primary);
       margin: 2.75rem 0 1rem;
       padding-bottom: 0.5rem;
-      border-bottom: 1px solid rgba(0,217,255,0.1);
+      border-bottom: 1px solid rgba(255,140,0,0.12);
       scroll-margin-top: 100px;
     }
     .post-body h3 {
@@ -135,23 +440,19 @@
     }
     .post-body p  { margin-bottom: 1.4rem; }
     .post-body strong { color: var(--text-primary); font-weight: 600; }
-    .post-body em { color: var(--primary); font-style: italic; }
-    .post-body a  { color: var(--primary); text-decoration: underline; text-underline-offset: 3px; }
-    .post-body a:hover { color: var(--primary-light); }
-
+    .post-body em { color: var(--accent); font-style: italic; }
+    .post-body a  { color: var(--accent); text-decoration: underline; text-underline-offset: 3px; }
+    .post-body a:hover { color: var(--accent-light); }
     .post-body ul,
-    .post-body ol {
-      padding-left: 1.5rem;
-      margin-bottom: 1.4rem;
-    }
+    .post-body ol { padding-left: 1.5rem; margin-bottom: 1.4rem; }
     .post-body li { margin-bottom: 0.5rem; }
 
-    /* Blockquote */
+    /* Blockquote — orange accent */
     .post-body blockquote {
-      border-left: 3px solid var(--primary);
+      border-left: 3px solid var(--accent);
       margin: 2rem 0;
       padding: 1.25rem 1.5rem;
-      background: rgba(0,217,255,0.05);
+      background: rgba(255,140,0,0.05);
       border-radius: 0 var(--radius-md) var(--radius-md) 0;
       font-style: italic;
       color: var(--text-primary);
@@ -176,236 +477,102 @@
       font-size: 0.92rem;
       line-height: 1.65;
     }
-    .callout-info { background: rgba(0,217,255,0.07);  border: 1px solid rgba(0,217,255,0.18); }
+    .callout-info { background: rgba(255,140,0,0.06);  border: 1px solid rgba(255,140,0,0.18); }
     .callout-tip  { background: rgba(6,219,168,0.07);  border: 1px solid rgba(6,219,168,0.18); }
     .callout i { margin-top: 0.15rem; flex-shrink: 0; }
-    .callout-info i { color: var(--primary); }
+    .callout-info i { color: var(--accent); }
     .callout-tip i  { color: var(--success); }
-
-    /* Inline code */
-    .post-body code {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.85em;
-      background: rgba(0,217,255,0.08);
-      color: var(--primary);
-      padding: 0.15em 0.45em;
-      border-radius: 4px;
-    }
-
-    /* Code block */
-    .post-body pre {
-      background: #0d1117;
-      border: 1px solid rgba(0,217,255,0.12);
-      border-radius: var(--radius-md);
-      padding: 1.5rem;
-      overflow-x: auto;
-      margin: 1.75rem 0;
-    }
-    .post-body pre code {
-      background: none;
-      padding: 0;
-      font-size: 0.88rem;
-      color: #e6edf3;
-    }
 
     /* Post footer */
     .post-footer {
       margin-top: 3.5rem;
       padding-top: 2rem;
-      border-top: 1px solid rgba(0,217,255,0.1);
+      border-top: 1px solid rgba(255,140,0,0.12);
     }
-    .post-footer-tags { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 2rem; }
+    .post-tags-row { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1.25rem; }
+    .post-tag-pill {
+      display: inline-flex; align-items: center; gap: 0.35rem;
+      font-size: 0.72rem; font-family: 'JetBrains Mono', monospace;
+      padding: 0.25rem 0.75rem; border-radius: 999px;
+      text-transform: uppercase; letter-spacing: 0.05em;
+    }
+    .pill-tsa { background: rgba(255,140,0,0.1); color: var(--accent); border: 1px solid var(--accent-border); }
 
     .share-section { margin-bottom: 2rem; }
-    .share-label {
-      font-size: 0.8rem;
-      font-family: 'JetBrains Mono', monospace;
-      color: var(--text-muted);
-      margin-bottom: 0.75rem;
-    }
+    .share-label { font-size: 0.8rem; font-family: 'JetBrains Mono', monospace; color: var(--text-muted); margin-bottom: 0.75rem; }
     .share-buttons { display: flex; gap: 0.75rem; flex-wrap: wrap; }
     .share-btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
-      padding: 0.55rem 1.1rem;
-      border-radius: var(--radius-full);
-      font-size: 0.82rem;
-      font-weight: 600;
-      cursor: pointer;
-      border: none;
-      text-decoration: none;
-      transition: all 0.2s;
-      font-family: 'Inter', sans-serif;
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      padding: 0.55rem 1.1rem; border-radius: var(--radius-full);
+      font-size: 0.82rem; font-weight: 600; cursor: pointer; border: none;
+      text-decoration: none; transition: all 0.2s; font-family: 'Inter', sans-serif;
     }
     .share-btn:hover      { transform: translateY(-2px); }
     .share-twitter        { background: rgba(29,161,242,0.12); color: #1da1f2; border: 1px solid rgba(29,161,242,0.25); }
     .share-linkedin       { background: rgba(0,119,181,0.12);  color: #0077b5; border: 1px solid rgba(0,119,181,0.25); }
-    .share-copy           { background: rgba(0,217,255,0.1);   color: var(--primary); border: 1px solid rgba(0,217,255,0.2); }
+    .share-copy           { background: var(--accent-dim); color: var(--accent); border: 1px solid var(--accent-border); }
     .share-twitter:hover  { background: rgba(29,161,242,0.22); }
     .share-linkedin:hover { background: rgba(0,119,181,0.22); }
-    .share-copy:hover     { background: rgba(0,217,255,0.2); }
+    .share-copy:hover     { background: rgba(255,140,0,0.22); }
 
     /* Post navigation */
-    .post-nav {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 1rem;
-      margin-top: 2.5rem;
-    }
+    .post-nav { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 2.5rem; }
     .post-nav-btn {
-      background: var(--bg-card);
-      border: 1px solid rgba(0,217,255,0.1);
-      border-radius: var(--radius-md);
-      padding: 1rem 1.25rem;
-      text-decoration: none;
-      transition: all 0.3s;
-      display: flex;
-      flex-direction: column;
-      gap: 0.3rem;
+      background: var(--bg-card); border: 1px solid rgba(255,140,0,0.12);
+      border-radius: var(--radius-md); padding: 1rem 1.25rem; text-decoration: none;
+      transition: all 0.3s; display: flex; flex-direction: column; gap: 0.3rem;
     }
-    .post-nav-btn:hover { border-color: rgba(0,217,255,0.3); transform: translateY(-3px); }
+    .post-nav-btn:hover { border-color: rgba(255,140,0,0.35); transform: translateY(-3px); }
     .post-nav-btn.next  { text-align: right; }
-    .nav-label {
-      font-size: 0.72rem;
-      font-family: 'JetBrains Mono', monospace;
-      color: var(--text-muted);
-      display: flex;
-      align-items: center;
-      gap: 0.4rem;
-    }
+    .nav-label { font-size: 0.72rem; font-family: 'JetBrains Mono', monospace; color: var(--text-muted); display: flex; align-items: center; gap: 0.4rem; }
     .post-nav-btn.next .nav-label { justify-content: flex-end; }
     .nav-title { font-size: 0.88rem; color: var(--text-primary); font-weight: 600; line-height: 1.3; }
 
     /* ── Sidebar ─────────────────────────────────────────── */
-    .sidebar-sticky {
-      position: sticky;
-      top: 100px;
-      display: flex;
-      flex-direction: column;
-      gap: 1.5rem;
-    }
-
-    /* TOC widget */
-    .toc-widget {
-      background: var(--bg-card);
-      border: 1px solid rgba(0,217,255,0.1);
-      border-radius: var(--radius-lg);
-      padding: 1.5rem;
+    .sidebar-sticky { position: sticky; top: 100px; display: flex; flex-direction: column; gap: 1.5rem; }
+    .toc-widget, .info-widget, .tags-widget {
+      background: var(--bg-card); border: 1px solid rgba(255,140,0,0.1);
+      border-radius: var(--radius-lg); padding: 1.5rem;
     }
     .widget-title {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.72rem;
-      color: var(--primary);
-      text-transform: uppercase;
-      letter-spacing: 0.12em;
-      margin-bottom: 1.1rem;
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
+      font-family: 'JetBrains Mono', monospace; font-size: 0.72rem; color: var(--accent);
+      text-transform: uppercase; letter-spacing: 0.12em; margin-bottom: 1.1rem;
+      display: flex; align-items: center; gap: 0.5rem;
     }
-    .toc-list {
-      list-style: none;
-      padding: 0;
-      margin: 0;
-      display: flex;
-      flex-direction: column;
-      gap: 0.1rem;
-    }
+    .toc-list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 0.1rem; }
     .toc-list a {
-      display: flex;
-      align-items: center;
-      gap: 0.6rem;
-      padding: 0.45rem 0.6rem;
-      color: var(--text-muted);
-      text-decoration: none;
-      font-size: 0.85rem;
-      border-radius: 6px;
-      transition: all 0.2s;
-      border-left: 2px solid transparent;
-      line-height: 1.35;
+      display: flex; align-items: center; gap: 0.6rem; padding: 0.45rem 0.6rem;
+      color: var(--text-muted); text-decoration: none; font-size: 0.85rem;
+      border-radius: 6px; transition: all 0.2s; border-left: 2px solid transparent; line-height: 1.35;
     }
-    .toc-list a::before {
-      content: '';
-      width: 5px;
-      height: 5px;
-      border-radius: 50%;
-      background: var(--text-muted);
-      flex-shrink: 0;
-      transition: background 0.2s;
-    }
-    .toc-list a:hover,
-    .toc-list a.active {
-      color: var(--primary);
-      background: rgba(0,217,255,0.06);
-      border-left-color: var(--primary);
-    }
-    .toc-list a:hover::before,
-    .toc-list a.active::before { background: var(--primary); }
+    .toc-list a::before { content: ''; width: 5px; height: 5px; border-radius: 50%; background: var(--text-muted); flex-shrink: 0; transition: background 0.2s; }
+    .toc-list a:hover, .toc-list a.active { color: var(--accent); background: rgba(255,140,0,0.06); border-left-color: var(--accent); }
+    .toc-list a:hover::before, .toc-list a.active::before { background: var(--accent); }
     .toc-list .toc-h3 { padding-left: 1.4rem; font-size: 0.8rem; }
 
-    /* Post info widget */
-    .info-widget {
-      background: var(--bg-card);
-      border: 1px solid rgba(0,217,255,0.1);
-      border-radius: var(--radius-lg);
-      padding: 1.5rem;
-    }
-    .info-row {
-      display: flex;
-      align-items: flex-start;
-      gap: 0.75rem;
-      padding: 0.7rem 0;
-      border-bottom: 1px solid rgba(255,255,255,0.04);
-    }
+    .info-row { display: flex; align-items: flex-start; gap: 0.75rem; padding: 0.7rem 0; border-bottom: 1px solid rgba(255,255,255,0.04); }
     .info-row:last-child  { border-bottom: none; padding-bottom: 0; }
     .info-row:first-child { padding-top: 0; }
-    .info-icon  { color: var(--primary); font-size: 0.8rem; margin-top: 0.15rem; width: 14px; flex-shrink: 0; }
+    .info-icon  { color: var(--accent); font-size: 0.8rem; margin-top: 0.15rem; width: 14px; flex-shrink: 0; }
     .info-label { font-size: 0.72rem; color: var(--text-muted); font-family: 'JetBrains Mono', monospace; margin-bottom: 0.2rem; }
     .info-value { font-size: 0.85rem; color: var(--text-secondary); }
-
-    /* Tags widget */
-    .tags-widget {
-      background: var(--bg-card);
-      border: 1px solid rgba(0,217,255,0.1);
-      border-radius: var(--radius-lg);
-      padding: 1.5rem;
-    }
     .tags-cloud { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 0.5rem; }
 
-    /* Reading progress ring */
     .reading-progress-ring {
-      display: flex;
-      align-items: center;
-      gap: 0.75rem;
-      padding: 0.75rem 1rem;
-      background: rgba(0,217,255,0.05);
-      border: 1px solid rgba(0,217,255,0.1);
-      border-radius: var(--radius-md);
-      font-size: 0.8rem;
-      color: var(--text-muted);
+      display: flex; align-items: center; gap: 0.75rem; padding: 0.75rem 1rem;
+      background: rgba(255,140,0,0.05); border: 1px solid rgba(255,140,0,0.12);
+      border-radius: var(--radius-md); font-size: 0.8rem; color: var(--text-muted);
     }
     .progress-circle { position: relative; width: 36px; height: 36px; flex-shrink: 0; }
     .progress-circle svg { transform: rotate(-90deg); }
-    .progress-circle .track { fill: none; stroke: rgba(0,217,255,0.1); stroke-width: 3; }
+    .progress-circle .track { fill: none; stroke: rgba(255,140,0,0.1); stroke-width: 3; }
     .progress-circle .fill {
-      fill: none;
-      stroke: var(--primary);
-      stroke-width: 3;
-      stroke-linecap: round;
-      stroke-dasharray: 88;
-      stroke-dashoffset: 88;
-      transition: stroke-dashoffset 0.1s ease;
+      fill: none; stroke: var(--accent); stroke-width: 3; stroke-linecap: round;
+      stroke-dasharray: 88; stroke-dashoffset: 88; transition: stroke-dashoffset 0.1s ease;
     }
     .progress-pct {
-      position: absolute;
-      inset: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.6rem;
-      color: var(--primary);
+      position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
+      font-family: 'JetBrains Mono', monospace; font-size: 0.6rem; color: var(--accent);
     }
 
     /* ── Responsive ──────────────────────────────────────── */
@@ -415,13 +582,14 @@
       .sidebar-sticky { position: static; flex-direction: row; flex-wrap: wrap; }
       .toc-widget, .info-widget, .tags-widget { flex: 1 1 260px; }
       .reading-progress-ring { display: none; }
+      .quick-stats { grid-template-columns: repeat(2, 1fr); }
     }
     @media (max-width: 600px) {
-      .post-shell { padding: 7rem 1.25rem 4rem; }
-      .post-nav { grid-template-columns: 1fr; }
-      .share-buttons { flex-wrap: wrap; }
-      .post-meta-row { gap: 0.75rem; }
-      .meta-divider { display: none; }
+      .post-shell { padding: 2rem 1.25rem 4rem; }
+      .post-hero  { height: 340px; }
+      .post-hero-content { padding: 1.5rem; }
+      .post-nav   { grid-template-columns: 1fr; }
+      .quick-stats { grid-template-columns: repeat(2, 1fr); }
     }
   </style>
 </head>
@@ -440,8 +608,8 @@
         <li><a href="contact.html"><span class="nav-number">06.</span> Contact</a></li>
       </ul>
       <div class="nav-social">
-        <a href="https://github.com/jainArnav7" target="_blank" class="social-icon"><i class="fa-brands fa-github"></i></a>
-        <a href="https://www.linkedin.com/in/arnav-jain-b63069354" target="_blank" class="social-icon"><i class="fa-brands fa-linkedin"></i></a>
+        <a href="https://github.com/jainArnav7" target="_blank" rel="noopener" class="social-icon"><i class="fa-brands fa-github"></i></a>
+        <a href="https://www.linkedin.com/in/arnav-jain-b63069354" target="_blank" rel="noopener" class="social-icon"><i class="fa-brands fa-linkedin"></i></a>
         <button class="theme-toggle" id="themeToggle"><i class="fa-solid fa-moon"></i></button>
       </div>
       <div class="hamburger" id="hamburger"><span></span><span></span><span></span></div>
@@ -460,6 +628,30 @@
     </ul>
   </div>
 
+  <!-- ═══════════════════════════════════════════════════════
+       HERO BANNER
+       To add a real photo: replace the .post-hero-fallback div
+       with: <img class="post-hero-img" src="your-photo.jpg" alt="...">
+  ════════════════════════════════════════════════════════ -->
+  <div class="post-hero">
+    <div class="post-hero-fallback">
+      <div class="hero-bg-pattern"></div>
+    </div>
+    <!-- Swap above for a real image:
+    <img class="post-hero-img" src="images/tsa-2026-hero.jpg" alt="TSA 2026 competition"> -->
+    <div class="post-hero-overlay"></div>
+    <div class="post-hero-content">
+      <div class="post-hero-tag"><i class="fa-solid fa-microchip"></i> TSA · Year Two</div>
+      <h1>Colorado TSA <span>2026–2027</span></h1>
+      <p class="post-hero-sub">Prepared for my second year competing in Colorado TSA — with better plans, bigger events, and lessons from year one.</p>
+      <div class="post-hero-meta">
+        <span><i class="fa-solid fa-calendar-days"></i> 2026</span>
+        <span><i class="fa-solid fa-clock"></i> 6 min read</span>
+        <span><i class="fa-solid fa-user"></i> Arnav Jain</span>
+      </div>
+    </div>
+  </div>
+
   <!-- ═══════════════════════════════════════════════════════ -->
   <div class="post-shell">
 
@@ -470,26 +662,11 @@
         <i class="fa-solid fa-arrow-right"></i> Back to Blog
       </a>
 
-      <!-- Header -->
-      <header class="post-header">
-
-        <div class="post-tags-row">
-          <span class="post-tag-pill pill-tsa"><i class="fa-solid fa-microchip"></i> TSA</span>
-        </div>
-
-        <h1 class="post-title">Colorado TSA 2026–2027/h1>
-        <p class="post-subtitle">What I learned and accomplished during my second year in the Colorado Technology Student Association.</p>
-
-        <div class="post-meta-row">
-          <div class="meta-item"><i class="fa-solid fa-calendar-days"></i> February 19, 2027</div>
-          <div class="meta-divider"></div>
-          <div class="meta-item"><i class="fa-solid fa-clock"></i> 5 min read</div>
-          <div class="meta-divider"></div>
-          <div class="meta-item"><i class="fa-solid fa-folder"></i> TSA</div>
-          <div class="meta-divider"></div>
-          <div class="meta-item"><i class="fa-solid fa-user"></i> Arnav Jain</div>
-        </div>
-      </header>
+      <!-- In-progress notice -->
+      <div class="wip-banner">
+        <div class="wip-dot"></div>
+        This post is in progress — competition season is still ongoing. Check back for results and photos.
+      </div>
 
       <div class="post-divider"></div>
 
@@ -498,100 +675,300 @@
            ═══════════════════════════════════════════════════ -->
       <div class="post-body">
 
-        <h2 id="intro">What Is TSA?</h2>
-        <p>The <strong>Technology Student Association (TSA)</strong> is a national organization for students in STEM where you compete in tech-related events against other schools. Colorado has its own chapter, and this year was my first time participating. I had no idea what to expect going in.</p>
+        <h2 id="intro">Year Two</h2>
+        <p>After finishing my first year of TSA, I learned a lot about what it actually takes to compete at a high level. This post covers what I am planning for year two, what events I am entering, what I am doing differently, and how I am approaching each one with the lessons from 2025–2026 in mind.</p>
 
-        <p>Events range from coding challenges and cybersecurity to video game design and engineering. You pick your events, prepare, and then compete at the regional and state levels. It is genuinely one of the best ways to apply what you are learning in a real competitive setting.</p>
+        <p>The biggest difference between year one and year two is preparation. Last year I started late, prepared narrowly, and ran out of time on multiple builds. This year, the plan is built around avoiding every one of those mistakes.</p>
 
         <div class="callout callout-info">
           <i class="fa-solid fa-circle-info"></i>
           <span>TSA has over 250,000 members across the US. Colorado's state conference brings together schools from all over the state to compete across 60+ events.</span>
         </div>
 
-        <h2 id="events">Events I am going to Compete In</h2>
-        <p>I signed up for a few events that lined up with what I have been working on. Here is what I competed in and how it went:</p>
+        <!-- Quick Stats -->
+        <div class="quick-stats">
+          <div class="stat-card">
+            <div class="stat-icon"><i class="fa-solid fa-flag-checkered"></i></div>
+            <div class="stat-value">4</div>
+            <div class="stat-label">Events Planned</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon"><i class="fa-solid fa-calendar-check"></i></div>
+            <div class="stat-value">Nov</div>
+            <div class="stat-label">Start Date</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon"><i class="fa-solid fa-users"></i></div>
+            <div class="stat-value">3</div>
+            <div class="stat-label">Team Members</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon"><i class="fa-solid fa-rotate-left"></i></div>
+            <div class="stat-value">Yr 2</div>
+            <div class="stat-label">Experience</div>
+          </div>
+        </div>
 
-        <h3 id="fight">Flight Endurance HS</h3>
-        <p>This was the event I was most excited about and also the most nervous for. In this competition, participants must design and build a robot and carefully refine its performance. Once the robot is ready, it must be driven through a course with specific obstacles.</p>
+        <!-- ── Prep Timeline ──────────────────────────────── -->
+        <h2 id="timeline">Preparation Timeline</h2>
+        <p>One of the biggest lessons from year one was starting too late. This year I built a real schedule from the beginning:</p>
 
-        <p>The course required the robot to navigate several obstacles, including picking up objects and driving up ramps. One of the most difficult sections involved using the robot's arm to lift pipes. The robot had to slide the pipe upward, drive through it, and repeat this process multiple times. Later in the course, the robot also had to pick up eggs before returning to move the pipes again.</p>
+        <div class="prep-timeline">
+          <div class="timeline-item">
+            <div class="timeline-dot"></div>
+            <div class="timeline-month">November 2026</div>
+            <div class="timeline-title">Event selection &amp; planning</div>
+            <div class="timeline-desc">Choose events, research rules, form teams, and order any parts that need lead time.</div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-dot"></div>
+            <div class="timeline-month">December 2026</div>
+            <div class="timeline-title">Initial builds &amp; prototypes</div>
+            <div class="timeline-desc">Start physical builds. First drone frame assembly. Begin robot arm redesign based on last year's pipe-grip failure.</div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-dot"></div>
+            <div class="timeline-month">January 2027</div>
+            <div class="timeline-title">Testing &amp; refinement</div>
+            <div class="timeline-desc">Weekly test runs. Gear ratio testing for Flight Endurance. Coding practice across multiple languages.</div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-dot"></div>
+            <div class="timeline-month">February 2027</div>
+            <div class="timeline-title">Final prep &amp; mock competition</div>
+            <div class="timeline-desc">Full dress rehearsal. Practice interviews. Lock in designs — no major changes this close to competition.</div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-dot"></div>
+            <div class="timeline-month">March 2027</div>
+            <div class="timeline-title">Competition day</div>
+            <div class="timeline-desc">State conference. Compete across all entered events.</div>
+          </div>
+        </div>
 
-        <p>Our team was not able to complete the pipe section successfully because the robot's arm struggled to grip the pipe. However, we were able to complete the rest of the course, which required precise control, coordination, and careful decision-making under pressure.</p>
+        <!-- ── Events ─────────────────────────────────────── -->
+        <h2 id="events">Events I Am Competing In</h2>
+        <p>This year I chose events that match what I have been building on since last season, with one new challenge added:</p>
 
-        <blockquote>
-          "Engineering is not about getting it right the first time. It is about improving it until it works."
-          <cite>— A lesson I learned while preparing for the robotics competition</cite>
-        </blockquote>
+        <h3 id="flight">Flight Endurance HS</h3>
+
+        <div class="difficulty-row">
+          <span class="diff-label">Difficulty:</span>
+          <span class="diff-stars">
+            ★★★★<span class="empty">☆</span>
+          </span>
+        </div>
+
+        <p>In Flight Endurance, teams design and build a rubber-band-powered balsa wood airplane that must stay airborne as long as possible. The plane is judged entirely on flight time, so the design, weight distribution, and power system have to work together perfectly.</p>
+
+        <p>This is the event I am most focused on this year. After working with motors and mechanical systems in Robotics last year, I want to apply that precision thinking to an aerodynamics challenge. The learning curve is steep, but the design problem is exactly the kind I enjoy working through.</p>
+
+        <!-- ✏️ Replace placeholder with your actual flight model photo -->
+        <figure class="event-photo">
+          <div class="event-photo-placeholder">
+            <i class="fa-solid fa-paper-plane"></i>
+            Add your flight model photo here
+          </div>
+          <!-- <img src="images/tsa-flight-model.jpg" alt="Balsa wood airplane for Flight Endurance"> -->
+          <figcaption>Early prototype for the Flight Endurance HS event.</figcaption>
+        </figure>
+
+        <div class="callout callout-tip">
+          <i class="fa-solid fa-lightbulb"></i>
+          <span><strong>Key focus:</strong> Weight is everything. Even a small amount of extra material can significantly reduce flight time. Every component needs a reason to be there.</span>
+        </div>
 
         <h3 id="vgd">Video Game Design</h3>
-        <p>In this event, our team designed and built a solar-powered car. Although the car was well constructed and had a strong design, it did not perform well during the race. The gear ratio we selected was too large, which prevented the motor from generating enough torque to move the car effectively.</p>
 
-        <p>Despite this setback, our team interview went well and we were able to clearly explain our design process and what we learned from the experience. In the future, I would improve the design by selecting a smaller gear ratio so the motor can turn the wheels more efficiently.</p>
+        <div class="difficulty-row">
+          <span class="diff-label">Difficulty:</span>
+          <span class="diff-stars">
+            ★★★<span class="empty">☆☆</span>
+          </span>
+        </div>
+
+        <p>Teams design and build an original video game using C#, then present it to judges. The judging criteria covers game design, playability, originality, and the quality of the team's presentation about their development process.</p>
+
+        <p>This event is a good fit because I enjoy game logic and building interactive systems. My plan is to keep the scope tight — a smaller, polished game will score better than an ambitious one that is half-finished.</p>
+
+        <!-- ✏️ Replace with your game screenshot or design mockup -->
+        <figure class="event-photo">
+          <div class="event-photo-placeholder">
+            <i class="fa-solid fa-gamepad"></i>
+            Add a game screenshot or design mockup here
+          </div>
+          <!-- <img src="images/tsa-game-design.jpg" alt="Video game design mockup"> -->
+          <figcaption>Early design concept for the Video Game Design event.</figcaption>
+        </figure>
+
+        <blockquote>
+          "Failure is data. Every mistake tells you exactly what to fix next."
+          <cite>— What I took away from last year's Solar Sprint gear ratio problem</cite>
+        </blockquote>
+
+        <h3 id="robot">Robotics</h3>
+
+        <div class="difficulty-row">
+          <span class="diff-label">Difficulty:</span>
+          <span class="diff-stars">
+            ★★★<span class="empty">☆☆</span>
+          </span>
+        </div>
+
+        <p>Last year, we didn't place in the top three in this event because we weren't able to pick up the pipe and weren't professional enough during the interview.</p>
+
+        <p>The robot had to complete a timed obstacle course, by manual control depending on the event format. There was a lot of room for things to go wrong, which is exactly why early testing mattered so much.</p>
+        <!-- ✏️ Replace with your robot frame or build photo -->
+        <figure class="event-photo">
+          <div class="event-photo-placeholder">
+            <i class="fa-solid fa-robot"></i>
+            Add your robot build photo here
+          </div>
+          <!-- <img src="images/tsa-robot-build.jpg" alt="Robot build in progress"> -->
+          <figcaption>Robot frame assembly — started November 2026.</figcaption>
+        </figure>
 
         <div class="callout callout-tip">
           <i class="fa-solid fa-lightbulb"></i>
-          <span><strong>Tip for future competitors:</strong> Test your gear ratios early and often. A well-built car will not perform well if the motor cannot provide enough torque to move the wheels. Small adjustments in gearing can make a huge difference in performance.</span>
+          <span><strong>Improvement for this year:</strong> We built and redesigned the robot, giving it over three months to test instead of rushing at the last minute.</span>
         </div>
 
-        <h3 id="drone">Drone Challenge UAV</h3>
-        <p>In this event, our team was unfortunately unable to compete because we did not have enough time to build the drone or order the required parts. This experience showed us the importance of planning and preparing early for complex engineering projects.</p>
+       
+        <!-- ── Competition Day ────────────────────────────── -->
+        <h2 id="compday">What I Expect on Competition Day</h2>
+        <p>After going through it once, I know what to expect. Walking in, there is a lot of energy. Teams are testing builds, checking equipment, and running through last-minute practice. Last year that environment caught me off guard. This year I am planning for it.</p>
 
-        <p>In the future, we plan to begin designing and ordering components much earlier so we have enough time to build, test, and refine the drone before competition day. With better planning, we hope to fully participate in this event next year.</p>
+        <p>The biggest thing I learned from competition day last year is that anything that can go wrong will go wrong at the worst possible moment. The robot arm that worked perfectly at home will suddenly struggle under pressure. The best thing you can do is practice under pressure conditions long before competition day arrives.</p>
 
-        <div class="callout callout-tip">
-          <i class="fa-solid fa-lightbulb"></i>
-          <span><strong>Tip for future competitors:</strong> Start planning early and give yourself plenty of time to build and test your drone. Flight systems often require many adjustments, and early testing helps you fix problems with stability, controls, and hardware before competition day.</span>
+        <!-- ── Mistakes from Year One ─────────────────────── -->
+        <h2 id="mistakes">Mistakes from Year One</h2>
+        <p>Before planning year two, I wrote down every mistake I made in year one. Here is the honest list:</p>
+
+        <div class="mistakes-list">
+          <div class="mistake-item">
+            <i class="fa-solid fa-circle-xmark"></i>
+            <span><strong>Gear ratio too large for Solar Sprint.</strong> We built a well-designed car but never tested whether the motor had enough torque to move it. A single bench test before competition would have caught it.</span>
+          </div>
+          <div class="mistake-item">
+            <i class="fa-solid fa-circle-xmark"></i>
+            <span><strong>Did not order drone parts early enough.</strong> We knew about the Drone Challenge weeks in advance. Still ran out of time. Large builds need a hard ordering deadline, not a rough intention.</span>
+          </div>
+          <div class="mistake-item">
+            <i class="fa-solid fa-circle-xmark"></i>
+            <span><strong>Only studied Python for the Coding event.</strong> The exam covered multiple languages. One language was never enough. We should have known this going in.</span>
+          </div>
+          <div class="mistake-item">
+            <i class="fa-solid fa-circle-xmark"></i>
+            <span><strong>Did not practice the robot arm enough.</strong> The pipe-gripping section was the hardest obstacle and we had not drilled it nearly enough before showing up.</span>
+          </div>
         </div>
 
-        <h3 id="coding">Coding HS</h3>
-        <p>In this event, my teammate and I had to complete a written test in order to qualify for the state competition. Unfortunately, we did not pass. Our preparation focused mostly on Python, but the exam included questions from several different programming languages. Since most of the questions were not related to Python, we were not fully prepared.</p>
+        <!-- ── Year One Placement Reference ──────────────── -->
+        <h2 id="results">Year One Results</h2>
+        <p>For context, here is how year one finished. These are the benchmarks I am trying to beat this season:</p>
 
-        <p>This experience showed us the importance of broader preparation. In the future, we plan to study additional programming languages and review a wider range of programming concepts so we are better prepared for the competition.</p>
-
-        <div class="callout callout-tip">
-          <i class="fa-solid fa-lightbulb"></i>
-          <span><strong>Tip for future competitors:</strong> Study more than one programming language before the competition. The exam may include questions about different languages and general programming concepts, so understanding the basics of several languages can make a big difference.</span>
+        <div class="placement-bars" id="placementBars">
+          <div class="placement-item">
+            <div class="placement-header">
+              <span class="placement-event">Robotics</span>
+              <span class="placement-rank">4th Place · State</span>
+            </div>
+            <div class="placement-track">
+              <div class="placement-fill" data-width="75%"></div>
+            </div>
+          </div>
+          <div class="placement-item">
+            <div class="placement-header">
+              <span class="placement-event">Senior Solar Sprint</span>
+              <span class="placement-rank">Did Not Place</span>
+            </div>
+            <div class="placement-track">
+              <div class="placement-fill" data-width="20%"></div>
+            </div>
+          </div>
+          <div class="placement-item">
+            <div class="placement-header">
+              <span class="placement-event">Drone Challenge UAV</span>
+              <span class="placement-rank">Did Not Compete</span>
+            </div>
+            <div class="placement-track">
+              <div class="placement-fill" data-width="5%"></div>
+            </div>
+          </div>
+          <div class="placement-item">
+            <div class="placement-header">
+              <span class="placement-event">Coding HS</span>
+              <span class="placement-rank">Did Not Qualify</span>
+            </div>
+            <div class="placement-track">
+              <div class="placement-fill" data-width="10%"></div>
+            </div>
+          </div>
         </div>
 
-        <h2 id="results">Results &amp; Placement</h2>
-        <p>I placed in several of my events at the state level, but did not qualify to advance to nationals. The state competition was a completely different level — the preparation required and the quality of the competitors were both noticeably higher.</p>
+        <!-- ── Tools ─────────────────────────────────────── -->
+        <h2 id="tools">Tools &amp; Technologies</h2>
+        <p>Here is what we are planning to work with across all four events this season:</p>
 
-        <p>In Robotics, I placed 4th at the state level. Although I did not take first place, the experience gave me a much clearer understanding of what top competitors do differently. Their designs were carefully planned, their systems were well tested, and their interviews were highly professional. Competing at this level gave me valuable experience that I will carry into future competitions.</p>
+        <div class="tools-grid">
+          <span class="tool-tag"><i class="fa-solid fa-code"></i> C#</span>
+          <span class="tool-tag"><i class="fa-solid fa-wind"></i> Balsa Wood</span>
+          <span class="tool-tag"><i class="fa-brands fa-python"></i> Python</span>
+          <span class="tool-tag"><i class="fa-solid fa-gamepad"></i> Game Engine</span>
+          <span class="tool-tag"><i class="fa-solid fa-screwdriver-wrench"></i> Mechanical Design</span>
+        </div>
 
-        <h2 id="lessons">What I Actually Learned</h2>
-        <p>Beyond the placements, TSA taught me several important lessons that I would not have learned just by building projects at home:</p>
+        <!-- ── Next Year Strategy ─────────────────────────── -->
+        <h2 id="strategy">Next Year Strategy</h2>
+        <p>Rather than just a general goal, here is the specific action plan for year two:</p>
 
-        <ul>
-          <li><strong>Small design choices matter.</strong> In Solar Sprint, our car was well built, but the gear ratio was too large for the motor. A single design decision can completely change whether a project succeeds or fails.</li>
-          <li><strong>Practice improves control and precision.</strong> In Robotics, successfully navigating the obstacle course required careful control, coordination, and a lot of practice driving the robot.</li>
-          <li><strong>Preparation needs to be broad.</strong> During the Coding event, I learned that focusing on only one programming language was not enough. Competitions often test a wide range of concepts and skills.</li>
-          <li><strong>Planning early is critical.</strong> For the Drone Challenge, our team learned that large projects require early planning, timely parts orders, and enough time to build and test before the deadline.</li>
-          <li><strong>Explaining your design is part of engineering.</strong> Interviews and presentations are just as important as the build itself. Being able to clearly communicate your design decisions is a key skill.</li>
-        </ul>
+        <div class="strategy-list">
+          <div class="strategy-item">
+            <div class="strategy-num">1</div>
+            <span>Start the drone build in November — parts ordered before Thanksgiving, frame assembled by December.</span>
+          </div>
+          <div class="strategy-item">
+            <div class="strategy-num">2</div>
+            <span>Test the robot arm specifically. Run it through the pipe section 20+ times before competition day.</span>
+          </div>
+          <div class="strategy-item">
+            <div class="strategy-num">3</div>
+            <span>Study Java and C++ basics alongside Python for Coding HS. Two sessions per week starting January.</span>
+          </div>
+          <div class="strategy-item">
+            <div class="strategy-num">4</div>
+            <span>For Flight Endurance, test at least three different wing configurations before settling on a final design.</span>
+          </div>
+          <div class="strategy-item">
+            <div class="strategy-num">5</div>
+            <span>Keep the Video Game Design scope tight. A polished small game beats an ambitious unfinished one.</span>
+          </div>
+        </div>
 
+        <!-- ── What's Next ────────────────────────────────── -->
         <h2 id="next">What's Next</h2>
-        <p>Next year, I plan to compete in TSA again with better preparation and a clearer plan. This year taught me a lot — especially about starting early, testing designs more carefully, and preparing for every part of an event. I will use what I learned from my mistakes to improve my projects and my performance.</p>
+        <p>This post will be updated as the season progresses — with photos, results, and what actually happened versus what was planned. That gap between plan and reality is usually where the most interesting lessons come from.</p>
 
-        <p>TSA showed me that every competition is an opportunity to learn and grow. Even when things do not go as planned, the experience helps you improve for the next challenge.</p>
+        <p>Year one taught me that TSA is genuinely hard. The competitors who place well are prepared in ways that are not obvious until you are standing next to them on competition day. Year two is about closing that gap.</p>
+
+        <p><em>The goal is not just to place higher — it is to leave knowing I prepared as well as I possibly could. Everything else follows from that.</em></p>
 
       </div>
       <!-- ═══════════════ END POST BODY ═══════════════════ -->
 
-      <!-- Footer: tags + share + nav -->
       <div class="post-footer">
 
-        <div class="post-tags-row post-footer-tags">
+        <div class="post-tags-row">
           <span class="post-tag-pill pill-tsa"><i class="fa-solid fa-microchip"></i> TSA</span>
         </div>
 
-        <!-- Share -->
         <div class="share-section">
           <p class="share-label">// share_post()</p>
           <div class="share-buttons">
-            <a class="share-btn share-twitter" id="shareTwitter" href="#" target="_blank">
+            <a class="share-btn share-twitter" id="shareTwitter" href="#" target="_blank" rel="noopener">
               <i class="fa-brands fa-x-twitter"></i> Share on X
             </a>
-            <a class="share-btn share-linkedin" id="shareLinkedin" href="#" target="_blank">
+            <a class="share-btn share-linkedin" id="shareLinkedin" href="#" target="_blank" rel="noopener">
               <i class="fa-brands fa-linkedin"></i> Share on LinkedIn
             </a>
             <button class="share-btn share-copy" id="copyLink">
@@ -600,11 +977,10 @@
           </div>
         </div>
 
-        <!-- Post navigation -->
         <div class="post-nav">
-          <a href="#" class="post-nav-btn prev">
+          <a href="blog-tsa-2025.html" class="post-nav-btn prev">
             <span class="nav-label"><i class="fa-solid fa-arrow-left"></i> Previous</span>
-            <span class="nav-title">What I Learned Building My First ML Model</span>
+            <span class="nav-title">Colorado TSA 2025–2026</span>
           </a>
           <a href="#" class="post-nav-btn next">
             <span class="nav-label">Next <i class="fa-solid fa-arrow-right"></i></span>
@@ -619,7 +995,6 @@
     <aside class="post-sidebar">
       <div class="sidebar-sticky">
 
-        <!-- Reading progress -->
         <div class="reading-progress-ring">
           <div class="progress-circle">
             <svg viewBox="0 0 36 36" width="36" height="36">
@@ -631,37 +1006,39 @@
           <span>Reading progress</span>
         </div>
 
-        <!-- Table of Contents -->
         <div class="toc-widget">
           <div class="widget-title"><i class="fa-solid fa-list"></i> Table of Contents</div>
           <ul class="toc-list" id="tocList">
-            <li><a href="#intro">What Is TSA?</a></li>
-            <li><a href="#events">Events I Competed In</a></li>
-            <li><a href="#robotics" class="toc-h3">&#8627; Robotics</a></li>
-            <li><a href="#sss"      class="toc-h3">&#8627; Senior Solar Sprint</a></li>
-            <li><a href="#drone"    class="toc-h3">&#8627; Drone Challenge UAV</a></li>
-            <li><a href="#coding"   class="toc-h3">&#8627; Coding HS</a></li>
-            <li><a href="#results">Results &amp; Placement</a></li>
-            <li><a href="#lessons">What I Actually Learned</a></li>
+            <li><a href="#intro">Year Two</a></li>
+            <li><a href="#timeline">Preparation Timeline</a></li>
+            <li><a href="#events">Events I Am Competing In</a></li>
+            <li><a href="#flight"  class="toc-h3">&#8627; Flight Endurance HS</a></li>
+            <li><a href="#vgd"     class="toc-h3">&#8627; Video Game Design</a></li>
+            <li><a href="#drone"   class="toc-h3">&#8627; Drone Challenge UAV</a></li>
+            <li><a href="#coding"  class="toc-h3">&#8627; Coding HS</a></li>
+            <li><a href="#compday">Competition Day</a></li>
+            <li><a href="#mistakes">Mistakes from Year One</a></li>
+            <li><a href="#results">Year One Results</a></li>
+            <li><a href="#tools">Tools &amp; Technologies</a></li>
+            <li><a href="#strategy">Next Year Strategy</a></li>
             <li><a href="#next">What's Next</a></li>
           </ul>
         </div>
 
-        <!-- Post info -->
         <div class="info-widget">
           <div class="widget-title"><i class="fa-solid fa-circle-info"></i> Post Info</div>
           <div class="info-row">
             <i class="fa-solid fa-calendar-days info-icon"></i>
             <div>
-              <div class="info-label">Published</div>
-              <div class="info-value">February 19, 2026</div>
+              <div class="info-label">Season</div>
+              <div class="info-value">2026–2027</div>
             </div>
           </div>
           <div class="info-row">
             <i class="fa-solid fa-clock info-icon"></i>
             <div>
               <div class="info-label">Read Time</div>
-              <div class="info-value">~5 minutes</div>
+              <div class="info-value">~6 minutes</div>
             </div>
           </div>
           <div class="info-row">
@@ -678,9 +1055,15 @@
               <div class="info-value">Arnav Jain</div>
             </div>
           </div>
+          <div class="info-row">
+            <i class="fa-solid fa-hourglass-half info-icon"></i>
+            <div>
+              <div class="info-label">Status</div>
+              <div class="info-value" style="color:#ff8c00;">In Progress</div>
+            </div>
+          </div>
         </div>
 
-        <!-- Tags widget -->
         <div class="tags-widget">
           <div class="widget-title"><i class="fa-solid fa-tags"></i> Tags</div>
           <div class="tags-cloud">
@@ -707,7 +1090,7 @@
     // ── Reading progress ring ───────────────────────────────
     const fillEl        = document.getElementById('progressFill');
     const pctEl         = document.getElementById('progressPct');
-    const circumference = 2 * Math.PI * 14; // r = 14
+    const circumference = 2 * Math.PI * 14;
 
     function updateProgress() {
       const body   = document.documentElement;
@@ -739,12 +1122,30 @@
     window.addEventListener('scroll', updateTOC, { passive: true });
     updateTOC();
 
+    // ── Animate placement bars on scroll ───────────────────
+    const fills = document.querySelectorAll('.placement-fill');
+    let barsAnimated = false;
+
+    function animateBars() {
+      if (barsAnimated) return;
+      const section = document.getElementById('placementBars');
+      if (!section) return;
+      const rect = section.getBoundingClientRect();
+      if (rect.top < window.innerHeight * 0.85) {
+        fills.forEach(fill => {
+          fill.style.width = fill.dataset.width;
+        });
+        barsAnimated = true;
+      }
+    }
+    window.addEventListener('scroll', animateBars, { passive: true });
+    animateBars();
+
     // ── Share buttons ───────────────────────────────────────
     const url   = encodeURIComponent(window.location.href);
     const title = encodeURIComponent(document.title);
-
-    const tw = document.getElementById('shareTwitter');
-    const li = document.getElementById('shareLinkedin');
+    const tw    = document.getElementById('shareTwitter');
+    const li    = document.getElementById('shareLinkedin');
     if (tw) tw.href = `https://twitter.com/intent/tweet?url=${url}&text=${title}`;
     if (li) li.href = `https://www.linkedin.com/sharing/share-offsite/?url=${url}`;
 

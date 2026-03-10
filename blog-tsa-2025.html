@@ -9,9 +9,103 @@
   <link rel="stylesheet" href="styles.css">
   <style>
 
+    /* ── Hero Banner ─────────────────────────────────────── */
+    .post-hero {
+      position: relative;
+      width: 100%;
+      height: 420px;
+      overflow: hidden;
+      margin-top: 70px; /* clear fixed navbar */
+    }
+    .post-hero-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      filter: brightness(0.45) saturate(1.1);
+    }
+    /* Fallback gradient if no image is provided */
+    .post-hero-fallback {
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, #0a0f1a 0%, #0d1f35 40%, #0a1628 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .post-hero-fallback-icon {
+      font-size: 5rem;
+      opacity: 0.08;
+      color: var(--primary);
+    }
+    .post-hero-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        to bottom,
+        rgba(10,15,26,0.3) 0%,
+        rgba(10,15,26,0.5) 50%,
+        rgba(10,15,26,0.85) 100%
+      );
+    }
+    .post-hero-content {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: 2.5rem 3rem;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    .post-hero-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.72rem;
+      font-family: 'JetBrains Mono', monospace;
+      color: #ffa000;
+      background: rgba(255,160,0,0.12);
+      border: 1px solid rgba(255,160,0,0.3);
+      padding: 0.25rem 0.75rem;
+      border-radius: 999px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 0.9rem;
+    }
+    .post-hero h1 {
+      font-family: 'Lora', Georgia, serif;
+      font-size: clamp(1.8rem, 4vw, 3rem);
+      font-weight: 600;
+      color: #ffffff;
+      line-height: 1.2;
+      margin-bottom: 0.6rem;
+      text-shadow: 0 2px 20px rgba(0,0,0,0.5);
+    }
+    .post-hero-sub {
+      font-size: 1rem;
+      color: rgba(255,255,255,0.72);
+      margin-bottom: 1rem;
+      font-style: italic;
+    }
+    .post-hero-meta {
+      display: flex;
+      align-items: center;
+      gap: 1.25rem;
+      flex-wrap: wrap;
+    }
+    .post-hero-meta span {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.8rem;
+      color: rgba(255,255,255,0.55);
+      font-family: 'JetBrains Mono', monospace;
+    }
+    .post-hero-meta i { color: var(--primary); }
+
     /* ── Layout ─────────────────────────────────────────── */
     .post-shell {
-      padding: 8rem 2rem 6rem;
+      padding: 3rem 2rem 6rem;
       max-width: 1200px;
       margin: 0 auto;
       display: grid;
@@ -19,8 +113,6 @@
       gap: 4rem;
       align-items: start;
     }
-
-    /* ── Article ─────────────────────────────────────────── */
 
     /* Back link */
     .post-back {
@@ -31,84 +123,165 @@
       text-decoration: none;
       font-size: 0.85rem;
       font-family: 'JetBrains Mono', monospace;
-      margin-bottom: 2.5rem;
+      margin-bottom: 2rem;
       transition: color 0.2s, gap 0.2s;
     }
     .post-back:hover { color: var(--primary); gap: 0.8rem; }
     .post-back i { transform: rotate(180deg); }
-
-    /* Header */
-    .post-header { margin-bottom: 3rem; }
-
-    .post-tags-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.5rem;
-      margin-bottom: 1.25rem;
-    }
-    .post-tag-pill {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.35rem;
-      font-size: 0.72rem;
-      font-family: 'JetBrains Mono', monospace;
-      padding: 0.25rem 0.75rem;
-      border-radius: 999px;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-    }
-    .pill-tsa    { background: rgba(255,160,0,0.1);  color: #ffa000;           border: 1px solid rgba(255,160,0,0.25); }
-    .pill-ai     { background: rgba(0,217,255,0.1);  color: var(--primary);    border: 1px solid rgba(0,217,255,0.25); }
-    .pill-python { background: rgba(6,219,168,0.1);  color: var(--success);    border: 1px solid rgba(6,219,168,0.25); }
-    .pill-web    { background: rgba(124,58,237,0.1); color: var(--secondary);  border: 1px solid rgba(124,58,237,0.25); }
-
-    .post-title {
-      font-family: 'Lora', Georgia, serif;
-      font-size: clamp(1.9rem, 4vw, 2.8rem);
-      font-weight: 600;
-      line-height: 1.25;
-      color: var(--text-primary);
-      margin-bottom: 1.25rem;
-    }
-
-    .post-subtitle {
-      font-size: 1.1rem;
-      color: var(--text-secondary);
-      line-height: 1.7;
-      margin-bottom: 1.75rem;
-      font-style: italic;
-    }
-
-    .post-meta-row {
-      display: flex;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 1.5rem;
-      padding: 1.25rem 1.5rem;
-      background: var(--bg-card);
-      border: 1px solid rgba(0,217,255,0.1);
-      border-radius: var(--radius-md);
-    }
-    .meta-item {
-      display: flex;
-      align-items: center;
-      gap: 0.45rem;
-      font-size: 0.82rem;
-      color: var(--text-muted);
-    }
-    .meta-item i { color: var(--primary); font-size: 0.75rem; }
-    .meta-divider { width: 1px; height: 18px; background: rgba(255,255,255,0.08); }
 
     /* Separator */
     .post-divider {
       width: 100%;
       height: 1px;
       background: linear-gradient(to right, var(--primary), var(--secondary), transparent);
-      margin: 2.5rem 0;
+      margin: 2rem 0;
       opacity: 0.3;
     }
 
-    /* Body prose */
+    /* ── Quick Stats ─────────────────────────────────────── */
+    .quick-stats {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1rem;
+      margin: 2rem 0 2.5rem;
+    }
+    .stat-card {
+      background: var(--bg-card);
+      border: 1px solid rgba(0,217,255,0.12);
+      border-radius: var(--radius-md);
+      padding: 1.1rem 1rem;
+      text-align: center;
+      transition: border-color 0.2s, transform 0.2s;
+    }
+    .stat-card:hover {
+      border-color: rgba(0,217,255,0.3);
+      transform: translateY(-3px);
+    }
+    .stat-icon {
+      font-size: 1.2rem;
+      color: var(--primary);
+      margin-bottom: 0.5rem;
+    }
+    .stat-value {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      line-height: 1.1;
+      margin-bottom: 0.3rem;
+    }
+    .stat-label {
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    /* ── Event photo ─────────────────────────────────────── */
+    .event-photo {
+      margin: 1.5rem 0;
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid rgba(0,217,255,0.1);
+    }
+    .event-photo img {
+      width: 100%;
+      max-height: 300px;
+      object-fit: cover;
+      display: block;
+    }
+    /* Placeholder when no real photo is available */
+    .event-photo-placeholder {
+      width: 100%;
+      height: 200px;
+      background: var(--bg-card);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 0.6rem;
+      color: var(--text-muted);
+      font-size: 0.82rem;
+      font-family: 'JetBrains Mono', monospace;
+    }
+    .event-photo-placeholder i {
+      font-size: 2rem;
+      color: var(--primary);
+      opacity: 0.25;
+    }
+    .event-photo figcaption {
+      padding: 0.6rem 1rem;
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      font-family: 'Inter', sans-serif;
+      font-style: italic;
+      background: var(--bg-card);
+      border-top: 1px solid rgba(0,217,255,0.07);
+    }
+
+    /* ── Results highlight box ───────────────────────────── */
+    .result-highlight {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+      padding: 1.5rem 1.75rem;
+      background: var(--bg-card);
+      border-left: 4px solid var(--primary);
+      border-radius: 0 var(--radius-md) var(--radius-md) 0;
+      margin: 1.75rem 0;
+    }
+    .result-trophy {
+      font-size: 2.2rem;
+      flex-shrink: 0;
+    }
+    .result-details { flex: 1; }
+    .result-label {
+      font-size: 0.72rem;
+      font-family: 'JetBrains Mono', monospace;
+      color: var(--primary);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 0.25rem;
+    }
+    .result-title {
+      font-family: 'Poppins', sans-serif;
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 0.2rem;
+    }
+    .result-sub {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    /* ── Tools / tech tags ───────────────────────────────── */
+    .tools-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.65rem;
+      margin: 1rem 0 1.5rem;
+    }
+    .tool-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.8rem;
+      font-family: 'JetBrains Mono', monospace;
+      padding: 0.3rem 0.85rem;
+      border-radius: 999px;
+      background: rgba(0,217,255,0.07);
+      color: var(--primary);
+      border: 1px solid rgba(0,217,255,0.18);
+      transition: all 0.2s;
+    }
+    .tool-tag:hover {
+      background: rgba(0,217,255,0.14);
+      border-color: rgba(0,217,255,0.35);
+    }
+
+    /* ── Body prose ──────────────────────────────────────── */
     .post-body {
       font-family: 'Lora', Georgia, serif;
       font-size: 1.05rem;
@@ -138,12 +311,8 @@
     .post-body em { color: var(--primary); font-style: italic; }
     .post-body a  { color: var(--primary); text-decoration: underline; text-underline-offset: 3px; }
     .post-body a:hover { color: var(--primary-light); }
-
     .post-body ul,
-    .post-body ol {
-      padding-left: 1.5rem;
-      margin-bottom: 1.4rem;
-    }
+    .post-body ol { padding-left: 1.5rem; margin-bottom: 1.4rem; }
     .post-body li { margin-bottom: 0.5rem; }
 
     /* Blockquote */
@@ -182,39 +351,25 @@
     .callout-info i { color: var(--primary); }
     .callout-tip i  { color: var(--success); }
 
-    /* Inline code */
-    .post-body code {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.85em;
-      background: rgba(0,217,255,0.08);
-      color: var(--primary);
-      padding: 0.15em 0.45em;
-      border-radius: 4px;
-    }
-
-    /* Code block */
-    .post-body pre {
-      background: #0d1117;
-      border: 1px solid rgba(0,217,255,0.12);
-      border-radius: var(--radius-md);
-      padding: 1.5rem;
-      overflow-x: auto;
-      margin: 1.75rem 0;
-    }
-    .post-body pre code {
-      background: none;
-      padding: 0;
-      font-size: 0.88rem;
-      color: #e6edf3;
-    }
-
     /* Post footer */
     .post-footer {
       margin-top: 3.5rem;
       padding-top: 2rem;
       border-top: 1px solid rgba(0,217,255,0.1);
     }
-    .post-footer-tags { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 2rem; }
+    .post-tags-row { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1.25rem; }
+    .post-tag-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      font-size: 0.72rem;
+      font-family: 'JetBrains Mono', monospace;
+      padding: 0.25rem 0.75rem;
+      border-radius: 999px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .pill-tsa { background: rgba(255,160,0,0.1); color: #ffa000; border: 1px solid rgba(255,160,0,0.25); }
 
     .share-section { margin-bottom: 2rem; }
     .share-label {
@@ -285,9 +440,7 @@
       flex-direction: column;
       gap: 1.5rem;
     }
-
-    /* TOC widget */
-    .toc-widget {
+    .toc-widget, .info-widget, .tags-widget {
       background: var(--bg-card);
       border: 1px solid rgba(0,217,255,0.1);
       border-radius: var(--radius-lg);
@@ -327,8 +480,7 @@
     }
     .toc-list a::before {
       content: '';
-      width: 5px;
-      height: 5px;
+      width: 5px; height: 5px;
       border-radius: 50%;
       background: var(--text-muted);
       flex-shrink: 0;
@@ -344,13 +496,6 @@
     .toc-list a.active::before { background: var(--primary); }
     .toc-list .toc-h3 { padding-left: 1.4rem; font-size: 0.8rem; }
 
-    /* Post info widget */
-    .info-widget {
-      background: var(--bg-card);
-      border: 1px solid rgba(0,217,255,0.1);
-      border-radius: var(--radius-lg);
-      padding: 1.5rem;
-    }
     .info-row {
       display: flex;
       align-items: flex-start;
@@ -364,13 +509,6 @@
     .info-label { font-size: 0.72rem; color: var(--text-muted); font-family: 'JetBrains Mono', monospace; margin-bottom: 0.2rem; }
     .info-value { font-size: 0.85rem; color: var(--text-secondary); }
 
-    /* Tags widget */
-    .tags-widget {
-      background: var(--bg-card);
-      border: 1px solid rgba(0,217,255,0.1);
-      border-radius: var(--radius-lg);
-      padding: 1.5rem;
-    }
     .tags-cloud { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 0.5rem; }
 
     /* Reading progress ring */
@@ -415,13 +553,16 @@
       .sidebar-sticky { position: static; flex-direction: row; flex-wrap: wrap; }
       .toc-widget, .info-widget, .tags-widget { flex: 1 1 260px; }
       .reading-progress-ring { display: none; }
+      .quick-stats { grid-template-columns: repeat(2, 1fr); }
     }
     @media (max-width: 600px) {
-      .post-shell { padding: 7rem 1.25rem 4rem; }
+      .post-shell { padding: 2rem 1.25rem 4rem; }
+      .post-hero { height: 320px; }
+      .post-hero-content { padding: 1.5rem; }
       .post-nav { grid-template-columns: 1fr; }
       .share-buttons { flex-wrap: wrap; }
-      .post-meta-row { gap: 0.75rem; }
-      .meta-divider { display: none; }
+      .quick-stats { grid-template-columns: repeat(2, 1fr); }
+      .result-highlight { flex-direction: column; gap: 0.75rem; }
     }
   </style>
 </head>
@@ -440,8 +581,8 @@
         <li><a href="contact.html"><span class="nav-number">06.</span> Contact</a></li>
       </ul>
       <div class="nav-social">
-        <a href="https://github.com/jainArnav7" target="_blank" class="social-icon"><i class="fa-brands fa-github"></i></a>
-        <a href="https://www.linkedin.com/in/arnav-jain-b63069354" target="_blank" class="social-icon"><i class="fa-brands fa-linkedin"></i></a>
+        <a href="https://github.com/jainArnav7" target="_blank" rel="noopener" class="social-icon"><i class="fa-brands fa-github"></i></a>
+        <a href="https://www.linkedin.com/in/arnav-jain-b63069354" target="_blank" rel="noopener" class="social-icon"><i class="fa-brands fa-linkedin"></i></a>
         <button class="theme-toggle" id="themeToggle"><i class="fa-solid fa-moon"></i></button>
       </div>
       <div class="hamburger" id="hamburger"><span></span><span></span><span></span></div>
@@ -460,6 +601,28 @@
     </ul>
   </div>
 
+  <!-- ══════════════════════════════════════════════════════
+       HERO BANNER
+       To add a real photo: replace the .post-hero-fallback div
+       with: <img class="post-hero-img" src="your-photo.jpg" alt="...">
+  ════════════════════════════════════════════════════════ -->
+  <div class="post-hero">
+    <div class="post-hero-fallback">
+      <img class="post-hero-img" src="images/tsa-logo.webp" alt="TSA Logo">
+    </div>
+    <div class="post-hero-overlay"></div>
+    <div class="post-hero-content">
+      <div class="post-hero-tag"><i class="fa-solid fa-microchip"></i> TSA</div>
+      <h1>Colorado TSA 2025–2026</h1>
+      <p class="post-hero-sub">What I learned and built during my first year competing in the Colorado Technology Student Association.</p>
+      <div class="post-hero-meta">
+        <span><i class="fa-solid fa-calendar-days"></i> February 19, 2026</span>
+        <span><i class="fa-solid fa-clock"></i> 6 min read</span>
+        <span><i class="fa-solid fa-user"></i> Arnav Jain</span>
+      </div>
+    </div>
+  </div>
+
   <!-- ═══════════════════════════════════════════════════════ -->
   <div class="post-shell">
 
@@ -469,27 +632,6 @@
       <a href="blog.html" class="post-back">
         <i class="fa-solid fa-arrow-right"></i> Back to Blog
       </a>
-
-      <!-- Header -->
-      <header class="post-header">
-
-        <div class="post-tags-row">
-          <span class="post-tag-pill pill-tsa"><i class="fa-solid fa-microchip"></i> TSA</span>
-        </div>
-
-        <h1 class="post-title">Colorado TSA 2025–2026</h1>
-        <p class="post-subtitle">What I learned and accomplished during my first year in the Colorado Technology Student Association.</p>
-
-        <div class="post-meta-row">
-          <div class="meta-item"><i class="fa-solid fa-calendar-days"></i> February 19, 2026</div>
-          <div class="meta-divider"></div>
-          <div class="meta-item"><i class="fa-solid fa-clock"></i> 5 min read</div>
-          <div class="meta-divider"></div>
-          <div class="meta-item"><i class="fa-solid fa-folder"></i> TSA</div>
-          <div class="meta-divider"></div>
-          <div class="meta-item"><i class="fa-solid fa-user"></i> Arnav Jain</div>
-        </div>
-      </header>
 
       <div class="post-divider"></div>
 
@@ -508,6 +650,30 @@
           <span>TSA has over 250,000 members across the US. Colorado's state conference brings together schools from all over the state to compete across 60+ events.</span>
         </div>
 
+        <!-- Quick Stats -->
+        <div class="quick-stats">
+          <div class="stat-card">
+            <div class="stat-icon"><i class="fa-solid fa-trophy"></i></div>
+            <div class="stat-value">4</div>
+            <div class="stat-label">Events Entered</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon"><i class="fa-solid fa-medal"></i></div>
+            <div class="stat-value">4th</div>
+            <div class="stat-label">State Robotics</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon"><i class="fa-solid fa-users"></i></div>
+            <div class="stat-value">3</div>
+            <div class="stat-label">Team Members</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon"><i class="fa-solid fa-calendar-check"></i></div>
+            <div class="stat-value">~2 mo</div>
+            <div class="stat-label">Prep Time</div>
+          </div>
+        </div>
+
         <h2 id="events">Events I Competed In</h2>
         <p>I signed up for a few events that lined up with what I have been working on. Here is what I competed in and how it went:</p>
 
@@ -518,8 +684,18 @@
 
         <p>Our team was not able to complete the pipe section successfully because the robot's arm struggled to grip the pipe. However, we were able to complete the rest of the course, which required precise control, coordination, and careful decision-making under pressure.</p>
 
+        <!-- ✏️ Replace src with your actual robot photo -->
+        <figure class="event-photo">
+          <div class="event-photo-placeholder">
+            <i class="fa-solid fa-robot"></i>
+            Add your robot photo here — replace this block with an img tag
+          </div>
+          <!-- <img src="images/tsa-robot.jpg" alt="Robot used in TSA Robotics event"> -->
+          <figcaption>The robot our team built and used during the TSA Robotics event.</figcaption>
+        </figure>
+
         <blockquote>
-          "Engineering is not about getting it right the first time. It is about improving it until it works."
+          "Engineering rarely works the first time. The real skill is improving it until it does."
           <cite>— A lesson I learned while preparing for the robotics competition</cite>
         </blockquote>
 
@@ -527,6 +703,16 @@
         <p>In this event, our team designed and built a solar-powered car. Although the car was well constructed and had a strong design, it did not perform well during the race. The gear ratio we selected was too large, which prevented the motor from generating enough torque to move the car effectively.</p>
 
         <p>Despite this setback, our team interview went well and we were able to clearly explain our design process and what we learned from the experience. In the future, I would improve the design by selecting a smaller gear ratio so the motor can turn the wheels more efficiently.</p>
+
+        <!-- ✏️ Replace with your actual solar car photo -->
+        <figure class="event-photo">
+          <div class="event-photo-placeholder">
+            <i class="fa-solid fa-sun"></i>
+            Add your solar car photo here — replace this block with an img tag
+          </div>
+          <!-- <img src="images/tsa-solar-car.jpg" alt="Solar-powered car for Senior Solar Sprint"> -->
+          <figcaption>The solar-powered car our team built for the Senior Solar Sprint event.</figcaption>
+        </figure>
 
         <div class="callout callout-tip">
           <i class="fa-solid fa-lightbulb"></i>
@@ -538,6 +724,16 @@
 
         <p>In the future, we plan to begin designing and ordering components much earlier so we have enough time to build, test, and refine the drone before competition day. With better planning, we hope to fully participate in this event next year.</p>
 
+        <!-- ✏️ Replace with your drone sketch or parts photo -->
+        <figure class="event-photo">
+          <div class="event-photo-placeholder">
+            <i class="fa-solid fa-plane"></i>
+            Add a drone design sketch or parts photo here
+          </div>
+          <!-- <img src="images/tsa-drone.jpg" alt="Drone design sketch for UAV Challenge"> -->
+          <figcaption>Early design sketch for the Drone Challenge UAV event.</figcaption>
+        </figure>
+
         <div class="callout callout-tip">
           <i class="fa-solid fa-lightbulb"></i>
           <span><strong>Tip for future competitors:</strong> Start planning early and give yourself plenty of time to build and test your drone. Flight systems often require many adjustments, and early testing helps you fix problems with stability, controls, and hardware before competition day.</span>
@@ -548,31 +744,83 @@
 
         <p>This experience showed us the importance of broader preparation. In the future, we plan to study additional programming languages and review a wider range of programming concepts so we are better prepared for the competition.</p>
 
+        <!-- ✏️ Replace with a coding/laptop photo -->
+        <figure class="event-photo">
+          <div class="event-photo-placeholder">
+            <i class="fa-solid fa-laptop-code"></i>
+            Add a coding or study photo here
+          </div>
+          <!-- <img src="images/tsa-coding.jpg" alt="Preparing for the Coding HS event"> -->
+          <figcaption>Preparing code and reviewing concepts before the Coding HS qualifier.</figcaption>
+        </figure>
+
         <div class="callout callout-tip">
           <i class="fa-solid fa-lightbulb"></i>
           <span><strong>Tip for future competitors:</strong> Study more than one programming language before the competition. The exam may include questions about different languages and general programming concepts, so understanding the basics of several languages can make a big difference.</span>
         </div>
 
+        <!-- ── Competition Day ────────────────────────────── -->
+        <h2 id="compday">Competition Day</h2>
+        <p>Walking into the venue on competition day was a different experience from anything I had done before. Other teams were already setting up, testing robots, and running through last-minute checks. The energy was competitive but also collaborative — everyone was there because they genuinely cared about what they built.</p>
+
+        <p>For Robotics, we ran through a few quick test drives in the warmup area before our slot. The pressure of having judges watching and a timer running made it feel completely different from practicing at home. Even small mistakes that we had fixed a dozen times suddenly felt possible again. That pressure was actually one of the most valuable parts of the whole experience.</p>
+
+        <!-- ── Results ────────────────────────────────────── -->
         <h2 id="results">Results &amp; Placement</h2>
-        <p>I placed in several of my events at the state level, but did not qualify to advance to nationals. The state competition was a completely different level — the preparation required and the quality of the competitors were both noticeably higher.</p>
+        <p>I placed in several events at the state level, but did not qualify to advance to nationals. The state competition was a completely different level — the preparation required and the quality of the competitors were both noticeably higher.</p>
 
-        <p>In Robotics, I placed 4th at the state level. Although I did not take first place, the experience gave me a much clearer understanding of what top competitors do differently. Their designs were carefully planned, their systems were well tested, and their interviews were highly professional. Competing at this level gave me valuable experience that I will carry into future competitions.</p>
+        <div class="result-highlight">
+          <div class="result-trophy">🏆</div>
+          <div class="result-details">
+            <div class="result-label">State Placement</div>
+            <div class="result-title">Robotics — 4th Place</div>
+            <div class="result-sub">Colorado TSA State Conference · 2026</div>
+          </div>
+        </div>
 
+        <p>Although I did not take first place, the experience gave me a much clearer understanding of what top competitors do differently. Their designs were carefully planned, their systems were well tested, and their interviews were highly professional. Competing at this level gave me valuable experience that I will carry into future competitions.</p>
+
+        <!-- ── Biggest Mistakes ───────────────────────────── -->
+        <h2 id="mistakes">Biggest Mistakes</h2>
+        <p>Looking back, there were a few clear mistakes that cost us in multiple events. Being honest about them is the only way to actually improve:</p>
+
+        <ul>
+          <li><strong>Gear ratio too large for Solar Sprint.</strong> We tested the car but never checked whether the motor had enough torque to actually move it under load. A simple bench test would have caught this.</li>
+          <li><strong>Did not order drone parts early enough.</strong> We knew about the Drone Challenge weeks in advance and still ran out of time. Complex builds need a hard deadline for parts ordering, not a rough idea.</li>
+          <li><strong>Only prepared Python for the Coding event.</strong> The exam covered multiple languages. One language was never going to be enough.</li>
+          <li><strong>Did not test the robot arm enough.</strong> The pipe-gripping section was the hardest part of the Robotics course and we had not drilled it nearly enough before competition day.</li>
+        </ul>
+
+        <!-- ── Learned ────────────────────────────────────── -->
         <h2 id="lessons">What I Actually Learned</h2>
         <p>Beyond the placements, TSA taught me several important lessons that I would not have learned just by building projects at home:</p>
 
         <ul>
-          <li><strong>Small design choices matter.</strong> In Solar Sprint, our car was well built, but the gear ratio was too large for the motor. A single design decision can completely change whether a project succeeds or fails.</li>
-          <li><strong>Practice improves control and precision.</strong> In Robotics, successfully navigating the obstacle course required careful control, coordination, and a lot of practice driving the robot.</li>
-          <li><strong>Preparation needs to be broad.</strong> During the Coding event, I learned that focusing on only one programming language was not enough. Competitions often test a wide range of concepts and skills.</li>
-          <li><strong>Planning early is critical.</strong> For the Drone Challenge, our team learned that large projects require early planning, timely parts orders, and enough time to build and test before the deadline.</li>
-          <li><strong>Explaining your design is part of engineering.</strong> Interviews and presentations are just as important as the build itself. Being able to clearly communicate your design decisions is a key skill.</li>
+          <li><strong>Small design choices matter.</strong> A single decision — like gear ratio — can completely change whether a project succeeds or fails.</li>
+          <li><strong>Practice improves control and precision.</strong> Successfully navigating the obstacle course required careful coordination and a lot of repetition.</li>
+          <li><strong>Preparation needs to be broad.</strong> Focusing on only one language or one skill is rarely enough. Competitions test range.</li>
+          <li><strong>Planning early is critical.</strong> Large builds require early ordering, early testing, and a real schedule — not guesses.</li>
+          <li><strong>Explaining your design is part of engineering.</strong> Interviews and presentations matter just as much as the build itself.</li>
         </ul>
 
-        <h2 id="next">What's Next</h2>
-        <p>Next year, I plan to compete in TSA again with better preparation and a clearer plan. This year taught me a lot — especially about starting early, testing designs more carefully, and preparing for every part of an event. I will use what I learned from my mistakes to improve my projects and my performance.</p>
+        <!-- ── Tools ─────────────────────────────────────── -->
+        <h2 id="tools">Tools &amp; Technologies</h2>
+        <p>Here is a quick overview of what we worked with across all four events:</p>
 
-        <p>TSA showed me that every competition is an opportunity to learn and grow. Even when things do not go as planned, the experience helps you improve for the next challenge.</p>
+        <div class="tools-grid">
+          <span class="tool-tag"><i class="fa-solid fa-bolt"></i> Basic Electronics</span>
+          <span class="tool-tag"><i class="fa-solid fa-sun"></i> Solar Panel</span>
+          <span class="tool-tag"><i class="fa-solid fa-gear"></i> Mechanical Design</span>
+          <span class="tool-tag"><i class="fa-solid fa-screwdriver-wrench"></i> CAD</span>
+        </div>
+
+        <!-- ── What's Next ────────────────────────────────── -->
+        <h2 id="next">What's Next</h2>
+        <p>Next year, I plan to compete in TSA again with better preparation and a clearer plan. This year taught me a lot — especially about starting early, testing designs more carefully, and preparing broadly for every part of an event. I will use what I learned from my mistakes to improve my projects and my performance.</p>
+
+        <p>TSA showed me that every competition is an opportunity to learn and grow. Even when things do not go as planned, the experience pushes you to improve for the next challenge.</p>
+
+        <p><em>This first year of TSA showed me how much preparation, engineering, and teamwork go into real competitions. Next year, I plan to return with better designs, stronger preparation, and a much clearer plan from day one.</em></p>
 
       </div>
       <!-- ═══════════════ END POST BODY ═══════════════════ -->
@@ -580,18 +828,17 @@
       <!-- Footer: tags + share + nav -->
       <div class="post-footer">
 
-        <div class="post-tags-row post-footer-tags">
+        <div class="post-tags-row">
           <span class="post-tag-pill pill-tsa"><i class="fa-solid fa-microchip"></i> TSA</span>
         </div>
 
-        <!-- Share -->
         <div class="share-section">
           <p class="share-label">// share_post()</p>
           <div class="share-buttons">
-            <a class="share-btn share-twitter" id="shareTwitter" href="#" target="_blank">
+            <a class="share-btn share-twitter" id="shareTwitter" href="#" target="_blank" rel="noopener">
               <i class="fa-brands fa-x-twitter"></i> Share on X
             </a>
-            <a class="share-btn share-linkedin" id="shareLinkedin" href="#" target="_blank">
+            <a class="share-btn share-linkedin" id="shareLinkedin" href="#" target="_blank" rel="noopener">
               <i class="fa-brands fa-linkedin"></i> Share on LinkedIn
             </a>
             <button class="share-btn share-copy" id="copyLink">
@@ -600,7 +847,6 @@
           </div>
         </div>
 
-        <!-- Post navigation -->
         <div class="post-nav">
           <a href="#" class="post-nav-btn prev">
             <span class="nav-label"><i class="fa-solid fa-arrow-left"></i> Previous</span>
@@ -619,7 +865,6 @@
     <aside class="post-sidebar">
       <div class="sidebar-sticky">
 
-        <!-- Reading progress -->
         <div class="reading-progress-ring">
           <div class="progress-circle">
             <svg viewBox="0 0 36 36" width="36" height="36">
@@ -631,7 +876,6 @@
           <span>Reading progress</span>
         </div>
 
-        <!-- Table of Contents -->
         <div class="toc-widget">
           <div class="widget-title"><i class="fa-solid fa-list"></i> Table of Contents</div>
           <ul class="toc-list" id="tocList">
@@ -641,13 +885,15 @@
             <li><a href="#sss"      class="toc-h3">&#8627; Senior Solar Sprint</a></li>
             <li><a href="#drone"    class="toc-h3">&#8627; Drone Challenge UAV</a></li>
             <li><a href="#coding"   class="toc-h3">&#8627; Coding HS</a></li>
+            <li><a href="#compday">Competition Day</a></li>
             <li><a href="#results">Results &amp; Placement</a></li>
+            <li><a href="#mistakes">Biggest Mistakes</a></li>
             <li><a href="#lessons">What I Actually Learned</a></li>
+            <li><a href="#tools">Tools &amp; Technologies</a></li>
             <li><a href="#next">What's Next</a></li>
           </ul>
         </div>
 
-        <!-- Post info -->
         <div class="info-widget">
           <div class="widget-title"><i class="fa-solid fa-circle-info"></i> Post Info</div>
           <div class="info-row">
@@ -661,7 +907,7 @@
             <i class="fa-solid fa-clock info-icon"></i>
             <div>
               <div class="info-label">Read Time</div>
-              <div class="info-value">~5 minutes</div>
+              <div class="info-value">~6 minutes</div>
             </div>
           </div>
           <div class="info-row">
@@ -680,7 +926,6 @@
           </div>
         </div>
 
-        <!-- Tags widget -->
         <div class="tags-widget">
           <div class="widget-title"><i class="fa-solid fa-tags"></i> Tags</div>
           <div class="tags-cloud">
@@ -707,7 +952,7 @@
     // ── Reading progress ring ───────────────────────────────
     const fillEl        = document.getElementById('progressFill');
     const pctEl         = document.getElementById('progressPct');
-    const circumference = 2 * Math.PI * 14; // r = 14
+    const circumference = 2 * Math.PI * 14;
 
     function updateProgress() {
       const body   = document.documentElement;
@@ -742,9 +987,8 @@
     // ── Share buttons ───────────────────────────────────────
     const url   = encodeURIComponent(window.location.href);
     const title = encodeURIComponent(document.title);
-
-    const tw = document.getElementById('shareTwitter');
-    const li = document.getElementById('shareLinkedin');
+    const tw    = document.getElementById('shareTwitter');
+    const li    = document.getElementById('shareLinkedin');
     if (tw) tw.href = `https://twitter.com/intent/tweet?url=${url}&text=${title}`;
     if (li) li.href = `https://www.linkedin.com/sharing/share-offsite/?url=${url}`;
 
