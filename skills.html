@@ -1,6 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <script>
+    try {
+      const t = localStorage.getItem('theme');
+      if (t) document.documentElement.setAttribute('data-theme', t);
+      else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.documentElement.setAttribute('data-theme', 'dark');
+      }
+    } catch (e) {}
+  </script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Skills | Arnav Jain</title>
@@ -42,8 +51,8 @@
         <li><a href="blog.html"><span class="nav-number">07.</span> Blog</a></li>
       </ul>
       <div class="nav-social">
-        <a href="https://github.com/jainArnav7" target="_blank" class="social-icon"><i class="fa-brands fa-github"></i></a>
-        <a href="https://www.linkedin.com/in/arnav-jain-b63069354" target="_blank" class="social-icon"><i class="fa-brands fa-linkedin"></i></a>
+        <a href="https://github.com/jainArnav7" target="_blank" rel="noopener" class="social-icon"><i class="fa-brands fa-github" aria-label="GitHub"></i></a>
+        <a href="https://www.linkedin.com/in/arnav-jain-b63069354" target="_blank" rel="noopener" class="social-icon"><i class="fa-brands fa-linkedin" aria-label="LinkedIn"></i></a>
         <button class="theme-toggle" id="themeToggle"><i class="fa-solid fa-moon"></i></button>
       </div>
       <div class="hamburger" id="hamburger"><span></span><span></span><span></span></div>
@@ -71,7 +80,7 @@
 
     <div class="skills-categories">
       <div class="skill-category">
-        <div class="cat-title"><i class="fa-solid fa-code"></i> Languages</div>
+        <div class="cat-title"><i class="fa-solid fa-code" aria-hidden="true"></i> Languages</div>
         <div class="skills-bar-list">
           <div class="skill-bar-item">
             <span class="skill-bar-label">Python</span>
@@ -84,76 +93,74 @@
             <span class="skill-bar-pct">90%</span>
           </div>
           <div class="skill-bar-item">
-            <span class="skill-bar-label">CSS3</span>
-            <div class="skill-bar-track"><div class="skill-bar-fill" data-width="65%"></div></div>
-            <span class="skill-bar-pct">65%</span>
-          </div>
-          <div class="skill-bar-item">
-            <span class="skill-bar-label">JavaScript</span>
-            <div class="skill-bar-track"><div class="skill-bar-fill" data-width="55%"></div></div>
-            <span class="skill-bar-pct">55%</span>
-          </div>
-          <div class="skill-bar-item">
-            <span class="skill-bar-label">Bash/Shell</span>
-            <div class="skill-bar-track"><div class="skill-bar-fill" data-width="60%"></div></div>
-            <span class="skill-bar-pct">60%</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="skill-category">
-        <div class="cat-title"><i class="fa-solid fa-brain"></i> AI & Data</div>
-        <div class="skills-bar-list">
-          <div class="skill-bar-item">
-            <span class="skill-bar-label">Machine Learning</span>
-            <div class="skill-bar-track"><div class="skill-bar-fill" data-width="60%"></div></div>
-            <span class="skill-bar-pct">60%</span>
-          </div>
-          <div class="skill-bar-item">
-            <span class="skill-bar-label">Data Analysis</span>
-            <div class="skill-bar-track"><div class="skill-bar-fill" data-width="65%"></div></div>
-            <span class="skill-bar-pct">65%</span>
-          </div>
-          <div class="skill-bar-item">
-            <span class="skill-bar-label">AI Tool Integration</span>
-            <div class="skill-bar-track"><div class="skill-bar-fill" data-width="75%"></div></div>
-            <span class="skill-bar-pct">75%</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="skill-category">
-        <div class="cat-title"><i class="fa-solid fa-microchip"></i> Hardware & Systems</div>
-        <div class="skills-bar-list">
-          <div class="skill-bar-item">
-            <span class="skill-bar-label">Raspberry Pi</span>
-            <div class="skill-bar-track"><div class="skill-bar-fill" data-width="70%"></div></div>
-            <span class="skill-bar-pct">70%</span>
-          </div>
-          <div class="skill-bar-item">
-            <span class="skill-bar-label">Linux</span>
+            <span class="skill-bar-label">C#</span>
             <div class="skill-bar-track"><div class="skill-bar-fill" data-width="68%"></div></div>
             <span class="skill-bar-pct">68%</span>
           </div>
           <div class="skill-bar-item">
-            <span class="skill-bar-label">IoT / MQTT</span>
-            <div class="skill-bar-track"><div class="skill-bar-fill" data-width="58%"></div></div>
-            <span class="skill-bar-pct">58%</span>
+            <span class="skill-bar-label">CSS3</span>
+            <div class="skill-bar-track"><div class="skill-bar-fill" data-width="65%"></div></div>
+            <span class="skill-bar-pct">65%</span>
           </div>
         </div>
       </div>
 
       <div class="skill-category">
-        <div class="cat-title"><i class="fa-solid fa-wrench"></i> Tools & Platforms</div>
+        <div class="cat-title"><i class="fa-solid fa-brain" aria-hidden="true"></i> AI &amp; Data</div>
+        <div class="skills-bar-list">
+          <div class="skill-bar-item">
+            <span class="skill-bar-label">AI Tool Integration</span>
+            <div class="skill-bar-track"><div class="skill-bar-fill" data-width="86%"></div></div>
+            <span class="skill-bar-pct">86%</span>
+          </div>
+        </div>
+      </div>
+     <div class="skill-category">
+        <div class="cat-title"><i class="fa-solid fa-microchip" aria-hidden="true"></i> Hardware &amp; Systems</div>
+        <div class="skills-bar-list">
+          <div class="skill-bar-item">
+            <span class="skill-bar-label">Raspberry Pi</span>
+            <div class="skill-bar-track"><div class="skill-bar-fill" data-width="46%"></div></div>
+            <span class="skill-bar-pct">46%</span>
+          </div>
+          <div class="skill-bar-item">
+            <span class="skill-bar-label">iOS</span>
+            <div class="skill-bar-track"><div class="skill-bar-fill" data-width="96%"></div></div>
+            <span class="skill-bar-pct">96%</span>
+          </div>
+          <div class="skill-bar-item">
+            <span class="skill-bar-label">Windows</span>
+            <div class="skill-bar-track"><div class="skill-bar-fill" data-width="97%"></div></div>
+            <span class="skill-bar-pct">97%</span>
+          </div>
+          <div class="skill-bar-item">
+            <span class="skill-bar-label">Linux</span>
+            <div class="skill-bar-track"><div class="skill-bar-fill" data-width="67%"></div></div>
+            <span class="skill-bar-pct">67%</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="skill-category">
+        <div class="cat-title"><i class="fa-solid fa-wrench" aria-hidden="true"></i> Tools &amp; Platforms</div>
         <div class="tools-grid">
-          <span class="tool-badge"><i class="fa-brands fa-github"></i> GitHub</span>
-          <span class="tool-badge"><i class="fa-solid fa-terminal"></i> VS Code</span>
-          <span class="tool-badge"><i class="fa-brands fa-linux"></i> Linux CLI</span>
-          <span class="tool-badge"><i class="fa-solid fa-database"></i> SQLite</span>
-          <span class="tool-badge"><i class="fa-solid fa-robot"></i> OpenAI API</span>
-          <span class="tool-badge"><i class="fa-solid fa-network-wired"></i> MQTT</span>
-          <span class="tool-badge"><i class="fa-brands fa-python"></i> pip / venv</span>
-          <span class="tool-badge"><i class="fa-solid fa-fire"></i> Firebase</span>
+          <span class="tool-badge"><i class="fa-brands fa-github" aria-hidden="true"></i> <span>GitHub</span></span>
+          <span class="tool-badge"><i class="fa-solid fa-terminal" aria-hidden="true"></i> <span>VS Code</span></span>
+          <span class="tool-badge"><i class="fa-solid fa-robot" aria-hidden="true"></i> <span>OpenAI API</span></span>
+          <span class="tool-badge"><i class="fa-brands fa-discord" aria-hidden="true"></i> <span>Discord API</span></span>
+          <span class="tool-badge"><i class="fa-brands fa-python" aria-hidden="true"></i> <span>pip</span></span>
+        </div>
+      </div>
+
+      <div class="skill-category">
+        <div class="cat-title"><i class="fa-solid fa-people-group" aria-hidden="true"></i> Soft Skills</div>
+        <div class="tools-grid">
+          <span class="tool-badge"><i class="fa-solid fa-comments" aria-hidden="true"></i> <span>Communication</span></span>
+          <span class="tool-badge"><i class="fa-solid fa-users" aria-hidden="true"></i> <span>Teamwork</span></span>
+          <span class="tool-badge"><i class="fa-solid fa-lightbulb" aria-hidden="true"></i> <span>Problem Solving</span></span>
+          <span class="tool-badge"><i class="fa-solid fa-clock" aria-hidden="true"></i> <span>Time Management</span></span>
+          <span class="tool-badge"><i class="fa-solid fa-arrows-spin" aria-hidden="true"></i> <span>Adaptability</span></span>
+          <span class="tool-badge"><i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i> <span>Self-Learning</span></span>
         </div>
       </div>
     </div>
@@ -162,7 +169,7 @@
   <footer>
     <div class="footer-content">
       <div class="footer-text">
-        <p>Designed & Built by <span class="highlight">Arnav Jain</span></p>
+        <p>Designed &amp; Built by <span class="highlight">Arnav Jain</span></p>
         <p>&copy; 2026 All rights reserved.</p>
       </div>
     </div>

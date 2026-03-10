@@ -1,39 +1,129 @@
 <!DOCTYPE html>
 <html lang="en" style="scroll-behavior: smooth;">
 <head>
+  <!-- ① Theme: apply BEFORE paint to avoid flash -->
+  <script>
+    try {
+      const t = localStorage.getItem('theme');
+      if (t) document.documentElement.setAttribute('data-theme', t);
+      else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.documentElement.setAttribute('data-theme', 'dark');
+      }
+    } catch (e) {}
+  </script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  
   <meta name="description" content="Arnav Jain - AI/ML Developer & Web Builder portfolio. Exploring the future of AI tools and clean web design.">
   <meta property="og:type" content="website">
   <meta property="og:title" content="Arnav Jain | Portfolio">
   <meta property="og:description" content="I build with AI tools and create clean, practical web projects.">
   <meta property="og:image" content="images/hero-headshot.webp">
-
   <link rel="icon" type="image/x-icon" href="images/favicon.ico">
-
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;900&family=Inter:wght@300;400;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
-  
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  
-  <title>Arnav Jain | AI & Web Developer</title>
+  <title>Arnav Jain | AI &amp; Web Developer</title>
   <link rel="stylesheet" href="styles.css">
+  <style>
+    /* ── Theme toggle morph ──────────────────────────────── */
+    .theme-toggle { transition: transform 0.35s ease; }
+    .theme-toggle:hover { transform: rotate(20deg) scale(1.15); }
+    .theme-toggle i { transition: transform 0.4s cubic-bezier(0.34,1.56,0.64,1), opacity 0.25s; }
+    .theme-toggle.spinning i { transform: rotate(360deg); opacity: 0.5; }
+
+    /* ── Typing cursor ───────────────────────────────────── */
+    #rotatingText { display: inline-block; color: var(--primary); min-width: 12ch; }
+    .rotating-text-cursor {
+      display: inline-block; width: 2px; height: 1em;
+      background: var(--primary); margin-left: 2px; vertical-align: middle;
+      animation: cursorBlink 0.8s step-end infinite;
+    }
+    @keyframes cursorBlink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+
+    /* ── Orbit ring floats ───────────────────────────────── */
+    .ring-1 { animation: orbitFloat1 6s  ease-in-out infinite alternate; }
+    .ring-2 { animation: orbitFloat2 8s  ease-in-out infinite alternate; }
+    .ring-3 { animation: orbitFloat3 10s ease-in-out infinite alternate; }
+    @keyframes orbitFloat1 { from { transform: rotate(-8deg) scale(0.97); } to { transform: rotate(8deg)  scale(1.03); } }
+    @keyframes orbitFloat2 { from { transform: rotate(5deg)  scale(1.02); } to { transform: rotate(-5deg) scale(0.98); } }
+    @keyframes orbitFloat3 { from { transform: rotate(-3deg) scale(0.99); } to { transform: rotate(3deg)  scale(1.01); } }
+
+    /* ── Floating card bob ───────────────────────────────── */
+    .card-1 { animation: cardFloat1 5s   ease-in-out infinite; }
+    .card-2 { animation: cardFloat2 6.5s ease-in-out infinite; }
+    .card-3 { animation: cardFloat3 4.5s ease-in-out infinite; }
+    @keyframes cardFloat1 { 0%,100% { transform: translateY(0)   rotate(-2deg); } 50% { transform: translateY(-10px) rotate(2deg);  } }
+    @keyframes cardFloat2 { 0%,100% { transform: translateY(0)   rotate(3deg);  } 50% { transform: translateY(-8px)  rotate(-1deg); } }
+    @keyframes cardFloat3 { 0%,100% { transform: translateY(0)   rotate(-1deg); } 50% { transform: translateY(-12px) rotate(3deg);  } }
+    .floating-card { transition: transform 0.3s, box-shadow 0.3s; }
+    .floating-card:hover { transform: scale(1.1) translateY(-4px) !important; box-shadow: 0 12px 30px rgba(0,217,255,0.25); animation-play-state: paused; }
+
+    /* ── Hero button glow ────────────────────────────────── */
+    .btn { transition: transform 0.25s, box-shadow 0.25s !important; }
+    .btn-primary:hover  { box-shadow: 0 0 0 3px rgba(0,217,255,0.25), 0 8px 24px rgba(0,217,255,0.2) !important; transform: translateY(-3px) scale(1.03) !important; }
+    .btn-secondary:hover { box-shadow: 0 0 0 2px rgba(124,58,237,0.25), 0 8px 18px rgba(124,58,237,0.15) !important; transform: translateY(-3px) scale(1.03) !important; }
+
+    /* ── Skill card hover pop ────────────────────────────── */
+    .skill-card { transition: transform 0.3s, box-shadow 0.3s, border-color 0.3s !important; }
+    .skill-card:hover { transform: translateY(-10px) scale(1.03) !important; box-shadow: 0 16px 40px rgba(0,217,255,0.18) !important; border-color: rgba(0,217,255,0.35) !important; }
+    .skill-card:hover .skill-glow { opacity: 1 !important; }
+    /* Bars start at 0, JS adds .animated to fill to --level */
+    .level-bar { width: 0 !important; transition: width 1.3s cubic-bezier(0.4,0,0.2,1) !important; }
+    .level-bar.animated { width: var(--level) !important; }
+
+    /* ── Cert card hover tilt/scale ──────────────────────── */
+    .cert-preview-card { transition: transform 0.3s, box-shadow 0.3s, border-color 0.3s !important; }
+    .cert-preview-card:hover { transform: translateY(-6px) scale(1.02) !important; box-shadow: 0 16px 40px rgba(0,217,255,0.14) !important; border-color: rgba(0,217,255,0.3) !important; }
+
+    /* ── Blog card lift ──────────────────────────────────── */
+    .blog-card-home { transition: transform 0.3s, box-shadow 0.3s, border-color 0.3s !important; }
+    .blog-card-home:hover { transform: translateY(-8px) !important; box-shadow: 0 20px 50px rgba(0,217,255,0.12) !important; border-color: rgba(0,217,255,0.3) !important; }
+    .blog-card-arrow { transition: transform 0.25s; }
+    .blog-card-home:hover .blog-card-arrow { transform: translateX(5px); }
+
+    /* ── Explore card glow slide ─────────────────────────── */
+    .explore-card { transition: transform 0.3s, box-shadow 0.3s, border-color 0.3s !important; position: relative; overflow: hidden; }
+    .explore-card::before { content: ''; position: absolute; inset: 0; background: linear-gradient(135deg, rgba(0,217,255,0.05), rgba(124,58,237,0.05)); opacity: 0; transition: opacity 0.3s; }
+    .explore-card:hover { transform: translateY(-6px) !important; box-shadow: 0 14px 36px rgba(0,217,255,0.12) !important; border-color: rgba(0,217,255,0.3) !important; }
+    .explore-card:hover::before { opacity: 1; }
+    .explore-card-arrow { transition: transform 0.25s, opacity 0.25s; }
+    .explore-card:hover .explore-card-arrow { transform: translateX(5px); }
+
+    /* ── Navbar active section ───────────────────────────── */
+    .nav-links a.nav-active { color: var(--primary) !important; }
+
+    /* ── Scroll progress gradient shimmer ────────────────── */
+    .scroll-progress { background: linear-gradient(90deg, var(--primary), var(--secondary), #06dbaa) !important; background-size: 200% 100% !important; animation: progressShimmer 3s linear infinite !important; }
+    @keyframes progressShimmer { 0% { background-position: 0% 0%; } 100% { background-position: 200% 0%; } }
+
+    /* ── Mobile menu smooth fade ─────────────────────────── */
+    .mobile-menu { transition: opacity 0.25s ease, transform 0.25s ease !important; }
+    .mobile-menu:not(.active) { opacity: 0; transform: translateY(-8px); pointer-events: none; }
+    .mobile-menu.active { opacity: 1; transform: translateY(0); pointer-events: all; }
+
+    /* ── Form feedback messages ──────────────────────────── */
+    .form-feedback {
+      display: none; align-items: center; gap: 0.75rem;
+      padding: 1rem 1.25rem; border-radius: 10px;
+      font-size: 0.9rem; font-family: 'Inter', sans-serif;
+      margin-top: 1rem; animation: feedbackIn 0.35s ease;
+    }
+    .form-feedback.show { display: flex; }
+    .form-feedback.success { background: rgba(6,219,168,0.1); border: 1px solid rgba(6,219,168,0.25); color: var(--success); }
+    .form-feedback.error   { background: rgba(255,80,80,0.08); border: 1px solid rgba(255,80,80,0.2); color: #ff6060; }
+    @keyframes feedbackIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+  </style>
 </head>
 <body>
-  
   <div class="scroll-progress"></div>
 
   <nav id="navbar">
     <div class="nav-container">
       <a href="index.html" class="logo" aria-label="Arnav Jain Home">
-        <span class="logo-bracket">&lt;</span>
-        Arnav
-        <span class="logo-bracket">/&gt;</span>
+        <span class="logo-bracket">&lt;</span>Arnav<span class="logo-bracket">/&gt;</span>
       </a>
-      
-      <ul class="nav-links">
+      <ul class="nav-links" id="navLinks">
         <li><a href="aboutme.html"><span class="nav-number">01.</span> About</a></li>
         <li><a href="skills.html"><span class="nav-number">02.</span> Skills</a></li>
         <li><a href="projects.html"><span class="nav-number">03.</span> Projects</a></li>
@@ -42,48 +132,39 @@
         <li><a href="contact.html"><span class="nav-number">06.</span> Contact</a></li>
         <li><a href="blog.html"><span class="nav-number">07.</span> Blog</a></li>
       </ul>
-
       <div class="nav-social">
-        <a href="https://github.com/jainArnav7" target="_blank" class="social-icon" aria-label="GitHub Profile"><i class="fa-brands fa-github"></i></a>
-        <a href="https://www.linkedin.com/in/arnav-jain-b63069354" target="_blank" class="social-icon" aria-label="LinkedIn Profile"><i class="fa-brands fa-linkedin"></i></a>
-        <a href="/cdn-cgi/l/email-protection#97f6e5f9f6e1fdf6fef9a0a6a6d7f0faf6fefbb9f4f8fa" class="social-icon" aria-label="Send Email"><i class="fa-solid fa-envelope"></i></a>
-        
-        <a href="#" class="social-icon resume-btn" id="resumeBtn" title="Download Resume" aria-label="Download Resume">
-          <i class="fa-solid fa-download"></i>
-        </a>
-        
-        <button class="theme-toggle" id="themeToggle" aria-label="Toggle Dark Mode">
-          <i class="fa-solid fa-moon"></i>
+        <a href="https://github.com/jainArnav7" target="_blank" rel="noopener" class="social-icon" aria-label="GitHub"><i class="fa-brands fa-github" aria-hidden="true"></i></a>
+        <a href="https://www.linkedin.com/in/arnav-jain-b63069354" target="_blank" rel="noopener" class="social-icon" aria-label="LinkedIn"><i class="fa-brands fa-linkedin" aria-hidden="true"></i></a>
+        <a href="mailto:arnavjain711@gmail.com" class="social-icon" aria-label="Email"><i class="fa-solid fa-envelope" aria-hidden="true"></i></a>
+        <a href="#" class="social-icon resume-btn" id="resumeBtn" aria-label="Download Resume"><i class="fa-solid fa-download" aria-hidden="true"></i></a>
+        <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+          <i class="fa-solid fa-moon" aria-hidden="true"></i>
         </button>
       </div>
-
-      <div class="hamburger" id="hamburger" aria-label="Open Menu">
-        <span></span>
-        <span></span>
-        <span></span>
-      </div>
+      <div class="hamburger" id="hamburger"><span></span><span></span><span></span></div>
     </div>
   </nav>
 
   <div class="mobile-menu" id="mobileMenu">
     <ul>
-      <li><a href="index.html" class="mobile-link"><span>01.</span> Home</a></li>
-      <li><a href="aboutme.html" class="mobile-link"><span>02.</span> About</a></li>
-      <li><a href="skills.html" class="mobile-link"><span>03.</span> Skills</a></li>
-      <li><a href="projects.html" class="mobile-link"><span>04.</span> Projects</a></li>
+      <li><a href="index.html"          class="mobile-link"><span>01.</span> Home</a></li>
+      <li><a href="aboutme.html"        class="mobile-link"><span>02.</span> About</a></li>
+      <li><a href="skills.html"         class="mobile-link"><span>03.</span> Skills</a></li>
+      <li><a href="projects.html"       class="mobile-link"><span>04.</span> Projects</a></li>
       <li><a href="certifications.html" class="mobile-link"><span>05.</span> Certifications</a></li>
-      <li><a href="timeline.html" class="mobile-link"><span>06.</span> Journey</a></li>
-      <li><a href="contact.html" class="mobile-link"><span>07.</span> Contact</a></li>
-      <li><a href="blog.html" class="mobile-link"><span>08.</span> Blog</a></li>
+      <li><a href="timeline.html"       class="mobile-link"><span>06.</span> Journey</a></li>
+      <li><a href="contact.html"        class="mobile-link"><span>07.</span> Contact</a></li>
+      <li><a href="blog.html"           class="mobile-link"><span>08.</span> Blog</a></li>
     </ul>
     <div class="mobile-social">
-      <a href="https://github.com/jainArnav7" target="_blank" aria-label="GitHub"><i class="fa-brands fa-github"></i></a>
-      <a href="https://www.linkedin.com/in/arnav-jain-b63069354" target="_blank" aria-label="LinkedIn"><i class="fa-brands fa-linkedin"></i></a>
-      <a href="/cdn-cgi/l/email-protection#0d6c7f636c7b676c64633a3c3c4d6a606c6461236e6260" aria-label="Email"><i class="fa-solid fa-envelope"></i></a>
+      <a href="https://github.com/jainArnav7" target="_blank" rel="noopener" aria-label="GitHub"><i class="fa-brands fa-github" aria-hidden="true"></i></a>
+      <a href="https://www.linkedin.com/in/arnav-jain-b63069354" target="_blank" rel="noopener" aria-label="LinkedIn"><i class="fa-brands fa-linkedin" aria-hidden="true"></i></a>
+      <a href="mailto:arnavjain711@gmail.com" aria-label="Email"><i class="fa-solid fa-envelope" aria-hidden="true"></i></a>
     </div>
   </div>
 
   <main>
+    <!-- ── HERO ──────────────────────────────────────────── -->
     <section class="hero-section">
       <div class="hero-content">
         <div class="hero-badge">
@@ -93,21 +174,21 @@
         <h1 class="hero-title">
           <span class="hero-greeting">Hi, I'm</span>
           <span class="hero-name">Arnav Jain</span>
-          <span class="hero-tagline">I Build <span class="rotating-text" id="rotatingText">The Future</span></span>
+          <span class="hero-tagline">I Build <span id="rotatingText">The Future</span><span class="rotating-text-cursor" aria-hidden="true"></span></span>
         </h1>
         <p class="hero-description">I build clean and functional websites using <strong>AI tools</strong> and modern technology. I enjoy turning ideas into real projects that are simple, useful, and well designed.</p>
-        
+
         <div class="hero-stats">
           <div class="stat-item">
-            <div class="stat-number" data-target="0">1</div>
+            <div class="stat-number" data-target="1">0</div>
             <div class="stat-label">Projects Completed</div>
           </div>
           <div class="stat-item">
-            <div class="stat-number" data-target="1">1</div>
+            <div class="stat-number" data-target="1">0</div>
             <div class="stat-label">Certifications</div>
           </div>
           <div class="stat-item">
-            <div class="stat-number" data-target="100">100</div>
+            <div class="stat-number" data-target="100">0</div>
             <div class="stat-label">% Dedication</div>
           </div>
         </div>
@@ -115,86 +196,78 @@
         <div class="hero-buttons">
           <a href="#contact" class="btn btn-primary">
             <span>Let's Collaborate</span>
-            <i class="fa-solid fa-arrow-right"></i>
+            <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
           </a>
           <a href="projects.html" class="btn btn-secondary">
             <span>View My Work</span>
-            <i class="fa-solid fa-code"></i>
+            <i class="fa-solid fa-code" aria-hidden="true"></i>
           </a>
           <a href="#" class="btn btn-secondary" id="heroResumeBtn" aria-label="Download Resume">
             <span>Download Resume</span>
-            <i class="fa-solid fa-download"></i>
+            <i class="fa-solid fa-download" aria-hidden="true"></i>
           </a>
         </div>
       </div>
-      
+
       <div class="hero-visual">
         <div class="hero-image-container">
           <div class="image-glow"></div>
-          <img src="images/hero-headshot.webp" alt="Arnav Jain Headshot" class="hero-image" loading="eager">
+          <img src="images/hero-headshot.webp" alt="Arnav Jain" class="hero-image" loading="eager">
           <div class="orbit-ring ring-1"></div>
           <div class="orbit-ring ring-2"></div>
           <div class="orbit-ring ring-3"></div>
         </div>
         <div class="floating-card card-1">
-          <i class="fa-brands fa-python"></i>
+          <i class="fa-brands fa-python" aria-hidden="true"></i>
           <span>Python Expert</span>
         </div>
         <div class="floating-card card-2">
-          <i class="fa-solid fa-brain"></i>
+          <i class="fa-solid fa-brain" aria-hidden="true"></i>
           <span>AI/ML</span>
         </div>
         <div class="floating-card card-3">
-          <i class="fa-brands fa-raspberry-pi"></i>
+          <i class="fa-brands fa-raspberry-pi" aria-hidden="true"></i>
           <span>IoT</span>
         </div>
       </div>
     </section>
 
+    <!-- ── SKILLS ─────────────────────────────────────────── -->
     <section id="skills" class="skills-section">
       <div class="section-header">
         <span class="section-number">02.</span>
         <h2 class="section-title">Technical Arsenal</h2>
         <div class="section-line"></div>
       </div>
-      
       <div class="skills-container">
         <div class="skills-grid">
           <div class="skill-card" data-skill="python">
             <div class="skill-icon-wrapper">
-              <i class="fa-brands fa-python"></i>
+              <i class="fa-brands fa-python" aria-hidden="true"></i>
               <div class="skill-glow"></div>
             </div>
             <h3>Python</h3>
-            <div class="skill-level">
-              <div class="level-bar" style="--level: 78%"></div>
-            </div>
+            <div class="skill-level"><div class="level-bar" style="--level: 78%"></div></div>
             <span class="skill-percent">78%</span>
             <p>AI/ML • Automation • Backend</p>
           </div>
-
           <div class="skill-card" data-skill="html">
             <div class="skill-icon-wrapper">
-              <i class="fa-brands fa-html5"></i>
+              <i class="fa-brands fa-html5" aria-hidden="true"></i>
               <div class="skill-glow"></div>
             </div>
             <h3>HTML5</h3>
-            <div class="skill-level">
-              <div class="level-bar" style="--level: 90%"></div>
-            </div>
+            <div class="skill-level"><div class="level-bar" style="--level: 90%"></div></div>
             <span class="skill-percent">90%</span>
             <p>Semantic • Accessible • Modern</p>
           </div>
-
           <div class="skill-card" data-skill="css">
             <div class="skill-icon-wrapper">
-              <i class="fa-brands fa-css3-alt"></i>
+              <i class="fa-brands fa-css3-alt" aria-hidden="true"></i>
               <div class="skill-glow"></div>
             </div>
             <h3>CSS3</h3>
-            <div class="skill-level">
-              <div class="level-bar" style="--level: 65%"></div>
-            </div>
+            <div class="skill-level"><div class="level-bar" style="--level: 65%"></div></div>
             <span class="skill-percent">65%</span>
             <p>Animations • Responsive • Design</p>
           </div>
@@ -202,14 +275,13 @@
       </div>
     </section>
 
-    <!-- Featured Certifications -->
+    <!-- ── CERTIFICATIONS PREVIEW ─────────────────────────── -->
     <section id="certs-preview" class="certs-preview-section">
       <div class="section-header">
         <span class="section-number">04.</span>
-        <h2 class="section-title">Certifications & Achievements</h2>
+        <h2 class="section-title">Certifications &amp; Achievements</h2>
         <div class="section-line"></div>
       </div>
-
       <div class="certs-preview-grid">
         <div class="cert-preview-card">
           <div class="cert-preview-icon blue">🐍</div>
@@ -220,7 +292,7 @@
           </div>
         </div>
         <div class="cert-preview-card">
-          <div class="cert-preview-icon purple">#️</div>
+          <div class="cert-preview-icon purple">💻</div>
           <div class="cert-preview-info">
             <h4>Foundational C#</h4>
             <div class="cert-preview-issuer">Microsoft Learn / freeCodeCamp</div>
@@ -236,28 +308,26 @@
           </div>
         </div>
       </div>
-
       <div class="certs-preview-footer">
-        <a href="certifications.html">View all certifications and achievements <i class="fa-solid fa-arrow-right"></i></a>
+        <a href="certifications.html">View all certifications and achievements <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a>
       </div>
     </section>
 
-    <!-- Featured Blog Posts -->
+    <!-- ── BLOG PREVIEW ───────────────────────────────────── -->
     <section id="blog-preview" class="blog-preview-section">
       <div class="section-header">
         <span class="section-number">07.</span>
         <h2 class="section-title">From the Blog</h2>
         <div class="section-line"></div>
       </div>
-
       <div class="blog-preview-grid">
         <a href="blog-tsa-2025.html" class="blog-card-home featured">
           <span class="blog-card-tag">TSA</span>
           <h3 class="blog-card-title">Colorado TSA 2025-2026</h3>
           <p class="blog-card-excerpt">What I learned and accomplished during my first time in the Colorado Technology Student Association.</p>
           <div class="blog-card-footer">
-            <span class="blog-card-date">February 2026 · 5 min</span>
-            <i class="fa-solid fa-arrow-right blog-card-arrow"></i>
+            <span class="blog-card-date">February 2026 · 6 min</span>
+            <i class="fa-solid fa-arrow-right blog-card-arrow" aria-hidden="true"></i>
           </div>
         </a>
         <a href="blog.html" class="blog-card-home">
@@ -266,7 +336,7 @@
           <p class="blog-card-excerpt">Not theoretical tips — real scripts I run almost every week. File renaming, auto-backup, and one that reminded me to drink water.</p>
           <div class="blog-card-footer">
             <span class="blog-card-date">Feb 2025</span>
-            <i class="fa-solid fa-arrow-right blog-card-arrow"></i>
+            <i class="fa-solid fa-arrow-right blog-card-arrow" aria-hidden="true"></i>
           </div>
         </a>
         <a href="blog.html" class="blog-card-home">
@@ -275,122 +345,95 @@
           <p class="blog-card-excerpt">No frameworks. No build tools. Just HTML, CSS, and JS — and why that's sometimes exactly right.</p>
           <div class="blog-card-footer">
             <span class="blog-card-date">Dec 2024</span>
-            <i class="fa-solid fa-arrow-right blog-card-arrow"></i>
+            <i class="fa-solid fa-arrow-right blog-card-arrow" aria-hidden="true"></i>
           </div>
         </a>
       </div>
-      <a href="blog.html" class="section-view-all">View all posts <i class="fa-solid fa-arrow-right"></i></a>
+      <a href="blog.html" class="section-view-all">View all posts <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a>
     </section>
 
+    <!-- ── EXPLORE ─────────────────────────────────────────── -->
     <section id="explore" class="explore-section">
       <div class="section-header">
         <h2 class="section-title">Explore More</h2>
       </div>
       <div class="explore-grid">
         <a href="aboutme.html" class="explore-card">
-          <div class="explore-card-icon"><i class="fa-solid fa-user"></i></div>
+          <div class="explore-card-icon"><i class="fa-solid fa-user" aria-hidden="true"></i></div>
           <span class="explore-card-label">About Me</span>
-          <span class="explore-card-sub">My story & background</span>
-          <i class="fa-solid fa-arrow-right explore-card-arrow"></i>
+          <span class="explore-card-sub">My story &amp; background</span>
+          <i class="fa-solid fa-arrow-right explore-card-arrow" aria-hidden="true"></i>
         </a>
         <a href="skills.html" class="explore-card">
-          <div class="explore-card-icon"><i class="fa-solid fa-code"></i></div>
+          <div class="explore-card-icon"><i class="fa-solid fa-code" aria-hidden="true"></i></div>
           <span class="explore-card-label">Skills</span>
-          <span class="explore-card-sub">Languages & tech stack</span>
-          <i class="fa-solid fa-arrow-right explore-card-arrow"></i>
+          <span class="explore-card-sub">Languages &amp; tech stack</span>
+          <i class="fa-solid fa-arrow-right explore-card-arrow" aria-hidden="true"></i>
         </a>
         <a href="projects.html" class="explore-card">
-          <div class="explore-card-icon"><i class="fa-solid fa-folder-open"></i></div>
+          <div class="explore-card-icon"><i class="fa-solid fa-folder-open" aria-hidden="true"></i></div>
           <span class="explore-card-label">Projects</span>
           <span class="explore-card-sub">What I've built</span>
-          <i class="fa-solid fa-arrow-right explore-card-arrow"></i>
+          <i class="fa-solid fa-arrow-right explore-card-arrow" aria-hidden="true"></i>
         </a>
         <a href="timeline.html" class="explore-card">
-          <div class="explore-card-icon"><i class="fa-solid fa-route"></i></div>
+          <div class="explore-card-icon"><i class="fa-solid fa-route" aria-hidden="true"></i></div>
           <span class="explore-card-label">Journey</span>
           <span class="explore-card-sub">How I got here</span>
-          <i class="fa-solid fa-arrow-right explore-card-arrow"></i>
+          <i class="fa-solid fa-arrow-right explore-card-arrow" aria-hidden="true"></i>
         </a>
         <a href="certifications.html" class="explore-card">
-          <div class="explore-card-icon"><i class="fa-solid fa-certificate"></i></div>
+          <div class="explore-card-icon"><i class="fa-solid fa-certificate" aria-hidden="true"></i></div>
           <span class="explore-card-label">Certifications</span>
           <span class="explore-card-sub">Credentials I've earned</span>
-          <i class="fa-solid fa-arrow-right explore-card-arrow"></i>
-        </a>
-        <a href="techstack.html" class="explore-card">
-          <div class="explore-card-icon"><i class="fa-solid fa-layer-group"></i></div>
-          <span class="explore-card-label">Tech Stack</span>
-          <span class="explore-card-sub">Tools I use daily</span>
-          <i class="fa-solid fa-arrow-right explore-card-arrow"></i>
+          <i class="fa-solid fa-arrow-right explore-card-arrow" aria-hidden="true"></i>
         </a>
         <a href="blog.html" class="explore-card">
-          <div class="explore-card-icon"><i class="fa-solid fa-pen-nib"></i></div>
+          <div class="explore-card-icon"><i class="fa-solid fa-pen-nib" aria-hidden="true"></i></div>
           <span class="explore-card-label">Blog</span>
-          <span class="explore-card-sub">Thoughts & learnings</span>
-          <i class="fa-solid fa-arrow-right explore-card-arrow"></i>
+          <span class="explore-card-sub">Thoughts &amp; learnings</span>
+          <i class="fa-solid fa-arrow-right explore-card-arrow" aria-hidden="true"></i>
         </a>
         <a href="contact.html" class="explore-card">
-          <div class="explore-card-icon"><i class="fa-solid fa-paper-plane"></i></div>
+          <div class="explore-card-icon"><i class="fa-solid fa-paper-plane" aria-hidden="true"></i></div>
           <span class="explore-card-label">Contact</span>
           <span class="explore-card-sub">Get in touch with me</span>
-          <i class="fa-solid fa-arrow-right explore-card-arrow"></i>
+          <i class="fa-solid fa-arrow-right explore-card-arrow" aria-hidden="true"></i>
         </a>
       </div>
     </section>
 
+    <!-- ── CONTACT ─────────────────────────────────────────── -->
     <section id="contact" class="contact-section">
       <div class="section-header">
         <span class="section-number">06.</span>
         <h2 class="section-title">Get In Touch</h2>
         <div class="section-line"></div>
       </div>
-
       <div class="contact-wrapper">
         <div class="contact-cta">
           <h3>Let's work together</h3>
           <p>Open to collaborations, internships, and interesting projects. Reach out any time.</p>
-
           <div class="contact-methods">
-            <a href="/cdn-cgi/l/email-protection#2041524e41564a41494e17111160474d41494c0e434f4d" class="contact-method-card" aria-label="Email Me">
-              <div class="method-icon">
-                <i class="fa-solid fa-envelope"></i>
-              </div>
-              <div class="method-info">
-                <h4>Email</h4>
-                <p><span class="__cf_email__" data-cfemail="5d3c2f333c2b373c34336a6c6c1d3a303c3431733e3230">[email&#160;protected]</span></p>
-              </div>
-              <i class="fa-solid fa-arrow-right method-arrow"></i>
+            <a href="mailto:arnavjain711@gmail.com" class="contact-method-card" aria-label="Email Me">
+              <div class="method-icon"><i class="fa-solid fa-envelope" aria-hidden="true"></i></div>
+              <div class="method-info"><h4>Email</h4><p>arnavjain711@gmail.com</p></div>
+              <i class="fa-solid fa-arrow-right method-arrow" aria-hidden="true"></i>
             </a>
-
-            <a href="https://wa.me/9832081282" target="_blank" class="contact-method-card" aria-label="Chat on WhatsApp">
-              <div class="method-icon">
-                <i class="fa-brands fa-whatsapp"></i>
-              </div>
-              <div class="method-info">
-                <h4>WhatsApp</h4>
-                <p>Quick chat on WhatsApp</p>
-              </div>
-              <i class="fa-solid fa-arrow-right method-arrow"></i>
+            <a href="https://wa.me/9832081282" target="_blank" rel="noopener" class="contact-method-card" aria-label="WhatsApp">
+              <div class="method-icon"><i class="fa-brands fa-whatsapp" aria-hidden="true"></i></div>
+              <div class="method-info"><h4>WhatsApp</h4><p>Quick chat on WhatsApp</p></div>
+              <i class="fa-solid fa-arrow-right method-arrow" aria-hidden="true"></i>
             </a>
-
-            <a href="https://discord.gg" target="_blank" class="contact-method-card" aria-label="Join Discord">
-              <div class="method-icon">
-                <i class="fa-brands fa-discord"></i>
-              </div>
-              <div class="method-info">
-                <h4>Discord</h4>
-                <p>Join my dev community</p>
-              </div>
-              <i class="fa-solid fa-arrow-right method-arrow"></i>
+            <a href="https://discord.gg" target="_blank" rel="noopener" class="contact-method-card" aria-label="Discord">
+              <div class="method-icon"><i class="fa-brands fa-discord" aria-hidden="true"></i></div>
+              <div class="method-info"><h4>Discord</h4><p>Join my dev community</p></div>
+              <i class="fa-solid fa-arrow-right method-arrow" aria-hidden="true"></i>
             </a>
           </div>
         </div>
 
         <form class="contact-form-modern" id="contactForm">
-          <!-- 
-            TO ACTIVATE: Get a free key at web3forms.com, replace YOUR_ACCESS_KEY below.
-            Messages will be delivered directly to arnavjain711@gmail.com.
-          -->
           <input type="hidden" name="access_key" value="YOUR_ACCESS_KEY">
           <input type="hidden" name="subject" value="New message from Portfolio">
           <input type="hidden" name="redirect" value="false">
@@ -398,7 +441,6 @@
             <h3>Send a Message</h3>
             <p>Fill out the form and I'll get back to you within 24 hours</p>
           </div>
-
           <div class="form-row">
             <div class="form-group-modern">
               <label for="name">Your Name</label>
@@ -409,21 +451,26 @@
               <input type="email" id="email" name="email" placeholder="john@example.com" required>
             </div>
           </div>
-
           <div class="form-group-modern">
             <label for="subject">Subject</label>
             <input type="text" id="subject" name="subject" placeholder="Let's work together" required>
           </div>
-
           <div class="form-group-modern">
             <label for="message">Message</label>
             <textarea id="message" name="message" rows="5" placeholder="Tell me about your project..." required></textarea>
           </div>
-
-          <button type="submit" class="btn btn-primary btn-large">
+          <button type="submit" class="btn btn-primary btn-large" id="submitBtn">
             <span>Send Message</span>
-            <i class="fa-solid fa-paper-plane"></i>
+            <i class="fa-solid fa-paper-plane" aria-hidden="true"></i>
           </button>
+          <div class="form-feedback success" id="formSuccess">
+            <i class="fa-solid fa-circle-check" aria-hidden="true"></i>
+            Message sent! I'll get back to you within 24 hours.
+          </div>
+          <div class="form-feedback error" id="formError">
+            <i class="fa-solid fa-circle-xmark" aria-hidden="true"></i>
+            Something went wrong — please try again or email me directly.
+          </div>
         </form>
       </div>
     </section>
@@ -432,9 +479,152 @@
   <footer>
     <div class="footer-content">
       <div class="footer-text">
-        <p>Designed & Built by <span class="highlight">Arnav Jain</span></p>
+        <p>Designed &amp; Built by <span class="highlight">Arnav Jain</span></p>
         <p>&copy; 2026 All rights reserved.</p>
       </div>
       <div class="footer-links">
-        <a href="https://github.com/jainArnav7" target="_blank" aria-label="GitHub"><i class="fa-brands fa-github"></i></a>
-        <a href="https://www.linkedin.com/in/arnav-jain-b63069354" target="_blank" aria-label="LinkedIn"><i class="fa-bra
+        <a href="https://github.com/jainArnav7" target="_blank" rel="noopener" aria-label="GitHub"><i class="fa-brands fa-github" aria-hidden="true"></i></a>
+        <a href="https://www.linkedin.com/in/arnav-jain-b63069354" target="_blank" rel="noopener" aria-label="LinkedIn"><i class="fa-brands fa-linkedin" aria-hidden="true"></i></a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- scripts.js handles: navbar scroll, hamburger, scroll-progress width elsewhere -->
+  <script src="scripts.js"></script>
+  <script>
+    // ════════════════════════════════════════════════════════
+    // ① THEME TOGGLE  — self-contained, runs on every page
+    // ════════════════════════════════════════════════════════
+    (function() {
+      const btn  = document.getElementById('themeToggle');
+      const html = document.documentElement;
+
+      function applyTheme(theme) {
+        html.setAttribute('data-theme', theme);
+        try { localStorage.setItem('theme', theme); } catch(e) {}
+        const icon = btn && btn.querySelector('i');
+        if (icon) icon.className = theme === 'dark' ? 'fa-solid fa-sun' : 'fa-solid fa-moon';
+        if (btn) btn.setAttribute('aria-label', theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode');
+      }
+
+      // Sync icon on load
+      const saved = (function() { try { return localStorage.getItem('theme'); } catch(e) {} })();
+      applyTheme(saved || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'));
+
+      if (btn) btn.addEventListener('click', function() {
+        this.classList.add('spinning');
+        setTimeout(() => this.classList.remove('spinning'), 450);
+        applyTheme(html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
+      });
+    })();
+
+    // ════════════════════════════════════════════════════════
+    // ② SCROLL PROGRESS BAR
+    // ════════════════════════════════════════════════════════
+    const progressBar = document.querySelector('.scroll-progress');
+    window.addEventListener('scroll', () => {
+      if (!progressBar) return;
+      const pct = window.scrollY / (document.documentElement.scrollHeight - window.innerHeight) * 100;
+      progressBar.style.width = Math.min(pct, 100) + '%';
+    }, { passive: true });
+
+    // ════════════════════════════════════════════════════════
+    // ③ ROTATING / TYPING TAGLINE
+    // ════════════════════════════════════════════════════════
+    const phrases  = ['The Future', 'With Python', 'AI Projects', 'Clean UIs', 'Smart Tools', 'Real Things'];
+    const rotEl    = document.getElementById('rotatingText');
+    let pIdx = 0, cIdx = 0, deleting = false;
+    function type() {
+      const word = phrases[pIdx];
+      if (!deleting) {
+        rotEl.textContent = word.slice(0, ++cIdx);
+        if (cIdx === word.length) { deleting = true; setTimeout(type, 1800); return; }
+        setTimeout(type, 80);
+      } else {
+        rotEl.textContent = word.slice(0, --cIdx);
+        if (cIdx === 0) { deleting = false; pIdx = (pIdx + 1) % phrases.length; setTimeout(type, 300); return; }
+        setTimeout(type, 45);
+      }
+    }
+    if (rotEl) setTimeout(type, 900);
+
+    // ════════════════════════════════════════════════════════
+    // ④ STAT COUNTERS  — animate up when hero scrolls in
+    // ════════════════════════════════════════════════════════
+    const statEls = document.querySelectorAll('.stat-number[data-target]');
+    let statsRan = false;
+    function runStats() {
+      if (statsRan) return;
+      const box = document.querySelector('.hero-stats');
+      if (!box || box.getBoundingClientRect().top > window.innerHeight * 0.95) return;
+      statsRan = true;
+      statEls.forEach(el => {
+        const target = +el.dataset.target, steps = 60;
+        let count = 0;
+        const timer = setInterval(() => {
+          count = Math.min(count + target / steps, target);
+          el.textContent = Math.round(count);
+          if (count >= target) clearInterval(timer);
+        }, 18);
+      });
+    }
+    window.addEventListener('scroll', runStats, { passive: true });
+    runStats();
+
+    // ════════════════════════════════════════════════════════
+    // ⑤ SKILL BARS  — fill on scroll into view
+    // ════════════════════════════════════════════════════════
+    const barObs = new IntersectionObserver(entries => {
+      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('animated'); barObs.unobserve(e.target); } });
+    }, { threshold: 0.3 });
+    document.querySelectorAll('.level-bar').forEach(b => barObs.observe(b));
+
+    // ════════════════════════════════════════════════════════
+    // ⑥ ACTIVE NAV SECTION  — highlight while scrolling
+    // ════════════════════════════════════════════════════════
+    const secEls = document.querySelectorAll('section[id]');
+    const navAs  = document.querySelectorAll('.nav-links a');
+    function setActiveNav() {
+      let cur = '';
+      secEls.forEach(s => { if (window.scrollY >= s.offsetTop - 150) cur = s.id; });
+      navAs.forEach(a => a.classList.toggle('nav-active', a.getAttribute('href').replace('#','') === cur));
+    }
+    window.addEventListener('scroll', setActiveNav, { passive: true });
+    setActiveNav();
+
+    // ════════════════════════════════════════════════════════
+    // ⑦ CONTACT FORM  — success / error feedback
+    // ════════════════════════════════════════════════════════
+    const cForm  = document.getElementById('contactForm');
+    const cBtn   = document.getElementById('submitBtn');
+    const cOk    = document.getElementById('formSuccess');
+    const cErr   = document.getElementById('formError');
+    if (cForm) cForm.addEventListener('submit', async e => {
+      e.preventDefault();
+      cOk.classList.remove('show'); cErr.classList.remove('show');
+      const orig = cBtn.innerHTML;
+      cBtn.innerHTML = '<span>Sending…</span><i class="fa-solid fa-spinner fa-spin"></i>';
+      cBtn.disabled = true;
+      try {
+        const r = await fetch('https://api.web3forms.com/submit', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+          body: JSON.stringify(Object.fromEntries(new FormData(cForm)))
+        });
+        (await r.json()).success ? (cOk.classList.add('show'), cForm.reset()) : cErr.classList.add('show');
+      } catch { cErr.classList.add('show'); }
+      finally { cBtn.innerHTML = orig; cBtn.disabled = false; }
+    });
+
+    // ════════════════════════════════════════════════════════
+    // ⑧ HAMBURGER  — smooth mobile menu
+    // ════════════════════════════════════════════════════════
+    const hb = document.getElementById('hamburger');
+    const mm = document.getElementById('mobileMenu');
+    if (hb && mm) {
+      hb.addEventListener('click', () => { mm.classList.toggle('active'); hb.classList.toggle('active'); });
+      mm.querySelectorAll('a').forEach(a => a.addEventListener('click', () => { mm.classList.remove('active'); hb.classList.remove('active'); }));
+    }
+  </script>
+</body>
+</html>

@@ -69,20 +69,44 @@ function initThemeToggle() {
   if (!btn) return;
   const icon = btn.querySelector('i');
   const html = document.documentElement;
-  const saved = localStorage.getItem('theme') || 'dark';
-  html.setAttribute('data-theme', saved);
-  updateThemeIcon(saved, icon);
+
+  // try to read saved theme; fall back to system or dark if unavailable
+  let saved;
+  try {
+    saved = localStorage.getItem('theme');
+  } catch (e) {
+    // localStorage can throw in some contexts (file://, private mode)
+    saved = null;
+  }
+  const defaultTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+  const theme = saved || defaultTheme || 'dark';
+
+  html.setAttribute('data-theme', theme);
+  updateThemeIcon(theme, icon);
+  updateThemeAria(theme, btn);
+
   btn.addEventListener('click', () => {
     const next = html.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
     html.setAttribute('data-theme', next);
-    localStorage.setItem('theme', next);
+    try {
+      localStorage.setItem('theme', next);
+    } catch (e) {
+      // ignore storage errors silently
+    }
     updateThemeIcon(next, icon);
+    updateThemeAria(next, btn);
   });
 }
 
 function updateThemeIcon(theme, icon) {
   if (!icon) return;
   icon.className = theme === 'dark' ? 'fa-solid fa-sun' : 'fa-solid fa-moon';
+}
+
+// update aria-label so assistive users know what the button will do
+function updateThemeAria(theme, btn) {
+  if (!btn) return;
+  btn.setAttribute('aria-label', theme === 'dark' ? 'Toggle Light Mode' : 'Toggle Dark Mode');
 }
 
 function initAnimations() {

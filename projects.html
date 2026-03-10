@@ -1,6 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <script>
+    try {
+      const t = localStorage.getItem('theme');
+      if (t) document.documentElement.setAttribute('data-theme', t);
+      else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.documentElement.setAttribute('data-theme', 'dark');
+      }
+    } catch (e) {}
+  </script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Projects | Arnav Jain</title>
@@ -29,6 +38,47 @@
     .status-done { background: rgba(6,219,168,0.1); color: var(--success); border: 1px solid rgba(6,219,168,0.2); }
     .status-wip { background: rgba(255,160,0,0.1); color: #ffa000; border: 1px solid rgba(255,160,0,0.2); }
     .status-dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+    .status-wip .status-dot { animation: wip-blink 1.5s ease-in-out infinite; }
+    @keyframes wip-blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.2; } }
+
+    /* Featured badge */
+    .featured-badge {
+      display: inline-flex; align-items: center; gap: 0.35rem;
+      font-size: 0.68rem; font-family: 'JetBrains Mono', monospace;
+      padding: 0.2rem 0.65rem; border-radius: 999px;
+      text-transform: uppercase; letter-spacing: 0.07em;
+      background: linear-gradient(135deg, rgba(0,217,255,0.15), rgba(124,58,237,0.15));
+      color: var(--primary); border: 1px solid rgba(0,217,255,0.3);
+      margin-bottom: 0.4rem;
+    }
+    .featured-badge i { font-size: 0.6rem; color: #ffd700; }
+
+    /* Project preview image strip */
+    .project-preview {
+      width: calc(100% + 4rem); margin: -2rem -2rem 1.5rem;
+      height: 155px; overflow: hidden; position: relative;
+      border-bottom: 1px solid rgba(0,217,255,0.08);
+    }
+    .project-preview img {
+      width: 100%; height: 100%; object-fit: cover; object-position: top;
+      display: block; transition: transform 0.5s ease;
+    }
+    .project-card:hover .project-preview img { transform: scale(1.04); }
+    .project-preview-placeholder {
+      width: 100%; height: 100%;
+      display: flex; align-items: center; justify-content: center;
+      background: linear-gradient(135deg, rgba(0,217,255,0.04) 0%, rgba(124,58,237,0.06) 100%);
+    }
+    .project-preview-placeholder i { font-size: 2.5rem; color: var(--primary); opacity: 0.15; }
+
+    /* Key takeaways */
+    .key-takeaways { display: flex; flex-wrap: wrap; gap: 0.4rem; margin: 0.75rem 0 1.25rem; }
+    .takeaway {
+      font-size: 0.72rem; font-family: 'Inter', sans-serif; color: var(--text-muted);
+    }
+    .takeaway::before { content: '✓ '; color: var(--success); font-size: 0.65rem; font-weight: 700; }
+    .takeaway:not(:last-child)::after { content: ' · '; color: rgba(255,255,255,0.15); }
+
     @media (max-width: 500px) { .project-cards { grid-template-columns: 1fr; } }
   </style>
 </head>
@@ -47,7 +97,7 @@
         <li><a href="blog.html"><span class="nav-number">07.</span> Blog</a></li>
       </ul>
       <div class="nav-social">
-        <a href="https://github.com/jainArnav7" target="_blank" class="social-icon"><i class="fa-brands fa-github"></i></a>
+        <a href="https://github.com/jainArnav7" target="_blank" rel="noopener" class="social-icon" aria-label="GitHub"><i class="fa-brands fa-github" aria-hidden="true"></i></a>
         <button class="theme-toggle" id="themeToggle"><i class="fa-solid fa-moon"></i></button>
       </div>
       <div class="hamburger" id="hamburger"><span></span><span></span><span></span></div>
@@ -75,34 +125,53 @@
 
     <div class="project-cards">
       <div class="project-card">
+        <!-- ✏️ Add screenshot: <img src="images/portfolio-preview.png" alt="Elite Portfolio"> -->
+        <div class="project-preview">
+          <div class="project-preview-placeholder"><i class="fa-solid fa-globe" aria-hidden="true"></i></div>
+        </div>
         <div class="project-card-top">
-          <div class="folder-icon-wrap"><i class="fa-solid fa-folder-open"></i></div>
+          <div class="folder-icon-wrap"><i class="fa-solid fa-globe" aria-hidden="true"></i></div>
           <div class="card-links">
-            <a href="https://github.com/jainArnav7" target="_blank" title="GitHub"><i class="fa-brands fa-github"></i></a>
-            <a href="#" title="Live Demo"><i class="fa-solid fa-arrow-up-right-from-square"></i></a>
+            <a href="https://github.com/jainArnav7/MyPortfolio" target="_blank" rel="noopener" title="GitHub"><i class="fa-brands fa-github" aria-hidden="true"></i></a>
+            <a href="https://arnavjain.pages.dev/" target="_blank" rel="noopener" title="Live Site"><i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i></a>
           </div>
         </div>
+        <div class="featured-badge"><i class="fa-solid fa-star" aria-hidden="true"></i> Featured</div>
         <span class="project-status status-done"><span class="status-dot"></span> Completed</span>
-        <h3>AI Task Planner Pro</h3>
-        <p>An intelligent task management system powered by custom AI algorithms that learns from your habits and optimizes your schedule automatically.</p>
+        <h3>Elite Portfolio</h3>
+        <p>The site you are on right now — a fully custom multi-page portfolio built from scratch with modern design and smooth animations.</p>
+        <div class="key-takeaways">
+          <span class="takeaway">Responsive design</span>
+          <span class="takeaway">Custom animations</span>
+          <span class="takeaway">Multi-page architecture</span>
+        </div>
         <div class="tech-pills">
-          <span class="tech-pill">Python</span>
-          <span class="tech-pill">ML</span>
-          <span class="tech-pill">Data Analysis</span>
+          <span class="tech-pill">HTML5</span>
+          <span class="tech-pill">CSS3</span>
+          <span class="tech-pill">JavaScript</span>
         </div>
       </div>
 
       <div class="project-card">
+        <!-- ✏️ Add screenshot: <img src="images/bot-preview.png" alt="Miscellaneous Bot"> -->
+        <div class="project-preview">
+          <div class="project-preview-placeholder"><i class="fa-brands fa-discord" aria-hidden="true"></i></div>
+        </div>
         <div class="project-card-top">
-          <div class="folder-icon-wrap"><i class="fa-solid fa-folder-open"></i></div>
+          <div class="folder-icon-wrap"><i class="fa-brands fa-discord" aria-hidden="true"></i></div>
           <div class="card-links">
-            <a href="https://github.com/jainArnav7/Miscellaneous-Bot" target="_blank" title="GitHub"><i class="fa-brands fa-github"></i></a>
-            <a href="https://discord.com/oauth2/authorize?client_id=1457845969755443477" target="_blank" title="Live Demo"><i class="fa-solid fa-arrow-up-right-from-square"></i></a>
+            <a href="https://github.com/jainArnav7/Miscellaneous-Bot" target="_blank" rel="noopener" title="GitHub"><i class="fa-brands fa-github" aria-hidden="true"></i></a>
+            <a href="https://discord.com/oauth2/authorize?client_id=1457845969755443477" target="_blank" rel="noopener" title="Add to Discord"><i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i></a>
           </div>
         </div>
         <span class="project-status status-wip"><span class="status-dot"></span> In Progress</span>
         <h3>Miscellaneous Bot</h3>
-        <p>A high performance Discord bot built with Python and the Discord API. It uses optimized intents, concurrent cog loading, and instant slash command syncing to deliver fast responses and scalable features like moderation, utilities, and interactive commands.</p>
+        <p>A Python Discord bot with concurrent cog loading, slash commands, and modular features built for speed and scale.</p>
+        <div class="key-takeaways">
+          <span class="takeaway">Async architecture</span>
+          <span class="takeaway">Slash commands</span>
+          <span class="takeaway">Modular cog system</span>
+        </div>
         <div class="tech-pills">
           <span class="tech-pill">Python</span>
           <span class="tech-pill">Discord API</span>
@@ -112,63 +181,75 @@
       </div>
 
       <div class="project-card">
+        <!-- ✏️ Add screenshot: <img src="images/pacman-preview.png" alt="Pac-Man"> -->
+        <div class="project-preview">
+          <div class="project-preview-placeholder"><i class="fa-solid fa-ghost" aria-hidden="true"></i></div>
+        </div>
         <div class="project-card-top">
-          <div class="folder-icon-wrap"><i class="fa-solid fa-folder-open"></i></div>
+          <div class="folder-icon-wrap"><i class="fa-solid fa-ghost" aria-hidden="true"></i></div>
           <div class="card-links">
-            <a href="https://github.com/jainArnav7/PacMan" target="_blank"><i class="fa-brands fa-github"></i></a>
+            <a href="https://github.com/jainArnav7/PacMan" target="_blank" rel="noopener" title="GitHub"><i class="fa-brands fa-github" aria-hidden="true"></i></a>
           </div>
         </div>
         <span class="project-status status-wip"><span class="status-dot"></span> In Progress</span>
-        <h3>Pac Man</h3>
-        <p>A classic arcade game made with Python, featuring smooth animations and responsive controls.</p>
+        <h3>Pac-Man</h3>
+        <p>A Python recreation of the classic arcade game with smooth animations, ghost AI, and responsive keyboard controls.</p>
+        <div class="key-takeaways">
+          <span class="takeaway">Game loop logic</span>
+          <span class="takeaway">Collision detection</span>
+          <span class="takeaway">Ghost AI</span>
+        </div>
         <div class="tech-pills">
           <span class="tech-pill">Python</span>
+          <span class="tech-pill">Pygame</span>
         </div>
       </div>
 
       <div class="project-card">
+        <!-- ✏️ Add screenshot: <img src="images/countdown-preview.png" alt="New Year Countdown"> -->
+        <div class="project-preview">
+          <div class="project-preview-placeholder"><i class="fa-solid fa-clock" aria-hidden="true"></i></div>
+        </div>
         <div class="project-card-top">
-          <div class="folder-icon-wrap"><i class="fa-solid fa-folder-open"></i></div>
+          <div class="folder-icon-wrap"><i class="fa-solid fa-clock" aria-hidden="true"></i></div>
           <div class="card-links">
-            <a href="https://github.com/jainArnav7/PacMan" target="_blank"><i class="fa-brands fa-github"></i></a>
+            <a href="https://github.com/jainArnav7/NewYearCountdown" target="_blank" rel="noopener" title="GitHub"><i class="fa-brands fa-github" aria-hidden="true"></i></a>
           </div>
         </div>
         <span class="project-status status-done"><span class="status-dot"></span> Completed</span>
         <h3>New Year Countdown</h3>
-        <p>A simple python application that displays a countdown to the new year, in your own timezone, and fireworks when the new year arrives.</p>
+        <p>A Python app that displays a live timezone-aware countdown to midnight, with a fireworks animation when the new year arrives.</p>
+        <div class="key-takeaways">
+          <span class="takeaway">Timezone handling</span>
+          <span class="takeaway">Live clock display</span>
+          <span class="takeaway">Particle animation</span>
+        </div>
         <div class="tech-pills">
           <span class="tech-pill">Python</span>
+          <span class="tech-pill">datetime</span>
+          <span class="tech-pill">Tkinter</span>
         </div>
       </div>
 
-  <div class="project-card">
-  <div class="project-card-top">
-    <div class="folder-icon-wrap"><i class="fa-solid fa-folder-open"></i></div>
-    <div class="card-links">
-      <a href="https://github.com/jainArnav7/MyPortfolio" target="_blank" title="GitHub"><i class="fa-brands fa-github"></i></a>
-      <a href="https://arnavjain.pages.dev/" target="_blank" title="Live Demo"><i class="fa-solid fa-arrow-up-right-from-square"></i></a>
-    </div>
-  </div>
-  <span class="project-status status-wip"><span class="status-dot"></span> In Progress</span>
-  <h3>Elite Portfolio</h3>
-  <p>A fully custom developer portfolio built from scratch, highlighting modern design, smooth animations, and a multi-page architecture. It demonstrates clean, efficient coding and practical use of HTML5, CSS3, and JavaScript to create a responsive, interactive experience.</p>
-  <div class="tech-pills">
-    <span class="tech-pill">HTML5</span>
-    <span class="tech-pill">CSS3</span>
-    <span class="tech-pill">JavaScript</span>
-  </div>
-</div>
-
       <div class="project-card">
+        <!-- ✏️ Add screenshot: <img src="images/mathsolver-preview.png" alt="Math Competition Solver"> -->
+        <div class="project-preview">
+          <div class="project-preview-placeholder"><i class="fa-solid fa-square-root-variable" aria-hidden="true"></i></div>
+        </div>
         <div class="project-card-top">
-          <div class="folder-icon-wrap"><i class="fa-solid fa-folder-open"></i></div>
+          <div class="folder-icon-wrap"><i class="fa-solid fa-calculator" aria-hidden="true"></i></div>
           <div class="card-links">
-            <a href="https://github.com/jainArnav7" target="_blank"><i class="fa-brands fa-github"></i></a>
+            <a href="https://github.com/jainArnav7" target="_blank" rel="noopener" title="GitHub"><i class="fa-brands fa-github" aria-hidden="true"></i></a>
           </div>
         </div>
         <span class="project-status status-wip"><span class="status-dot"></span> In Progress</span>
         <h3>Math Competition Solver</h3>
-        <p>Algorithmic problem solver for competition-style problems, with step-by-step visual explanations and multiple optimization strategies.</p>
+        <p>An algorithmic solver for competition-style problems with step-by-step visual breakdowns and multiple optimization strategies.</p>
+        <div class="key-takeaways">
+          <span class="takeaway">Step-by-step output</span>
+          <span class="takeaway">Multiple strategies</span>
+          <span class="takeaway">Competition format</span>
+        </div>
         <div class="tech-pills">
           <span class="tech-pill">Python</span>
           <span class="tech-pill">Algorithms</span>
@@ -180,7 +261,7 @@
   <footer>
     <div class="footer-content">
       <div class="footer-text">
-        <p>Designed & Built by <span class="highlight">Arnav Jain</span></p>
+        <p>Designed &amp; Built by <span class="highlight">Arnav Jain</span></p>
         <p>&copy; 2026 All rights reserved.</p>
       </div>
     </div>

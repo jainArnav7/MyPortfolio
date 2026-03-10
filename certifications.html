@@ -47,6 +47,8 @@
       transform: translateY(-6px);
       box-shadow: 0 12px 40px rgba(0,217,255,0.12);
     }
+
+    /* Badge — 56px for standard cards, 64px for featured (intentional pop) */
     .cert-badge {
       width: 56px; height: 56px;
       border-radius: var(--radius-md);
@@ -61,9 +63,16 @@
     .cert-card h3      { font-size: 1.05rem; color: var(--text-primary); margin-bottom: 0.4rem; }
     .cert-issuer       { font-size: 0.85rem; color: var(--primary); font-family: 'JetBrains Mono', monospace; margin-bottom: 0.75rem; }
     .cert-desc         { font-size: 0.88rem; color: var(--text-secondary); line-height: 1.6; margin-bottom: 1.25rem; }
-    .cert-meta         { display: flex; align-items: center; justify-content: space-between; }
+
+    /* cert-meta: flex row, wraps on narrow screens */
+    .cert-meta {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
     .cert-date         { font-size: 0.8rem; color: var(--text-muted); display: flex; align-items: center; gap: 0.4rem; }
-    .cert-link         { font-size: 0.82rem; color: var(--primary); text-decoration: none; display: flex; align-items: center; gap: 0.4rem; transition: gap 0.2s; }
+    .cert-link         { font-size: 0.82rem; color: var(--primary); text-decoration: none; display: flex; align-items: center; gap: 0.4rem; transition: gap 0.2s; white-space: nowrap; }
     .cert-link:hover   { gap: 0.7rem; }
 
     /* ─── In Progress Badge ─── */
@@ -124,7 +133,7 @@
       border-radius: var(--radius-lg);
       padding: 0;
       overflow: hidden;
-      margin-bottom: 2rem;
+      margin-bottom: 2.5rem; /* 3. Extra gap before other achievement cards */
       transition: all 0.3s;
     }
     .featured-achievement:hover {
@@ -153,7 +162,7 @@
       0%, 100% { background-position: 0% 0%; }
       50%       { background-position: 0% 100%; }
     }
-    /* "Featured" badge */
+    /* "Featured" pill */
     .featured-badge {
       position: absolute;
       top: 1rem; right: 1rem;
@@ -173,6 +182,7 @@
     .featured-badge i { font-size: 0.65rem; color: #ffd700; }
 
     .featured-content { padding-left: 0.5rem; }
+    /* 1. Featured badge is intentionally 64px to visually "pop" vs 56px on standard cards */
     .featured-content .cert-badge {
       width: 64px; height: 64px;
       font-size: 1.75rem;
@@ -257,26 +267,29 @@
       background: var(--bg-card);
       border: 1px dashed rgba(0,217,255,0.2);
       border-radius: var(--radius-lg);
-      padding: 3rem;
+      padding: 3rem 2rem;  /* 7. Better padding for narrow screens */
       color: var(--text-muted);
     }
     .certs-coming i {
-      font-size: 2rem;
+      font-size: 2.25rem; /* 7. Slightly bigger icon */
       color: var(--primary);
       opacity: 0.4;
       margin-bottom: 1rem;
       display: block;
     }
+    .certs-coming p { max-width: 340px; margin: 0 auto; line-height: 1.6; } /* 7. Centers text on narrow */
 
     /* ─── Responsive ─── */
     @media (max-width: 700px) {
       .certs-grid, .achievements-grid { grid-template-columns: 1fr; }
       .featured-achievement-inner { grid-template-columns: 1fr; }
       .featured-stats { flex-wrap: wrap; gap: 1rem; }
+      /* 6. Prevent hover translateY from causing horizontal scroll on mobile */
+      .cert-card:hover, .achievement-card:hover, .featured-achievement:hover { transform: translateY(-3px); }
     }
   </style>
 </head>
-<body>
+<body style="overflow-x: hidden;">
   <div class="scroll-progress"></div>
   <nav id="navbar">
     <div class="nav-container">
@@ -291,7 +304,7 @@
         <li><a href="blog.html"><span class="nav-number">07.</span> Blog</a></li>
       </ul>
       <div class="nav-social">
-        <a href="https://github.com/jainArnav7" target="_blank" class="social-icon"><i class="fa-brands fa-github"></i></a>
+        <a href="https://github.com/jainArnav7" target="_blank" rel="noopener" class="social-icon" aria-label="GitHub"><i class="fa-brands fa-github" aria-hidden="true"></i></a>
         <button class="theme-toggle" id="themeToggle"><i class="fa-solid fa-moon"></i></button>
       </div>
       <div class="hamburger" id="hamburger"><span></span><span></span><span></span></div>
@@ -330,8 +343,8 @@
           <div class="cert-issuer">PCEP™</div>
           <p class="cert-desc">Certified Entry-Level Python Programmer certification shows familiarity with universal computer programming concepts like data types, containers, functions, conditions, loops, as well as Python syntax, semantics, and the runtime environment.</p>
           <div class="cert-meta">
-            <span class="cert-date"><i class="fa-solid fa-calendar"></i> 2026</span>
-            <a href="https://pythoninstitute.org/pcep" class="cert-link">View <i class="fa-solid fa-arrow-right"></i></a>
+            <span class="cert-date"><i class="fa-solid fa-calendar" aria-hidden="true"></i> <time datetime="2026">2026</time></span>
+            <a href="https://pythoninstitute.org/pcep" class="cert-link">View <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a>
           </div>
         </div>
 
@@ -342,8 +355,8 @@
           <div class="in-progress-badge"><span class="dot"></span> In Progress</div>
           <p class="cert-desc">Introduction to C# programming, covering its core concepts, syntax, and practical application in software development.</p>
           <div class="cert-meta">
-            <span class="cert-date"><i class="fa-solid fa-calendar"></i> 2026</span>
-            <a href="https://www.freecodecamp.org/learn/foundational-c-sharp-with-microsoft/" class="cert-link">View <i class="fa-solid fa-arrow-right"></i></a>
+            <span class="cert-date"><i class="fa-solid fa-calendar" aria-hidden="true"></i> <time datetime="2026">2026</time></span>
+            <a href="https://www.freecodecamp.org/learn/foundational-c-sharp-with-microsoft/" class="cert-link">View <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a>
           </div>
         </div>
       </div>
@@ -388,29 +401,30 @@
               </div>
             </div>
             <div class="cert-meta" style="margin-top: 1.5rem;">
-              <span class="cert-date"><i class="fa-solid fa-calendar"></i> 2026</span>
-              <a href="blog-tsa-2025.html" target="_blank" class="cert-link">Visit Blog <i class="fa-solid fa-arrow-right"></i></a>
-              <a href="https://tsaweb.org" target="_blank" class="cert-link">Visit TSA <i class="fa-solid fa-arrow-right"></i></a>
+              <span class="cert-date"><i class="fa-solid fa-calendar" aria-hidden="true"></i> <time datetime="2026">2026</time></span>
+              <div style="display:flex; gap:0.75rem; flex-wrap:wrap;">
+                <a href="blog-tsa-2025.html" target="_blank" rel="noopener" class="cert-link">Visit Blog <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a>
+                <a href="https://tsaweb.org" target="_blank" rel="noopener" class="cert-link">Visit TSA <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a>
+              </div>
             </div>
           </div>
         </div>
       </div>
 
-      <!-- Additional achievement cards go here -->
-  <div class="achievement-card">
-  <div class="cert-badge purple">🎖️</div>
-  <h3>NJHS (National Junior Honor Society)</h3>
-  <div class="cert-issuer">Organization / Member</div>
-  <p class="cert-desc">A premier organization for 6th–9th grade students, 
-    recognizing excellence in scholarship, leadership, service, character, and citizenship. Founded in 1929, it encourages community involvement and leadership development, often requiring a 3.0–3.75+ GPA, service hours, and faculty recommendations.</p>
-  <div class="cert-meta">
-    <span class="cert-date"><i class="fa-solid fa-calendar"></i> 2024-2025</span>
-    <a href="https://www.njhs.us/" class="cert-link">View <i class="fa-solid fa-arrow-right"></i></a>
-  </div>
-</div>
-        <!-- ✏️ ADD MORE ACHIEVEMENT CARDS HERE — copy a cert-card block and swap the border color to purple via achievement-card -->
+      <!-- Achievements grid wraps all non-featured achievement cards -->
+      <div class="achievements-grid">
+        <div class="achievement-card">
+          <div class="cert-badge purple">🎖️</div>
+          <h3>NJHS (National Junior Honor Society)</h3>
+          <div class="cert-issuer">Organization / Member</div>
+          <p class="cert-desc">A premier organization for 6th–9th grade students, recognizing excellence in scholarship, leadership, service, character, and citizenship. Founded in 1929, it encourages community involvement and leadership development, often requiring a 3.0–3.75+ GPA, service hours, and faculty recommendations.</p>
+          <div class="cert-meta">
+            <span class="cert-date"><i class="fa-solid fa-calendar" aria-hidden="true"></i> <time datetime="2024/2025">2024–2025</time></span>
+            <a href="https://www.njhs.us/" target="_blank" rel="noopener" class="cert-link">View <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a>
+          </div>
+        </div>
+        <!-- ✏️ ADD MORE ACHIEVEMENT CARDS HERE — copy an achievement-card block above -->
       </div>
-    </div>
 
     <!-- Coming Soon -->
     <div class="certs-coming">
@@ -423,7 +437,7 @@
   <footer>
     <div class="footer-content">
       <div class="footer-text">
-        <p>Designed & Built by <span class="highlight">Arnav Jain</span></p>
+        <p>Designed &amp; Built by <span class="highlight">Arnav Jain</span></p>
         <p>&copy; 2026 All rights reserved.</p>
       </div>
     </div>

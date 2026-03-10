@@ -1,6 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <script>
+    try {
+      const t = localStorage.getItem('theme');
+      if (t) document.documentElement.setAttribute('data-theme', t);
+      else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.documentElement.setAttribute('data-theme', 'dark');
+      }
+    } catch (e) {}
+  </script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Blog | Arnav Jain</title>
@@ -254,7 +263,7 @@
   <nav id="navbar">
     <div class="nav-container">
       <a href="index.html" class="logo"><span class="logo-bracket">&lt;</span>Arnav<span class="logo-bracket">/&gt;</span></a>
-      <ul class="nav-links">
+      <ul class="nav-links" id="navLinks">
         <li><a href="aboutme.html"><span class="nav-number">01.</span> About</a></li>
         <li><a href="skills.html"><span class="nav-number">02.</span> Skills</a></li>
         <li><a href="projects.html"><span class="nav-number">03.</span> Projects</a></li>

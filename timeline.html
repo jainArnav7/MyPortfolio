@@ -1,6 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <script>
+    try {
+      const t = localStorage.getItem('theme');
+      if (t) document.documentElement.setAttribute('data-theme', t);
+      else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.documentElement.setAttribute('data-theme', 'dark');
+      }
+    } catch (e) {}
+  </script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Journey | Arnav Jain</title>
@@ -8,22 +17,202 @@
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=JetBrains+Mono:wght@400;600&family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
   <style>
+    /* ── Page Layout ─────────────────────────────────────── */
     .journey-page { padding: 9rem 2rem 6rem; max-width: 900px; margin: 0 auto; }
     .journey-page .section-header { margin-bottom: 3.5rem; }
-    .timeline { position: relative; padding-left: 2rem; }
-    .timeline::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 2px; background: linear-gradient(to bottom, var(--primary), var(--secondary), transparent); border-radius: 999px; }
-    .tl-item { position: relative; padding: 0 0 3rem 2.5rem; opacity: 0; transform: translateX(-20px); transition: all 0.6s ease; }
+
+    /* ── Vertical line — animated gradient ───────────────── */
+    .timeline {
+      position: relative;
+      padding-left: 2rem;
+    }
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 0; bottom: 0;
+      width: 2px;
+      border-radius: 999px;
+      background: linear-gradient(
+        180deg,
+        var(--primary)  0%,
+        var(--secondary) 40%,
+        #06dbaa          70%,
+        transparent      100%
+      );
+      background-size: 100% 300%;
+      animation: lineFlow 5s ease-in-out infinite alternate;
+    }
+    @keyframes lineFlow {
+      0%   { background-position: 0% 0%; }
+      100% { background-position: 0% 100%; }
+    }
+
+    /* ── Timeline item — scroll-in animation ─────────────── */
+    .tl-item {
+      position: relative;
+      padding: 0 0 3rem 2.5rem;
+      opacity: 0;
+      transform: translateX(-24px);
+      transition: opacity 0.55s ease, transform 0.55s ease;
+    }
+    /* Stagger delay by order */
+    .tl-item:nth-child(1) { transition-delay: 0.05s; }
+    .tl-item:nth-child(2) { transition-delay: 0.12s; }
+    .tl-item:nth-child(3) { transition-delay: 0.18s; }
+    .tl-item:nth-child(4) { transition-delay: 0.24s; }
+    .tl-item:nth-child(5) { transition-delay: 0.30s; }
+    .tl-item:nth-child(6) { transition-delay: 0.36s; }
     .tl-item.visible { opacity: 1; transform: translateX(0); }
-    .tl-dot { position: absolute; left: -2.1rem; top: 0.15rem; width: 18px; height: 18px; border-radius: 50%; background: var(--gradient-primary); border: 3px solid var(--bg-primary); box-shadow: 0 0 12px rgba(0,217,255,0.5); }
-    .tl-date { font-family: 'JetBrains Mono', monospace; font-size: 0.8rem; color: var(--primary); margin-bottom: 0.5rem; }
-    .tl-card { background: var(--bg-card); border: 1px solid rgba(0,217,255,0.1); border-radius: var(--radius-md); padding: 1.5rem 1.75rem; transition: border-color 0.3s, transform 0.3s; }
-    .tl-card:hover { border-color: rgba(0,217,255,0.3); transform: translateX(6px); }
-    .tl-card h3 { font-size: 1.1rem; color: var(--text-primary); margin-bottom: 0.4rem; }
+
+    /* ── Dot — hover glow + scale ────────────────────────── */
+    /* Base dot color matches the tag type via modifier classes */
+    .tl-dot {
+      position: absolute;
+      left: -2.1rem; top: 0.15rem;
+      width: 18px; height: 18px;
+      border-radius: 50%;
+      background: var(--gradient-primary);
+      border: 3px solid var(--bg-primary);
+      box-shadow: 0 0 10px rgba(0,217,255,0.45);
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+    }
+    /* Dot colors per entry type */
+    .tl-item[data-type="milestone"] .tl-dot {
+      background: linear-gradient(135deg, var(--primary), #00a8c6);
+      box-shadow: 0 0 10px rgba(0,217,255,0.45);
+    }
+    .tl-item[data-type="project"] .tl-dot {
+      background: linear-gradient(135deg, var(--secondary), #5b21b6);
+      box-shadow: 0 0 10px rgba(124,58,237,0.45);
+    }
+    .tl-item[data-type="cert"] .tl-dot {
+      background: linear-gradient(135deg, var(--success), #059669);
+      box-shadow: 0 0 10px rgba(6,219,168,0.45);
+    }
+    /* Hover: grow + intensify glow */
+    .tl-item:hover .tl-dot {
+      transform: scale(1.45);
+    }
+    .tl-item[data-type="milestone"]:hover .tl-dot { box-shadow: 0 0 18px 4px rgba(0,217,255,0.65); }
+    .tl-item[data-type="project"]:hover   .tl-dot { box-shadow: 0 0 18px 4px rgba(124,58,237,0.65); }
+    .tl-item[data-type="cert"]:hover      .tl-dot { box-shadow: 0 0 18px 4px rgba(6,219,168,0.65); }
+
+    /* ── Date label — highlights on card hover ───────────── */
+    .tl-date {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.8rem;
+      color: var(--primary);
+      margin-bottom: 0.5rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      transition: color 0.25s, letter-spacing 0.25s;
+    }
+    .tl-date i { font-size: 0.7rem; opacity: 0.7; }
+    .tl-item[data-type="project"]  .tl-date { color: var(--secondary); }
+    .tl-item[data-type="cert"]     .tl-date { color: var(--success); }
+    /* Date brightens on hover */
+    .tl-item:hover .tl-date { letter-spacing: 0.04em; }
+    .tl-item[data-type="milestone"]:hover .tl-date { color: #4de8ff; }
+    .tl-item[data-type="project"]:hover   .tl-date { color: #a78bfa; }
+    .tl-item[data-type="cert"]:hover      .tl-date { color: #34d399; }
+
+    /* ── Card — pop-out with background glow ─────────────── */
+    .tl-card {
+      position: relative;
+      background: var(--bg-card);
+      border: 1px solid rgba(0,217,255,0.1);
+      border-radius: var(--radius-md);
+      padding: 1.5rem 1.75rem;
+      overflow: hidden;
+      transition: border-color 0.3s, transform 0.3s, box-shadow 0.3s;
+    }
+    /* Subtle background glow blob — hidden by default */
+    .tl-card::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: var(--radius-md);
+      opacity: 0;
+      transition: opacity 0.35s ease;
+      pointer-events: none;
+    }
+    .tl-item[data-type="milestone"] .tl-card::after {
+      background: radial-gradient(ellipse at 10% 50%, rgba(0,217,255,0.07) 0%, transparent 65%);
+    }
+    .tl-item[data-type="project"] .tl-card::after {
+      background: radial-gradient(ellipse at 10% 50%, rgba(124,58,237,0.08) 0%, transparent 65%);
+    }
+    .tl-item[data-type="cert"] .tl-card::after {
+      background: radial-gradient(ellipse at 10% 50%, rgba(6,219,168,0.07) 0%, transparent 65%);
+    }
+    /* Hover: slide right, scale up slightly, show glow, sharpen border */
+    .tl-item[data-type="milestone"]:hover .tl-card {
+      border-color: rgba(0,217,255,0.32);
+      transform: translateX(8px) scale(1.012);
+      box-shadow: 0 8px 32px rgba(0,217,255,0.1);
+    }
+    .tl-item[data-type="project"]:hover .tl-card {
+      border-color: rgba(124,58,237,0.32);
+      transform: translateX(8px) scale(1.012);
+      box-shadow: 0 8px 32px rgba(124,58,237,0.1);
+    }
+    .tl-item[data-type="cert"]:hover .tl-card {
+      border-color: rgba(6,219,168,0.32);
+      transform: translateX(8px) scale(1.012);
+      box-shadow: 0 8px 32px rgba(6,219,168,0.1);
+    }
+    .tl-item:hover .tl-card::after { opacity: 1; }
+
+    /* Left accent bar that slides in on hover */
+    .tl-card::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 0; bottom: 0;
+      width: 3px;
+      border-radius: 0 2px 2px 0;
+      transform: scaleY(0);
+      transform-origin: top;
+      transition: transform 0.3s ease;
+    }
+    .tl-item[data-type="milestone"] .tl-card::before { background: var(--primary); }
+    .tl-item[data-type="project"]   .tl-card::before { background: var(--secondary); }
+    .tl-item[data-type="cert"]      .tl-card::before { background: var(--success); }
+    .tl-item:hover .tl-card::before { transform: scaleY(1); }
+
+    .tl-card h3 {
+      font-size: 1.1rem;
+      color: var(--text-primary);
+      margin-bottom: 0.4rem;
+      transition: color 0.25s;
+    }
+    .tl-item[data-type="milestone"]:hover .tl-card h3 { color: #4de8ff; }
+    .tl-item[data-type="project"]:hover   .tl-card h3 { color: #a78bfa; }
+    .tl-item[data-type="cert"]:hover      .tl-card h3 { color: #34d399; }
+
     .tl-card p { color: var(--text-secondary); font-size: 0.9rem; line-height: 1.7; margin: 0; }
-    .tl-tag { display: inline-block; font-size: 0.75rem; padding: 0.2rem 0.7rem; border-radius: 999px; margin-top: 0.75rem; }
-    .tl-tag.milestone { background: rgba(0,217,255,0.1); color: var(--primary); border: 1px solid rgba(0,217,255,0.2); }
-    .tl-tag.project { background: rgba(124,58,237,0.1); color: var(--secondary); border: 1px solid rgba(124,58,237,0.2); }
-    .tl-tag.cert { background: rgba(6,219,168,0.1); color: var(--success); border: 1px solid rgba(6,219,168,0.2); }
+
+    /* ── Tags — icon + type-colored ─────────────────────── */
+    .tl-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      font-size: 0.72rem;
+      font-family: 'JetBrains Mono', monospace;
+      padding: 0.22rem 0.7rem;
+      border-radius: 999px;
+      margin-top: 0.85rem;
+      letter-spacing: 0.04em;
+    }
+    .tl-tag i { font-size: 0.65rem; }
+    .tl-tag.milestone { background: rgba(0,217,255,0.1);   color: var(--primary);   border: 1px solid rgba(0,217,255,0.2); }
+    .tl-tag.project   { background: rgba(124,58,237,0.1);  color: var(--secondary); border: 1px solid rgba(124,58,237,0.2); }
+    .tl-tag.cert      { background: rgba(6,219,168,0.1);   color: var(--success);   border: 1px solid rgba(6,219,168,0.2); }
+
+    /* ── Responsive ──────────────────────────────────────── */
+    @media (max-width: 600px) {
+      .tl-item:hover .tl-card { transform: translateX(4px) scale(1.008); }
+    }
   </style>
 </head>
 <body>
@@ -41,8 +230,8 @@
         <li><a href="blog.html"><span class="nav-number">07.</span> Blog</a></li>
       </ul>
       <div class="nav-social">
-        <a href="https://github.com/jainArnav7" target="_blank" class="social-icon"><i class="fa-brands fa-github"></i></a>
-        <a href="https://www.linkedin.com/in/arnav-jain-b63069354" target="_blank" class="social-icon"><i class="fa-brands fa-linkedin"></i></a>
+        <a href="https://github.com/jainArnav7" target="_blank" rel="noopener" class="social-icon" aria-label="GitHub"><i class="fa-brands fa-github" aria-hidden="true"></i></a>
+        <a href="https://www.linkedin.com/in/arnav-jain-b63069354" target="_blank" rel="noopener" class="social-icon" aria-label="LinkedIn"><i class="fa-brands fa-linkedin" aria-hidden="true"></i></a>
         <button class="theme-toggle" id="themeToggle"><i class="fa-solid fa-moon"></i></button>
       </div>
       <div class="hamburger" id="hamburger"><span></span><span></span><span></span></div>
@@ -70,63 +259,63 @@
 
     <div class="timeline">
       <!-- ✏️ EDIT YOUR TIMELINE ENTRIES BELOW -->
-      <div class="tl-item">
+      <div class="tl-item" data-type="milestone">
         <div class="tl-dot"></div>
-        <div class="tl-date">2023 — Beginning</div>
+        <div class="tl-date"><i class="fa-solid fa-flag" aria-hidden="true"></i> 2023 — Beginning</div>
         <div class="tl-card">
           <h3>First Line of Code</h3>
           <p>Started with Python basics out of pure curiosity. Wrote my first scripts, broke a lot of things, and fell in love with the process of debugging and figuring things out.</p>
-          <span class="tl-tag milestone">Milestone</span>
+          <span class="tl-tag milestone"><i class="fa-solid fa-star" aria-hidden="true"></i> Milestone</span>
         </div>
       </div>
 
-      <div class="tl-item">
+      <div class="tl-item" data-type="milestone">
         <div class="tl-dot"></div>
-        <div class="tl-date">2023 — Mid Year</div>
+        <div class="tl-date"><i class="fa-solid fa-lightbulb" aria-hidden="true"></i> 2023 — Mid Year</div>
         <div class="tl-card">
-          <h3>Discovered AI & ML</h3>
+          <h3>Discovered AI &amp; ML</h3>
           <p>Dove into machine learning concepts and AI tools. Started integrating AI APIs into small projects and realized the incredible potential of combining code with intelligence.</p>
-          <span class="tl-tag milestone">Milestone</span>
+          <span class="tl-tag milestone"><i class="fa-solid fa-star" aria-hidden="true"></i> Milestone</span>
         </div>
       </div>
 
-      <div class="tl-item">
+      <div class="tl-item" data-type="project">
         <div class="tl-dot"></div>
-        <div class="tl-date">2024 — Early</div>
+        <div class="tl-date"><i class="fa-solid fa-code" aria-hidden="true"></i> 2024 — Early</div>
         <div class="tl-card">
-          <h3>Built First Real Project — AI Task Planner</h3>
-          <p>Created an intelligent task management system using Python and ML algorithms. First time shipping something that actually does something useful.</p>
-          <span class="tl-tag project">Project</span>
+          <h3>Built First Real Project — New Year Countdown</h3>
+          <p>A Python app that displays a live timezone-aware countdown to midnight, with a fireworks animation when the new year arrives.</p>
+          <span class="tl-tag project"><i class="fa-solid fa-folder" aria-hidden="true"></i> Project</span>
         </div>
       </div>
 
-      <div class="tl-item">
+      <div class="tl-item" data-type="project">
         <div class="tl-dot"></div>
-        <div class="tl-date">2024 — Mid Year</div>
+        <div class="tl-date"><i class="fa-solid fa-microchip" aria-hidden="true"></i> 2025 — Mid Year</div>
         <div class="tl-card">
-          <h3>IoT & Raspberry Pi Exploration</h3>
-          <p>Got a Raspberry Pi and started experimenting with home automation, sensors, and MQTT. Built the Smart IoT System project — learned hardware meets software in the most exciting way.</p>
-          <span class="tl-tag project">Project</span>
+          <h3>Raspberry Pi Exploration</h3>
+          <p>Got a Raspberry Pi and started experimenting with home automation, sensors, and LEDs. Built a working traffic light system and learned how hardware meets software in the most exciting way.</p>
+          <span class="tl-tag project"><i class="fa-solid fa-folder" aria-hidden="true"></i> Project</span>
         </div>
       </div>
 
-      <div class="tl-item">
+      <div class="tl-item" data-type="cert">
         <div class="tl-dot"></div>
-        <div class="tl-date">2024 — Late</div>
+        <div class="tl-date"><i class="fa-solid fa-certificate" aria-hidden="true"></i> 2025 — Late</div>
         <div class="tl-card">
           <h3>First Certifications Earned</h3>
-          <p>Completed formal certifications to back up my self-taught knowledge. Validated skills in Python and AI fundamentals.</p>
-          <span class="tl-tag cert">Certification</span>
+          <p>Completed formal certifications to back up my self-taught knowledge. Validated skills in Python with the PCEP™ (Certified Entry-Level Python Programmer) certification from the Python Institute.</p>
+          <span class="tl-tag cert"><i class="fa-solid fa-award" aria-hidden="true"></i> Certification</span>
         </div>
       </div>
 
-      <div class="tl-item">
+      <div class="tl-item" data-type="milestone">
         <div class="tl-dot"></div>
-        <div class="tl-date">2025 — Now</div>
+        <div class="tl-date"><i class="fa-solid fa-location-dot" aria-hidden="true"></i> 2025 — Now</div>
         <div class="tl-card">
-          <h3>Portfolio & Open to Opportunities</h3>
+          <h3>Portfolio &amp; Open to Opportunities</h3>
           <p>Launched this portfolio, continuing to build, learn, and look for collaborations, internships, and exciting projects. The journey is just getting started.</p>
-          <span class="tl-tag milestone">Present</span>
+          <span class="tl-tag milestone"><i class="fa-solid fa-circle-dot" aria-hidden="true"></i> Present</span>
         </div>
       </div>
       <!-- ✏️ ADD NEW ENTRIES ABOVE THIS LINE (copy one tl-item block) -->
@@ -136,7 +325,7 @@
   <footer>
     <div class="footer-content">
       <div class="footer-text">
-        <p>Designed & Built by <span class="highlight">Arnav Jain</span></p>
+        <p>Designed &amp; Built by <span class="highlight">Arnav Jain</span></p>
         <p>&copy; 2026 All rights reserved.</p>
       </div>
     </div>
