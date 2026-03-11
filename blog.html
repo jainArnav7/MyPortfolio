@@ -17,249 +17,57 @@
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=JetBrains+Mono:wght@400;600&family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
   <style>
-
-    /* ── Page layout ─────────────────────────────────────── */
-    .blog-page {
-      padding: 9rem 2rem 6rem;
-      max-width: 1100px;
-      margin: 0 auto;
-    }
+    .blog-page { padding: 9rem 2rem 6rem; max-width: 1100px; margin: 0 auto; }
     .blog-page .section-header { margin-bottom: 1rem; }
-    .blog-intro {
-      color: var(--text-secondary);
-      font-size: 1.05rem;
-      max-width: 600px;
-      margin-bottom: 3rem;
-      line-height: 1.7;
-    }
-
-    /* ── Filter tabs ─────────────────────────────────────── */
-    .blog-filters {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.6rem;
-      margin-bottom: 2.5rem;
-    }
-    .filter-btn {
-      padding: 0.45rem 1.1rem;
-      border-radius: var(--radius-full);
-      border: 1px solid rgba(0,217,255,0.18);
-      background: transparent;
-      color: var(--text-secondary);
-      font-size: 0.85rem;
-      cursor: pointer;
-      transition: all 0.2s;
-      font-family: inherit;
-    }
-    .filter-btn:hover,
-    .filter-btn.active {
-      background: var(--gradient-primary);
-      color: white;
-      border-color: transparent;
-    }
-
-    /* ── Featured post ───────────────────────────────────── */
-    .blog-featured {
-      background: var(--bg-card);
-      border: 1px solid rgba(0,217,255,0.15);
-      border-radius: var(--radius-lg);
-      padding: 2.5rem;
-      margin-bottom: 2.5rem;
-      display: grid;
-      grid-template-columns: 1fr auto;
-      gap: 2rem;
-      align-items: start;
-      position: relative;
-      overflow: hidden;
-      transition: border-color 0.3s, transform 0.3s;
-    }
-    .blog-featured::before {
-      content: '';
-      position: absolute;
-      top: 0; left: 0; right: 0;
-      height: 3px;
-      background: var(--gradient-primary);
-    }
-    .blog-featured:hover {
-      border-color: rgba(0,217,255,0.3);
-      transform: translateY(-4px);
-      box-shadow: 0 10px 40px rgba(0,217,255,0.1);
-    }
-    .featured-label {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.4rem;
-      font-size: 0.75rem;
-      font-family: 'JetBrains Mono', monospace;
-      color: var(--primary);
-      background: rgba(0,217,255,0.1);
-      border: 1px solid rgba(0,217,255,0.2);
-      padding: 0.25rem 0.75rem;
-      border-radius: var(--radius-full);
-      margin-bottom: 1rem;
-    }
-    .blog-featured h2 {
-      font-size: 1.5rem;
-      color: var(--text-primary);
-      margin-bottom: 0.75rem;
-      line-height: 1.3;
-    }
-    .blog-featured p {
-      color: var(--text-secondary);
-      font-size: 0.95rem;
-      line-height: 1.7;
-      margin-bottom: 1.25rem;
-    }
-    .post-meta {
-      display: flex;
-      align-items: center;
-      gap: 1.25rem;
-      font-size: 0.82rem;
-      color: var(--text-muted);
-    }
-    .post-meta span {
-      display: flex;
-      align-items: center;
-      gap: 0.35rem;
-    }
-    .read-more {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
-      color: var(--primary);
-      text-decoration: none;
-      font-size: 0.9rem;
-      font-weight: 600;
-      margin-top: 0.5rem;
-      transition: gap 0.2s;
-    }
+    .blog-intro { color: var(--text-secondary); font-size: 1.05rem; max-width: 600px; margin-bottom: 3rem; line-height: 1.7; }
+    .blog-filters { display: flex; flex-wrap: wrap; gap: 0.6rem; margin-bottom: 2.5rem; }
+    .filter-btn { padding: 0.45rem 1.1rem; border-radius: var(--radius-full); border: 1px solid rgba(0,217,255,0.18); background: transparent; color: var(--text-secondary); font-size: 0.85rem; cursor: pointer; transition: all 0.2s; font-family: inherit; }
+    .filter-btn:hover, .filter-btn.active { background: var(--gradient-primary); color: white; border-color: transparent; }
+    .blog-featured { background: var(--bg-card); border: 1px solid rgba(0,217,255,0.15); border-radius: var(--radius-lg); padding: 2.5rem; margin-bottom: 2.5rem; display: grid; grid-template-columns: 1fr auto; gap: 2rem; align-items: start; position: relative; overflow: hidden; transition: border-color 0.3s, transform 0.3s; }
+    .blog-featured::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: var(--gradient-primary); }
+    .blog-featured:hover { border-color: rgba(0,217,255,0.3); transform: translateY(-4px); box-shadow: 0 10px 40px rgba(0,217,255,0.1); }
+    .featured-label { display: inline-flex; align-items: center; gap: 0.4rem; font-size: 0.75rem; font-family: 'JetBrains Mono', monospace; color: var(--primary); background: rgba(0,217,255,0.1); border: 1px solid rgba(0,217,255,0.2); padding: 0.25rem 0.75rem; border-radius: var(--radius-full); margin-bottom: 1rem; }
+    .blog-featured h2 { font-size: 1.5rem; color: var(--text-primary); margin-bottom: 0.75rem; line-height: 1.3; }
+    .blog-featured p { color: var(--text-secondary); font-size: 0.95rem; line-height: 1.7; margin-bottom: 1.25rem; }
+    .post-meta { display: flex; align-items: center; gap: 1.25rem; font-size: 0.82rem; color: var(--text-muted); }
+    .post-meta span { display: flex; align-items: center; gap: 0.35rem; }
+    .read-more { display: inline-flex; align-items: center; gap: 0.5rem; color: var(--primary); text-decoration: none; font-size: 0.9rem; font-weight: 600; margin-top: 0.5rem; transition: gap 0.2s; }
     .read-more:hover { gap: 0.85rem; }
-    .featured-num {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 5rem;
-      font-weight: 900;
-      color: var(--primary);
-      opacity: 0.06;
-      line-height: 1;
-      align-self: center;
-    }
-
-    /* ── Post grid ───────────────────────────────────────── */
-    .blog-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-      gap: 1.5rem;
-    }
-    .blog-card {
-      background: var(--bg-card);
-      border: 1px solid rgba(0,217,255,0.1);
-      border-radius: var(--radius-lg);
-      padding: 1.75rem;
-      transition: all 0.3s;
-      display: flex;
-      flex-direction: column;
-    }
-    .blog-card:hover {
-      border-color: rgba(0,217,255,0.3);
-      transform: translateY(-5px);
-      box-shadow: 0 8px 30px rgba(0,217,255,0.1);
-    }
-
-    /* ── Post tags ───────────────────────────────────────── */
-    .post-tag {
-      display: inline-block;
-      font-size: 0.72rem;
-      font-family: 'JetBrains Mono', monospace;
-      padding: 0.2rem 0.65rem;
-      border-radius: 999px;
-      margin-bottom: 1rem;
-    }
-    .tag-ai      { background: rgba(0,217,255,0.1);   color: var(--primary);   border: 1px solid rgba(0,217,255,0.2); }
-    .tag-python  { background: rgba(6,219,168,0.1);   color: var(--success);   border: 1px solid rgba(6,219,168,0.2); }
-    .tag-web     { background: rgba(124,58,237,0.1);  color: var(--secondary); border: 1px solid rgba(124,58,237,0.2); }
-    .tag-iot     { background: rgba(255,160,0,0.1);   color: #ffa000;          border: 1px solid rgba(255,160,0,0.2); }
-    .tag-tsa     { background: rgba(255,160,0,0.1);   color: #ffa000;          border: 1px solid rgba(255,160,0,0.2); }
+    .featured-num { font-family: 'JetBrains Mono', monospace; font-size: 5rem; font-weight: 900; color: var(--primary); opacity: 0.06; line-height: 1; align-self: center; }
+    .blog-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.5rem; }
+    .blog-card { background: var(--bg-card); border: 1px solid rgba(0,217,255,0.1); border-radius: var(--radius-lg); padding: 1.75rem; transition: all 0.3s; display: flex; flex-direction: column; }
+    .blog-card:hover { border-color: rgba(0,217,255,0.3); transform: translateY(-5px); box-shadow: 0 8px 30px rgba(0,217,255,0.1); }
+    .post-tag { display: inline-block; font-size: 0.72rem; font-family: 'JetBrains Mono', monospace; padding: 0.2rem 0.65rem; border-radius: 999px; margin-bottom: 1rem; }
+    .tag-ai      { background: rgba(0,217,255,0.1);    color: var(--primary);   border: 1px solid rgba(0,217,255,0.2); }
+    .tag-python  { background: rgba(6,219,168,0.1);    color: var(--success);   border: 1px solid rgba(6,219,168,0.2); }
+    .tag-web     { background: rgba(124,58,237,0.1);   color: var(--secondary); border: 1px solid rgba(124,58,237,0.2); }
+    .tag-iot     { background: rgba(255,160,0,0.1);    color: #ffa000;          border: 1px solid rgba(255,160,0,0.2); }
+    .tag-tsa     { background: rgba(255,160,0,0.1);    color: #ffa000;          border: 1px solid rgba(255,160,0,0.2); }
     .tag-general { background: rgba(255,255,255,0.05); color: var(--text-muted); border: 1px solid rgba(255,255,255,0.1); }
 
-    /* ── Card internals ──────────────────────────────────── */
-    .blog-card h3 {
-      font-size: 1rem;
-      color: var(--text-primary);
-      margin-bottom: 0.6rem;
-      line-height: 1.4;
-    }
-    .blog-card p {
-      color: var(--text-secondary);
-      font-size: 0.875rem;
-      line-height: 1.65;
-      flex: 1;
-      margin-bottom: 1.25rem;
-    }
-    .card-footer {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-top: auto;
-    }
-    .post-date {
-      font-size: 0.78rem;
-      color: var(--text-muted);
-      font-family: 'JetBrains Mono', monospace;
-    }
-    .card-arrow {
-      color: var(--primary);
-      font-size: 0.8rem;
-      transition: transform 0.2s;
-    }
+    /* NEW badge */
+    .tag-row { display: flex; align-items: center; gap: 0.5rem; margin-bottom: 1rem; flex-wrap: wrap; }
+    .tag-row .post-tag { margin-bottom: 0; }
+    .new-badge { display: inline-flex; align-items: center; gap: 0.3rem; font-size: 0.68rem; font-family: 'JetBrains Mono', monospace; font-weight: 700; padding: 0.2rem 0.6rem; border-radius: 999px; background: linear-gradient(135deg, #06dba8, #00d9ff); color: #0a0e27; letter-spacing: 0.05em; animation: pulse-new 2s ease-in-out infinite; }
+    @keyframes pulse-new { 0%, 100% { box-shadow: 0 0 0 0 rgba(0,217,255,0.4); } 50% { box-shadow: 0 0 0 5px rgba(0,217,255,0); } }
+
+    .blog-card h3 { font-size: 1rem; color: var(--text-primary); margin-bottom: 0.6rem; line-height: 1.4; }
+    .blog-card p { color: var(--text-secondary); font-size: 0.875rem; line-height: 1.65; flex: 1; margin-bottom: 1.25rem; }
+    .card-footer { display: flex; align-items: center; justify-content: space-between; margin-top: auto; }
+    .post-date { font-size: 0.78rem; color: var(--text-muted); font-family: 'JetBrains Mono', monospace; }
+    .card-arrow { color: var(--primary); font-size: 0.8rem; transition: transform 0.2s; }
     .blog-card:hover .card-arrow { transform: translateX(4px); }
-
-    /* Coming soon card variant */
-    .blog-card.coming-soon {
-      opacity: 0.6;
-      border-style: dashed;
-    }
-    .coming-soon-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.35rem;
-      font-size: 0.72rem;
-      font-family: 'JetBrains Mono', monospace;
-      color: var(--text-muted);
-      background: rgba(255,255,255,0.04);
-      border: 1px solid rgba(255,255,255,0.1);
-      padding: 0.2rem 0.6rem;
-      border-radius: 999px;
-    }
-
-    /* ── Empty state ─────────────────────────────────────── */
-    .blog-empty {
-      grid-column: 1 / -1;
-      text-align: center;
-      padding: 4rem 2rem;
-      color: var(--text-muted);
-    }
-    .blog-empty i {
-      font-size: 2.5rem;
-      color: var(--primary);
-      opacity: 0.3;
-      margin-bottom: 1rem;
-      display: block;
-    }
+    .blog-card.coming-soon { opacity: 0.6; border-style: dashed; }
+    .coming-soon-badge { display: inline-flex; align-items: center; gap: 0.35rem; font-size: 0.72rem; font-family: 'JetBrains Mono', monospace; color: var(--text-muted); background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1); padding: 0.2rem 0.6rem; border-radius: 999px; }
+    .blog-empty { grid-column: 1/-1; text-align: center; padding: 4rem 2rem; color: var(--text-muted); }
+    .blog-empty i { font-size: 2.5rem; color: var(--primary); opacity: 0.3; margin-bottom: 1rem; display: block; }
     .blog-empty p { font-size: 0.95rem; }
-
-    /* ── Responsive ──────────────────────────────────────── */
-    @media (max-width: 768px) {
-      .blog-featured { grid-template-columns: 1fr; }
-      .featured-num  { display: none; }
-    }
-    @media (max-width: 500px) {
-      .blog-grid { grid-template-columns: 1fr; }
-    }
+    @media (max-width: 768px) { .blog-featured { grid-template-columns: 1fr; } .featured-num { display: none; } }
+    @media (max-width: 500px) { .blog-grid { grid-template-columns: 1fr; } }
   </style>
 </head>
 <body>
   <div class="scroll-progress"></div>
-
   <nav id="navbar">
     <div class="nav-container">
       <a href="index.html" class="logo"><span class="logo-bracket">&lt;</span>Arnav<span class="logo-bracket">/&gt;</span></a>
@@ -292,16 +100,13 @@
   </div>
 
   <main class="blog-page">
-
     <div class="section-header">
       <span class="section-number">08.</span>
       <h1 class="section-title">Blog</h1>
       <div class="section-line"></div>
     </div>
-
     <p class="blog-intro">Thoughts on AI, Python, building things, and whatever I am learning right now. No fluff — just what I actually think.</p>
 
-    <!-- Filter buttons -->
     <div class="blog-filters">
       <button class="filter-btn active" data-filter="all">All</button>
       <button class="filter-btn" data-filter="ai">AI / ML</button>
@@ -310,10 +115,6 @@
       <button class="filter-btn" data-filter="tsa">TSA</button>
     </div>
 
-    <!-- ── Featured post ──────────────────────────────────
-         To hide: delete this entire .blog-featured block.
-         To change: update title, description, date, and href.
-    ─────────────────────────────────────────────────────── -->
     <div class="blog-featured" data-category="tsa">
       <div>
         <div class="featured-label"><i class="fa-solid fa-star"></i> Featured</div>
@@ -329,17 +130,23 @@
       <div class="featured-num">01</div>
     </div>
 
-    <!-- ── Blog post cards ────────────────────────────────
-         To add a post:
-           1. Copy a .blog-card block
-           2. Set data-category to: ai | python | web | iot | tsa | general
-           3. Match the tag class: tag-ai | tag-python | tag-web | tag-iot | tag-tsa | tag-general
-           4. Fill in title, description, date, and link href
-         To remove a post: delete the entire .blog-card block.
-    ─────────────────────────────────────────────────────── -->
     <div class="blog-grid" id="blogGrid">
 
-      <!-- TSA 2026–2027 (Coming Soon) -->
+      <!-- ✅ MOVED TO TOP + NEW BADGE -->
+      <div class="blog-card" data-category="web">
+        <div class="tag-row">
+          <span class="post-tag tag-web">Web Dev</span>
+          <span class="new-badge"><i class="fa-solid fa-bolt"></i> NEW</span>
+        </div>
+        <h3>Why I Still Build Static Sites in 2026</h3>
+        <p>No frameworks. No build tools. No servers. Just HTML, CSS, and JavaScript. Here is why that is sometimes the right call — and when it absolutely is not.</p>
+        <div class="card-footer">
+          <span class="post-date">March 2026</span>
+          <a href="blog-why-i-still-build-static-sites.html"><i class="fa-solid fa-arrow-right card-arrow"></i></a>
+        </div>
+      </div>
+
+      <!-- TSA 2026–2027 Coming Soon -->
       <div class="blog-card coming-soon" data-category="tsa">
         <span class="post-tag tag-tsa">TSA</span>
         <h3>Colorado TSA 2026–2027</h3>
@@ -371,17 +178,6 @@
         </div>
       </div>
 
-      <!-- Web Dev -->
-      <div class="blog-card" data-category="web">
-        <span class="post-tag tag-web">Web Dev</span>
-        <h3>Why I Still Build Static Sites in 2025</h3>
-        <p>No frameworks. No build tools. No servers. Just HTML, CSS, and JavaScript. Here is why that is sometimes the right call — and when it absolutely is not.</p>
-        <div class="card-footer">
-          <span class="post-date">Dec 2024</span>
-          <a href="#"><i class="fa-solid fa-arrow-right card-arrow"></i></a>
-        </div>
-      </div>
-
       <!-- AI / ML -->
       <div class="blog-card" data-category="ai">
         <span class="post-tag tag-ai">AI / ML</span>
@@ -395,8 +191,7 @@
 
       <!-- ADD NEW CARDS ABOVE THIS COMMENT -->
 
-    </div><!-- /blog-grid -->
-
+    </div>
   </main>
 
   <footer>
@@ -410,7 +205,6 @@
 
   <script src="scripts.js"></script>
   <script>
-    // ── Filter functionality ────────────────────────────────
     const filterBtns = document.querySelectorAll('.filter-btn');
     const cards      = document.querySelectorAll('.blog-card');
     const featured   = document.querySelector('.blog-featured');
@@ -421,13 +215,11 @@
         btn.classList.add('active');
         const filter = btn.dataset.filter;
 
-        // Show/hide featured post
         if (featured) {
           const fc = featured.dataset.category;
           featured.style.display = (filter === 'all' || filter === fc) ? 'grid' : 'none';
         }
 
-        // Show/hide cards
         let visible = 0;
         cards.forEach(card => {
           const match = filter === 'all' || card.dataset.category === filter;
@@ -435,7 +227,6 @@
           if (match) visible++;
         });
 
-        // Show empty state if no cards are visible
         const existing = document.querySelector('.blog-empty');
         if (existing) existing.remove();
         if (visible === 0) {

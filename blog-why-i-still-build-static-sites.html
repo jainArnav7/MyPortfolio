@@ -1,0 +1,1036 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <script>
+    try {
+      const t = localStorage.getItem('theme');
+      if (t) document.documentElement.setAttribute('data-theme', t);
+      else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.documentElement.setAttribute('data-theme', 'dark');
+      }
+    } catch (e) {}
+  </script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Why I Still Build Static Sites in 2026 | Arnav Jain</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=JetBrains+Mono:wght@400;600&family=Inter:wght@300;400;600;700&family=Lora:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <style>
+
+    /* ── Hero Banner ─────────────────────────────────────── */
+    .post-hero {
+      position: relative;
+      width: 100%;
+      height: 420px;
+      overflow: hidden;
+      margin-top: 70px;
+    }
+    .post-hero-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      filter: brightness(0.45) saturate(1.1);
+    }
+    .post-hero-fallback {
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, #0a0f1a 0%, #0d1f35 40%, #0a1628 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .post-hero-fallback-icon {
+      font-size: 5rem;
+      opacity: 0.08;
+      color: var(--primary);
+    }
+    .post-hero-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        to bottom,
+        rgba(10,15,26,0.3) 0%,
+        rgba(10,15,26,0.5) 50%,
+        rgba(10,15,26,0.85) 100%
+      );
+    }
+    .post-hero-content {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: 2.5rem 3rem;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    .post-hero-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.72rem;
+      font-family: 'JetBrains Mono', monospace;
+      color: #ffa000;
+      background: rgba(255,160,0,0.12);
+      border: 1px solid rgba(255,160,0,0.3);
+      padding: 0.25rem 0.75rem;
+      border-radius: 999px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 0.9rem;
+    }
+    .post-hero h1 {
+      font-family: 'Lora', Georgia, serif;
+      font-size: clamp(1.8rem, 4vw, 3rem);
+      font-weight: 600;
+      color: #ffffff;
+      line-height: 1.2;
+      margin-bottom: 0.6rem;
+      text-shadow: 0 2px 20px rgba(0,0,0,0.5);
+    }
+    .post-hero-sub {
+      font-size: 1rem;
+      color: rgba(255,255,255,0.72);
+      margin-bottom: 1rem;
+      font-style: italic;
+    }
+    .post-hero-meta {
+      display: flex;
+      align-items: center;
+      gap: 1.25rem;
+      flex-wrap: wrap;
+    }
+    .post-hero-meta span {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.8rem;
+      color: rgba(255,255,255,0.55);
+      font-family: 'JetBrains Mono', monospace;
+    }
+    .post-hero-meta i { color: var(--primary); }
+
+    /* ── Layout ─────────────────────────────────────────── */
+    .post-shell {
+      padding: 3rem 2rem 6rem;
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 300px;
+      gap: 4rem;
+      align-items: start; /* critical: allows sticky sidebar to work */
+    }
+
+    /* Back link */
+    .post-back {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 0.85rem;
+      font-family: 'JetBrains Mono', monospace;
+      margin-bottom: 2rem;
+      transition: color 0.2s, gap 0.2s;
+    }
+    .post-back:hover { color: var(--primary); gap: 0.8rem; }
+    .post-back i { transform: rotate(180deg); }
+
+    /* Separator */
+    .post-divider {
+      width: 100%;
+      height: 1px;
+      background: linear-gradient(to right, var(--primary), var(--secondary), transparent);
+      margin: 2rem 0;
+      opacity: 0.3;
+    }
+
+    /* ── Quick Stats ─────────────────────────────────────── */
+    .quick-stats {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1rem;
+      margin: 2rem 0 2.5rem;
+    }
+    .stat-card {
+      background: var(--bg-card);
+      border: 1px solid rgba(0,217,255,0.12);
+      border-radius: var(--radius-md);
+      padding: 1.1rem 1rem;
+      text-align: center;
+      transition: border-color 0.2s, transform 0.2s;
+    }
+    .stat-card:hover {
+      border-color: rgba(0,217,255,0.3);
+      transform: translateY(-3px);
+    }
+    .stat-icon { font-size: 1.2rem; color: var(--primary); margin-bottom: 0.5rem; }
+    .stat-value {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      line-height: 1.1;
+      margin-bottom: 0.3rem;
+    }
+    .stat-label {
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    /* ── Code block ──────────────────────────────────────── */
+    .code-block {
+      background: rgba(0,0,0,0.35);
+      border: 1px solid rgba(0,217,255,0.1);
+      border-radius: var(--radius-md);
+      margin: 1.75rem 0;
+      overflow: hidden;
+    }
+    .code-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.6rem 1rem;
+      background: rgba(0,217,255,0.04);
+      border-bottom: 1px solid rgba(0,217,255,0.08);
+    }
+    .code-dots { display: flex; gap: 0.4rem; }
+    .code-dot  { width: 10px; height: 10px; border-radius: 50%; }
+    .dot-red    { background: #ff5f57; }
+    .dot-yellow { background: #ffbd2e; }
+    .dot-green  { background: #28c840; }
+    .code-lang { font-family: 'JetBrains Mono', monospace; font-size: 0.68rem; color: var(--text-muted); }
+    .code-block pre {
+      padding: 1.25rem 1.4rem;
+      overflow-x: auto;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.84rem;
+      line-height: 1.75;
+      color: #cdd6f4;
+      margin: 0;
+    }
+    .ck { color: #89b4fa; }
+    .cs { color: #a6e3a1; }
+    .cc { color: #585b70; font-style: italic; }
+    .ct { color: #f38ba8; }
+    .ca { color: #fab387; }
+
+    /* ── Results highlight box ───────────────────────────── */
+    .result-highlight {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+      padding: 1.5rem 1.75rem;
+      background: var(--bg-card);
+      border-left: 4px solid var(--primary);
+      border-radius: 0 var(--radius-md) var(--radius-md) 0;
+      margin: 1.75rem 0;
+    }
+    .result-trophy { font-size: 2.2rem; flex-shrink: 0; }
+    .result-details { flex: 1; }
+    .result-label {
+      font-size: 0.72rem;
+      font-family: 'JetBrains Mono', monospace;
+      color: var(--primary);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 0.25rem;
+    }
+    .result-title {
+      font-family: 'Poppins', sans-serif;
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 0.2rem;
+    }
+    .result-sub { font-size: 0.82rem; color: var(--text-muted); font-family: 'JetBrains Mono', monospace; }
+
+    /* ── Tools / tech tags ───────────────────────────────── */
+    .tools-grid { display: flex; flex-wrap: wrap; gap: 0.65rem; margin: 1rem 0 1.5rem; }
+    .tool-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.8rem;
+      font-family: 'JetBrains Mono', monospace;
+      padding: 0.3rem 0.85rem;
+      border-radius: 999px;
+      background: rgba(0,217,255,0.07);
+      color: var(--primary);
+      border: 1px solid rgba(0,217,255,0.18);
+      transition: all 0.2s;
+    }
+    .tool-tag:hover { background: rgba(0,217,255,0.14); border-color: rgba(0,217,255,0.35); }
+
+    /* ── Comparison table ────────────────────────────────── */
+    .comparison-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1.5rem 0;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.88rem;
+    }
+    .comparison-table th {
+      padding: 0.75rem 1rem;
+      background: rgba(0,217,255,0.06);
+      color: var(--primary);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.09em;
+      text-align: left;
+      border: 1px solid rgba(0,217,255,0.1);
+    }
+    .comparison-table td {
+      padding: 0.75rem 1rem;
+      border: 1px solid rgba(0,217,255,0.08);
+      color: var(--text-secondary);
+    }
+    .comparison-table tr:hover td { background: rgba(0,217,255,0.03); }
+    .check { color: var(--success); font-weight: 700; }
+    .cross { color: #f38ba8; }
+
+    /* ── Body prose ──────────────────────────────────────── */
+    .post-body {
+      font-family: 'Lora', Georgia, serif;
+      font-size: 1.05rem;
+      line-height: 1.85;
+      color: var(--text-secondary);
+    }
+    .post-body h2 {
+      font-family: 'Poppins', sans-serif;
+      font-size: 1.45rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin: 2.75rem 0 1rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 1px solid rgba(0,217,255,0.1);
+      scroll-margin-top: 100px;
+    }
+    .post-body h3 {
+      font-family: 'Poppins', sans-serif;
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin: 2rem 0 0.75rem;
+      scroll-margin-top: 100px;
+    }
+    .post-body p  { margin-bottom: 1.4rem; }
+    .post-body strong { color: var(--text-primary); font-weight: 600; }
+    .post-body em { color: var(--primary); font-style: italic; }
+    .post-body a  { color: var(--primary); text-decoration: underline; text-underline-offset: 3px; }
+    .post-body a:hover { color: var(--primary-light); }
+    .post-body ul,
+    .post-body ol { padding-left: 1.5rem; margin-bottom: 1.4rem; }
+    .post-body li { margin-bottom: 0.5rem; }
+
+    /* Blockquote */
+    .post-body blockquote {
+      border-left: 3px solid var(--primary);
+      margin: 2rem 0;
+      padding: 1.25rem 1.5rem;
+      background: rgba(0,217,255,0.05);
+      border-radius: 0 var(--radius-md) var(--radius-md) 0;
+      font-style: italic;
+      color: var(--text-primary);
+    }
+    .post-body blockquote cite {
+      display: block;
+      margin-top: 0.75rem;
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      font-style: normal;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    /* Callout boxes */
+    .callout {
+      display: flex;
+      gap: 1rem;
+      padding: 1.25rem 1.5rem;
+      border-radius: var(--radius-md);
+      margin: 2rem 0;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.92rem;
+      line-height: 1.65;
+    }
+    .callout-info { background: rgba(0,217,255,0.07);  border: 1px solid rgba(0,217,255,0.18); }
+    .callout-tip  { background: rgba(6,219,168,0.07);  border: 1px solid rgba(6,219,168,0.18); }
+    .callout-warn { background: rgba(255,160,0,0.07);  border: 1px solid rgba(255,160,0,0.2); }
+    .callout i { margin-top: 0.15rem; flex-shrink: 0; }
+    .callout-info i { color: var(--primary); }
+    .callout-tip  i { color: var(--success); }
+    .callout-warn i { color: #ffa000; }
+
+    /* Post footer */
+    .post-footer {
+      margin-top: 3.5rem;
+      padding-top: 2rem;
+      border-top: 1px solid rgba(0,217,255,0.1);
+    }
+    .post-tags-row { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1.25rem; }
+    .post-tag-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      font-size: 0.72rem;
+      font-family: 'JetBrains Mono', monospace;
+      padding: 0.25rem 0.75rem;
+      border-radius: 999px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .pill-web    { background: rgba(0,217,255,0.1); color: var(--primary); border: 1px solid rgba(0,217,255,0.25); }
+    .pill-static { background: rgba(255,160,0,0.1); color: #ffa000; border: 1px solid rgba(255,160,0,0.25); }
+
+    .share-section { margin-bottom: 2rem; }
+    .share-label { font-size: 0.8rem; font-family: 'JetBrains Mono', monospace; color: var(--text-muted); margin-bottom: 0.75rem; }
+    .share-buttons { display: flex; gap: 0.75rem; flex-wrap: wrap; }
+    .share-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.55rem 1.1rem;
+      border-radius: var(--radius-full);
+      font-size: 0.82rem;
+      font-weight: 600;
+      cursor: pointer;
+      border: none;
+      text-decoration: none;
+      transition: all 0.2s;
+      font-family: 'Inter', sans-serif;
+    }
+    .share-btn:hover      { transform: translateY(-2px); }
+    .share-twitter        { background: rgba(29,161,242,0.12); color: #1da1f2; border: 1px solid rgba(29,161,242,0.25); }
+    .share-linkedin       { background: rgba(0,119,181,0.12);  color: #0077b5; border: 1px solid rgba(0,119,181,0.25); }
+    .share-copy           { background: rgba(0,217,255,0.1);   color: var(--primary); border: 1px solid rgba(0,217,255,0.2); }
+    .share-twitter:hover  { background: rgba(29,161,242,0.22); }
+    .share-linkedin:hover { background: rgba(0,119,181,0.22); }
+    .share-copy:hover     { background: rgba(0,217,255,0.2); }
+
+    /* Post navigation */
+    .post-nav { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 2.5rem; }
+    .post-nav-btn {
+      background: var(--bg-card);
+      border: 1px solid rgba(0,217,255,0.1);
+      border-radius: var(--radius-md);
+      padding: 1rem 1.25rem;
+      text-decoration: none;
+      transition: all 0.3s;
+      display: flex;
+      flex-direction: column;
+      gap: 0.3rem;
+    }
+    .post-nav-btn:hover { border-color: rgba(0,217,255,0.3); transform: translateY(-3px); }
+    .post-nav-btn.next  { text-align: right; }
+    .nav-label {
+      font-size: 0.72rem;
+      font-family: 'JetBrains Mono', monospace;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+    .post-nav-btn.next .nav-label { justify-content: flex-end; }
+    .nav-title { font-size: 0.88rem; color: var(--text-primary); font-weight: 600; line-height: 1.3; }
+
+    /* ── Sidebar ─────────────────────────────────────────── */
+    .post-sidebar {
+      align-self: start; /* required for position:sticky to work inside a grid */
+    }
+    .sidebar-sticky {
+      position: sticky;
+      top: 90px; /* clears fixed navbar + a little breathing room */
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+      /* allow sidebar to scroll internally if it is taller than the viewport */
+      max-height: calc(100vh - 110px);
+      overflow-y: auto;
+      scrollbar-width: none; /* Firefox */
+    }
+    .sidebar-sticky::-webkit-scrollbar { display: none; } /* Chrome/Safari */
+
+    .toc-widget, .info-widget, .tags-widget {
+      background: var(--bg-card);
+      border: 1px solid rgba(0,217,255,0.1);
+      border-radius: var(--radius-lg);
+      padding: 1.5rem;
+    }
+    .widget-title {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.72rem;
+      color: var(--primary);
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      margin-bottom: 1.1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .toc-list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 0.1rem; }
+    .toc-list a {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      padding: 0.45rem 0.6rem;
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 0.85rem;
+      border-radius: 6px;
+      transition: all 0.2s;
+      border-left: 2px solid transparent;
+      line-height: 1.35;
+    }
+    .toc-list a::before {
+      content: ''; width: 5px; height: 5px; border-radius: 50%;
+      background: var(--text-muted); flex-shrink: 0; transition: background 0.2s;
+    }
+    .toc-list a:hover,
+    .toc-list a.active { color: var(--primary); background: rgba(0,217,255,0.06); border-left-color: var(--primary); }
+    .toc-list a:hover::before,
+    .toc-list a.active::before { background: var(--primary); }
+    .toc-list .toc-h3 { padding-left: 1.4rem; font-size: 0.8rem; }
+
+    .info-row { display: flex; align-items: flex-start; gap: 0.75rem; padding: 0.7rem 0; border-bottom: 1px solid rgba(255,255,255,0.04); }
+    .info-row:last-child  { border-bottom: none; padding-bottom: 0; }
+    .info-row:first-child { padding-top: 0; }
+    .info-icon  { color: var(--primary); font-size: 0.8rem; margin-top: 0.15rem; width: 14px; flex-shrink: 0; }
+    .info-label { font-size: 0.72rem; color: var(--text-muted); font-family: 'JetBrains Mono', monospace; margin-bottom: 0.2rem; }
+    .info-value { font-size: 0.85rem; color: var(--text-secondary); }
+    .tags-cloud { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 0.5rem; }
+
+    /* Reading progress ring */
+    .reading-progress-ring {
+      display: flex; align-items: center; gap: 0.75rem;
+      padding: 0.75rem 1rem;
+      background: rgba(0,217,255,0.05);
+      border: 1px solid rgba(0,217,255,0.1);
+      border-radius: var(--radius-md);
+      font-size: 0.8rem; color: var(--text-muted);
+    }
+    .progress-circle { position: relative; width: 36px; height: 36px; flex-shrink: 0; }
+    .progress-circle svg { transform: rotate(-90deg); }
+    .progress-circle .track { fill: none; stroke: rgba(0,217,255,0.1); stroke-width: 3; }
+    .progress-circle .fill {
+      fill: none; stroke: var(--primary); stroke-width: 3; stroke-linecap: round;
+      stroke-dasharray: 88; stroke-dashoffset: 88; transition: stroke-dashoffset 0.1s ease;
+    }
+    .progress-pct {
+      position: absolute; inset: 0;
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'JetBrains Mono', monospace; font-size: 0.6rem; color: var(--primary);
+    }
+
+    /* ── Responsive ──────────────────────────────────────── */
+    @media (max-width: 1000px) {
+      .post-shell { grid-template-columns: 1fr; gap: 2.5rem; }
+      .post-sidebar { order: -1; align-self: auto; }
+      .sidebar-sticky { position: static; flex-direction: row; flex-wrap: wrap; max-height: none; overflow-y: visible; }
+      .toc-widget, .info-widget, .tags-widget { flex: 1 1 260px; }
+      .reading-progress-ring { display: none; }
+      .quick-stats { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 600px) {
+      .post-shell { padding: 2rem 1.25rem 4rem; }
+      .post-hero { height: 320px; }
+      .post-hero-content { padding: 1.5rem; }
+      .post-nav { grid-template-columns: 1fr; }
+      .share-buttons { flex-wrap: wrap; }
+      .quick-stats { grid-template-columns: repeat(2, 1fr); }
+      .result-highlight { flex-direction: column; gap: 0.75rem; }
+    }
+  </style>
+</head>
+<body>
+  <div class="scroll-progress"></div>
+
+  <!-- ══════════════════════ NAVBAR (original, untouched) ══════════════════════ -->
+  <nav id="navbar">
+    <div class="nav-container">
+      <a href="index.html" class="logo"><span class="logo-bracket">&lt;</span>Arnav<span class="logo-bracket">/&gt;</span></a>
+      <ul class="nav-links">
+        <li><a href="aboutme.html"><span class="nav-number">01.</span> About</a></li>
+        <li><a href="skills.html"><span class="nav-number">02.</span> Skills</a></li>
+        <li><a href="projects.html"><span class="nav-number">03.</span> Projects</a></li>
+        <li><a href="certifications.html"><span class="nav-number">04.</span> Certifications</a></li>
+        <li><a href="timeline.html"><span class="nav-number">05.</span> Journey</a></li>
+        <li><a href="contact.html"><span class="nav-number">06.</span> Contact</a></li>
+      </ul>
+      <div class="nav-social">
+        <a href="https://github.com/jainArnav7" target="_blank" rel="noopener" class="social-icon"><i class="fa-brands fa-github"></i></a>
+        <a href="https://www.linkedin.com/in/arnav-jain-b63069354" target="_blank" rel="noopener" class="social-icon"><i class="fa-brands fa-linkedin"></i></a>
+        <button class="theme-toggle" id="themeToggle"><i class="fa-solid fa-moon"></i></button>
+      </div>
+      <div class="hamburger" id="hamburger"><span></span><span></span><span></span></div>
+    </div>
+  </nav>
+
+  <div class="mobile-menu" id="mobileMenu">
+    <ul>
+      <li><a href="index.html"          class="mobile-link"><span>01.</span> Home</a></li>
+      <li><a href="aboutme.html"        class="mobile-link"><span>02.</span> About</a></li>
+      <li><a href="skills.html"         class="mobile-link"><span>03.</span> Skills</a></li>
+      <li><a href="projects.html"       class="mobile-link"><span>04.</span> Projects</a></li>
+      <li><a href="certifications.html" class="mobile-link"><span>05.</span> Certifications</a></li>
+      <li><a href="timeline.html"       class="mobile-link"><span>06.</span> Journey</a></li>
+      <li><a href="contact.html"        class="mobile-link"><span>07.</span> Contact</a></li>
+    </ul>
+  </div>
+
+  <!-- ══════════════════════ HERO (original, untouched) ════════════════════════ -->
+  <div class="post-hero">
+    <div class="post-hero-fallback">
+      <img class="post-hero-img" src="images/hero-code-on-screen.jpg" alt="Laptop screen showing HTML and CSS code">
+    </div>
+    <div class="post-hero-overlay"></div>
+    <div class="post-hero-content">
+      <div class="post-hero-tag"><i class="fa-solid fa-microchip"></i> Web Dev</div>
+      <h1>Why I Still Build Static Sites in 2026</h1>
+      <p class="post-hero-sub">Why simple websites are faster, safer, and easier to build.</p>
+      <div class="post-hero-meta">
+        <span><i class="fa-solid fa-calendar-days"></i> March 11, 2026</span>
+        <span><i class="fa-solid fa-clock"></i> 7 min read</span>
+        <span><i class="fa-solid fa-user"></i> Arnav Jain</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════ -->
+  <div class="post-shell">
+
+    <!-- ── MAIN ARTICLE ──────────────────────────────────── -->
+    <article class="post-article">
+
+      <a href="blog.html" class="post-back">
+        <i class="fa-solid fa-arrow-right"></i> Back to Blog
+      </a>
+
+      <div class="post-divider"></div>
+
+      <div class="post-body">
+
+        <!-- ── Intro ─────────────────────────────────────── -->
+        <h2 id="intro">Why Even Ask This?</h2>
+        <p>If you have spent any time reading about web development lately, you have probably seen things like: <em>"You need React. You need Next.js. You need a backend, a database, Docker containers, and a full cloud deployment pipeline."</em></p>
+
+        <p>It sounds like you need a whole engineering team just to put a few paragraphs on the internet. And honestly? That used to intimidate me a lot.</p>
+
+        <p>But here is what I figured out after building my own portfolio from scratch: for most personal websites, blogs, or simple project pages, you do not need any of that. <strong>A plain static site works perfectly — and in a lot of ways, it actually works better.</strong></p>
+
+        <p>This is my honest case for why I keep choosing static sites in 2026, even when everyone else seems to be moving toward something way more complicated.</p>
+
+        <div class="callout callout-info">
+          <i class="fa-solid fa-circle-info"></i>
+          <span>Quick definition: a <strong>static site</strong> is a website made of plain HTML, CSS, and JavaScript files. There is no server running code in the background, no database storing stuff, and no backend logic doing anything fancy. You write the files, upload them somewhere, and they just work.</span>
+        </div>
+
+        <!-- Quick Stats -->
+        <div class="quick-stats">
+          <div class="stat-card">
+            <div class="stat-icon"><i class="fa-solid fa-bolt"></i></div>
+            <div class="stat-value">~0ms</div>
+            <div class="stat-label">Server Response</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon"><i class="fa-solid fa-dollar-sign"></i></div>
+            <div class="stat-value">$0</div>
+            <div class="stat-label">Monthly Hosting</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon"><i class="fa-solid fa-gauge-high"></i></div>
+            <div class="stat-value">100</div>
+            <div class="stat-label">Lighthouse Score</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon"><i class="fa-solid fa-file-code"></i></div>
+            <div class="stat-value">3</div>
+            <div class="stat-label">Core Files Needed</div>
+          </div>
+        </div>
+
+        <!-- ── What Is It ─────────────────────────────────── -->
+        <h2 id="what">What Even Is a Static Site?</h2>
+        <p>Let me make sure we are on the same page before I go further, because "static site" sounds kind of dull and the name is honestly a little misleading.</p>
+
+        <p>When your browser asks a server for a web page, one of two things can happen:</p>
+
+        <ul>
+          <li><strong>Dynamic sites</strong> run code on the server every single time someone visits. They check a database, figure out what to show you, build the page fresh, and then send it. Think Gmail, Instagram, or YouTube — everything is personalized and updated in real time.</li>
+          <li><strong>Static sites</strong> just send a file that was already written ahead of time. No code runs on the server. No database gets checked. It is like handing someone a piece of paper that is already printed — no waiting, no processing. Just the thing itself.</li>
+        </ul>
+
+        <p>Here is what a basic static site looks like. This is literally the whole thing:</p>
+
+        <div class="code-block">
+          <div class="code-header">
+            <div class="code-dots">
+              <div class="code-dot dot-red"></div>
+              <div class="code-dot dot-yellow"></div>
+              <div class="code-dot dot-green"></div>
+            </div>
+            <span class="code-lang">index.html</span>
+          </div>
+          <pre><span class="cc">&lt;!-- This is literally all you need to get started --&gt;</span>
+<span class="ct">&lt;!DOCTYPE html&gt;</span>
+<span class="ct">&lt;html</span> <span class="ca">lang</span>=<span class="cs">"en"</span><span class="ct">&gt;</span>
+  <span class="ct">&lt;head&gt;</span>
+    <span class="ct">&lt;title&gt;</span>Arnav's Blog<span class="ct">&lt;/title&gt;</span>
+    <span class="ct">&lt;link</span> <span class="ca">rel</span>=<span class="cs">"stylesheet"</span> <span class="ca">href</span>=<span class="cs">"style.css"</span><span class="ct">&gt;</span>
+  <span class="ct">&lt;/head&gt;</span>
+  <span class="ct">&lt;body&gt;</span>
+    <span class="ct">&lt;h1&gt;</span>Hello, world!<span class="ct">&lt;/h1&gt;</span>
+    <span class="ct">&lt;p&gt;</span>No npm. No build step. No config files. Just a page.<span class="ct">&lt;/p&gt;</span>
+  <span class="ct">&lt;/body&gt;</span>
+<span class="ct">&lt;/html&gt;</span>
+
+<span class="cc">/* That's it. Open it in any browser and it works. */</span></pre>
+        </div>
+
+        <p>No installation required. No setup commands. No mystery error messages from packages you don't recognize. Open that file in any browser on any computer and it just shows up. That is the whole point.</p>
+
+        <!-- ── Speed ──────────────────────────────────────── -->
+        <h2 id="speed">They Are Ridiculously Fast</h2>
+        <p>This is probably the biggest reason I keep coming back to static sites. When there is no server running code, there is almost nothing slowing things down.</p>
+
+        <p>With a dynamic site, your browser has to wait for the server to wake up, run some code, query a database, put the page together from scratch, and then finally send it. That whole chain takes time — sometimes a lot of it.</p>
+
+        <p>With a static site? The file is already finished. The server just grabs it and sends it. It is like the difference between ordering a custom sandwich (dynamic — you wait while they make it) versus grabbing one that is already sitting there ready to go (static — done instantly).</p>
+
+        <blockquote>
+          "The fastest website is one that is already finished before the user even asks for it."
+          <cite>— Something every experienced web developer figures out eventually</cite>
+        </blockquote>
+
+        <p>This matters a lot more than most people realize. Studies have shown that if a page takes more than 3 seconds to load, a huge chunk of visitors just leave. Fast sites keep people reading. Slow sites lose them instantly. Speed is not just a nice perk — it is a dealbreaker.</p>
+
+        <div class="callout callout-tip">
+          <i class="fa-solid fa-lightbulb"></i>
+          <span><strong>Real numbers:</strong> I ran my static portfolio through Google Lighthouse — Google's free performance testing tool — and it scored 99/100. A friend's WordPress blog with similar content scored around 54. The difference was not skill or better writing. It was just the architecture.</span>
+        </div>
+
+        <!-- ── Security ───────────────────────────────────── -->
+        <h2 id="security">Way More Secure</h2>
+        <p>Here is something most beginners do not think about at first: <strong>if there is no server running code, there is way less stuff that can go wrong from a security standpoint.</strong></p>
+
+        <p>Dynamic websites have what engineers call "attack surfaces" — places where someone with bad intentions can try to break in or steal data. A login page can be exploited. A database can be compromised. Server-side code can have bugs that let attackers sneak in through a back door.</p>
+
+        <p>Static sites basically have none of that. There is no database to steal. There is no login system to crack. There is no server code to exploit. You are just sending pre-made files, and pre-made files are really hard to hack in any meaningful way.</p>
+
+        <div class="callout callout-warn">
+          <i class="fa-solid fa-triangle-exclamation"></i>
+          <span>To be fair — static sites are not 100% bulletproof. If you add third-party scripts, contact forms, or external services, those parts can still have vulnerabilities. But compared to a full dynamic app, the overall security risk is dramatically lower for most personal projects.</span>
+        </div>
+
+        <!-- ── Cost ───────────────────────────────────────── -->
+        <h2 id="cost">Free (Or Almost Free) Hosting</h2>
+        <p>This one hits different as a student. Running a real server 24/7 costs real money — and sometimes quite a bit of it. But static sites can be hosted completely for free on platforms like <strong>GitHub Pages</strong>, <strong>Netlify</strong>, or <strong>Vercel</strong>.</p>
+
+        <p>These platforms can afford to offer free hosting because there is basically zero compute cost involved. There is no code to run on their servers, no database to query. Just files sitting there waiting to be sent when someone visits.</p>
+
+        <div class="result-highlight">
+          <div class="result-trophy">💸</div>
+          <div class="result-details">
+            <div class="result-label">My Actual Monthly Hosting Bill</div>
+            <div class="result-title">$0.00 — Zero Dollars</div>
+            <div class="result-sub">GitHub Pages · Automatic deploys · 100% uptime · Zero config</div>
+          </div>
+        </div>
+
+        <p>My portfolio has been live for over a year. I have paid exactly nothing. If I had gone with a WordPress host or a cloud server instead, I would have been paying at least $5–$10 a month. That adds up quickly — especially when the site is not making you any money yet.</p>
+
+        <!-- ── Ownership ───────────────────────────────────── -->
+        <h2 id="simple">You Own Every Single Line</h2>
+        <p>One of my favorite things about building static sites is that <em>I know exactly what is happening</em> at every step. There is no magic. No framework doing mysterious things behind the scenes. No plugin that was installed two years ago that I completely forgot about.</p>
+
+        <p>Every line of HTML, CSS, and JavaScript in my site was written by me — or at least reviewed by me. I know what each piece does. That feels genuinely powerful, especially when something breaks, because I can actually find the problem and fix it. I am not just Googling error messages from a framework I barely understand.</p>
+
+        <p>Compare that to something like WordPress, where a single page can load 40+ scripts and stylesheets that have nothing to do with your actual content. You end up spending more time managing the platform than actually building the thing itself.</p>
+
+        <!-- ── Comparison ─────────────────────────────────── -->
+        <h2 id="compare">Static vs. Dynamic — The Real Breakdown</h2>
+        <p>Let me put both options side by side so it is easy to see when each one makes the most sense:</p>
+
+        <table class="comparison-table">
+          <thead>
+            <tr>
+              <th>Feature</th>
+              <th>Static Site</th>
+              <th>Dynamic Site</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Page Load Speed</td>
+              <td><span class="check">✓</span> Blazing fast by default</td>
+              <td>Depends on server speed &amp; load</td>
+            </tr>
+            <tr>
+              <td>Hosting Cost</td>
+              <td><span class="check">✓</span> Free options everywhere</td>
+              <td>Usually $5–$50+ per month</td>
+            </tr>
+            <tr>
+              <td>Security Risk</td>
+              <td><span class="check">✓</span> Very small attack surface</td>
+              <td>More things to actively protect</td>
+            </tr>
+            <tr>
+              <td>Setup Time</td>
+              <td><span class="check">✓</span> Write file → done</td>
+              <td>Server + DB + config + deploy pipeline</td>
+            </tr>
+            <tr>
+              <td>Lighthouse Score</td>
+              <td><span class="check">✓</span> Near 100 by default</td>
+              <td>Requires significant tuning</td>
+            </tr>
+            <tr>
+              <td>User Accounts</td>
+              <td><span class="cross">✗</span> Not built-in</td>
+              <td><span class="check">✓</span> Easy to implement</td>
+            </tr>
+            <tr>
+              <td>Real-time Content</td>
+              <td><span class="cross">✗</span> Needs workarounds</td>
+              <td><span class="check">✓</span> Native support</td>
+            </tr>
+            <tr>
+              <td>Best For</td>
+              <td>Portfolios, blogs, docs, landing pages</td>
+              <td>Apps, social platforms, dashboards</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <!-- ── When NOT to use ────────────────────────────── -->
+        <h2 id="when-not">When You Should NOT Use Static</h2>
+        <p>I want to be honest here. Static sites are not the answer for every project, and pretending otherwise would just be wrong. There are real situations where you genuinely need something more powerful:</p>
+
+        <ul>
+          <li><strong>You need user accounts.</strong> If people need to log in, save their own data, or see personalized content, you need a backend. Plain HTML files cannot do that on their own.</li>
+          <li><strong>You need real-time data.</strong> Building a chat app, a live scoreboard, or a feed that updates constantly? Static files won't cut it. You need a server pushing live updates.</li>
+          <li><strong>Users are creating content.</strong> If people are posting comments, writing reviews, or uploading files, that data has to live somewhere — which means you need a database and a backend to handle it.</li>
+          <li><strong>You are building an actual app.</strong> E-commerce checkouts, booking systems, social media features — these genuinely need a server. There is no good workaround.</li>
+        </ul>
+
+        <div class="callout callout-info">
+          <i class="fa-solid fa-circle-info"></i>
+          <span>The key is matching the tool to the job. I use static sites for my portfolio and blog. I would absolutely reach for a framework and a backend if I were building something that needed live data, user accounts, or e-commerce. Knowing the difference between the two is actually the real skill here.</span>
+        </div>
+
+        <!-- ── Tools ──────────────────────────────────────── -->
+        <h2 id="tools">What I Actually Use</h2>
+        <p>Here is my full tech stack for building static sites. I have kept it intentionally simple:</p>
+
+        <div class="tools-grid">
+          <span class="tool-tag"><i class="fa-brands fa-html5"></i> HTML5</span>
+          <span class="tool-tag"><i class="fa-brands fa-css3-alt"></i> CSS3</span>
+          <span class="tool-tag"><i class="fa-brands fa-js"></i> Vanilla JS</span>
+          <span class="tool-tag"><i class="fa-brands fa-github"></i> GitHub Pages</span>
+          <span class="tool-tag"><i class="fa-solid fa-font"></i> Google Fonts</span>
+          <span class="tool-tag"><i class="fa-solid fa-icons"></i> Font Awesome</span>
+        </div>
+
+        <p>That is genuinely my whole stack. No package manager, no build system, no config files, no terminal commands just to start. I write the code in VS Code, push it to GitHub, and GitHub Pages automatically deploys it in about 30 seconds. The whole pipeline costs exactly zero dollars.</p>
+
+        <p>If I ever wanted to make writing easier — like writing posts in Markdown instead of raw HTML — I might look into tools like <strong>Astro</strong> or <strong>Eleventy (11ty)</strong>. These are called static site generators. You write your content in a simpler format and they convert everything into plain HTML automatically. The output is still a static site, but you write way less repetitive boilerplate code.</p>
+
+        <!-- ── Conclusion ─────────────────────────────────── -->
+        <h2 id="conclusion">My Honest Take</h2>
+        <p>Static sites are not "old school" or "too basic." They are the right tool for a huge number of real websites — especially personal ones. They are fast by default, secure by design, free to host, and easy to fully understand from top to bottom. That combination makes them almost perfect for someone who is learning web development and wants to actually ship something real.</p>
+
+        <p>Do I think everyone should always use static sites for everything? No. Use the right tool for the job. But the web development world has a real tendency to over-engineer things, and sometimes the boring, simple solution is genuinely the best one.</p>
+
+        <p>For a portfolio site? Static. For a blog? Static. For documentation? Static. For a landing page? Absolutely static. You do not need React for any of those. You just need HTML, CSS, and maybe a little JavaScript sprinkled in where it actually counts.</p>
+
+        <blockquote>
+          "Complexity is easy to add. Simplicity is the hard part."
+          <cite>— Something every experienced developer figures out the hard way</cite>
+        </blockquote>
+
+        <p><em>In 2026, with free hosting on every corner and browsers more powerful than ever, there has never been a better time to just build something and put it on the internet. Static sites let you do exactly that — with zero friction and zero cost. That is why I still build them. And honestly, it is why I think I always will.</em></p>
+
+      </div>
+      <!-- ═══════════════ END POST BODY ═══════════════════ -->
+
+      <!-- Footer: tags + share + nav -->
+      <div class="post-footer">
+
+        <div class="post-tags-row">
+          <span class="post-tag-pill pill-web"><i class="fa-solid fa-code"></i> Web Dev</span>
+          <span class="post-tag-pill pill-static"><i class="fa-solid fa-file-code"></i> Static Sites</span>
+        </div>
+
+        <div class="share-section">
+          <p class="share-label">// share_post()</p>
+          <div class="share-buttons">
+            <a class="share-btn share-twitter" id="shareTwitter" href="#" target="_blank" rel="noopener">
+              <i class="fa-brands fa-x-twitter"></i> Share on X
+            </a>
+            <a class="share-btn share-linkedin" id="shareLinkedin" href="#" target="_blank" rel="noopener">
+              <i class="fa-brands fa-linkedin"></i> Share on LinkedIn
+            </a>
+            <button class="share-btn share-copy" id="copyLink">
+              <i class="fa-solid fa-link"></i> <span id="copyText">Copy Link</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="post-nav">
+          <a href="#" class="post-nav-btn prev">
+            <span class="nav-label"><i class="fa-solid fa-arrow-left"></i> Previous</span>
+            <span class="nav-title">What I Learned Building My First ML Model</span>
+          </a>
+          <a href="#" class="post-nav-btn next">
+            <span class="nav-label">Next <i class="fa-solid fa-arrow-right"></i></span>
+            <span class="nav-title">My First Year Competing in TSA</span>
+          </a>
+        </div>
+
+      </div>
+    </article>
+
+    <!-- ── SIDEBAR ────────────────────────────────────────── -->
+    <aside class="post-sidebar">
+      <div class="sidebar-sticky">
+
+        <div class="reading-progress-ring">
+          <div class="progress-circle">
+            <svg viewBox="0 0 36 36" width="36" height="36">
+              <circle class="track" cx="18" cy="18" r="14"/>
+              <circle class="fill"  cx="18" cy="18" r="14" id="progressFill"/>
+            </svg>
+            <div class="progress-pct" id="progressPct">0%</div>
+          </div>
+          <span>Reading progress</span>
+        </div>
+
+        <div class="toc-widget">
+          <div class="widget-title"><i class="fa-solid fa-list"></i> Table of Contents</div>
+          <ul class="toc-list" id="tocList">
+            <li><a href="#intro">Why Even Ask This?</a></li>
+            <li><a href="#what">What Is a Static Site?</a></li>
+            <li><a href="#speed">They Are Ridiculously Fast</a></li>
+            <li><a href="#security">Way More Secure</a></li>
+            <li><a href="#cost">Free (Or Almost Free) Hosting</a></li>
+            <li><a href="#simple">You Own Every Single Line</a></li>
+            <li><a href="#compare">Static vs. Dynamic</a></li>
+            <li><a href="#when-not">When NOT to Use Static</a></li>
+            <li><a href="#tools">What I Actually Use</a></li>
+            <li><a href="#conclusion">My Honest Take</a></li>
+          </ul>
+        </div>
+
+        <div class="info-widget">
+          <div class="widget-title"><i class="fa-solid fa-circle-info"></i> Post Info</div>
+          <div class="info-row">
+            <i class="fa-solid fa-calendar-days info-icon"></i>
+            <div>
+              <div class="info-label">Published</div>
+              <div class="info-value">March 11, 2026</div>
+            </div>
+          </div>
+          <div class="info-row">
+            <i class="fa-solid fa-clock info-icon"></i>
+            <div>
+              <div class="info-label">Read Time</div>
+              <div class="info-value">~7 minutes</div>
+            </div>
+          </div>
+          <div class="info-row">
+            <i class="fa-solid fa-folder info-icon"></i>
+            <div>
+              <div class="info-label">Category</div>
+              <div class="info-value">Web Dev</div>
+            </div>
+          </div>
+          <div class="info-row">
+            <i class="fa-solid fa-user info-icon"></i>
+            <div>
+              <div class="info-label">Author</div>
+              <div class="info-value">Arnav Jain</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="tags-widget">
+          <div class="widget-title"><i class="fa-solid fa-tags"></i> Tags</div>
+          <div class="tags-cloud">
+            <span class="post-tag-pill pill-web">Web Dev</span>
+            <span class="post-tag-pill pill-static">Static Sites</span>
+          </div>
+        </div>
+
+      </div>
+    </aside>
+
+  </div><!-- /post-shell -->
+
+  <footer>
+    <div class="footer-content">
+      <div class="footer-text">
+        <p>Designed &amp; Built by <span class="highlight">Arnav Jain</span></p>
+        <p>&copy; 2026 All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="scripts.js"></script>
+  <script>
+    // ── Reading progress ring ───────────────────────────────
+    const fillEl        = document.getElementById('progressFill');
+    const pctEl         = document.getElementById('progressPct');
+    const circumference = 2 * Math.PI * 14;
+
+    function updateProgress() {
+      const body   = document.documentElement;
+      const total  = body.scrollHeight - body.clientHeight;
+      const pct    = total > 0 ? Math.round((window.scrollY / total) * 100) : 0;
+      const offset = circumference - (pct / 100) * circumference;
+      if (fillEl) {
+        fillEl.style.strokeDasharray  = circumference;
+        fillEl.style.strokeDashoffset = offset;
+      }
+      if (pctEl) pctEl.textContent = pct + '%';
+    }
+    window.addEventListener('scroll', updateProgress, { passive: true });
+    updateProgress();
+
+    // ── Active TOC highlight ────────────────────────────────
+    const headings = document.querySelectorAll('.post-body h2[id]');
+    const tocLinks = document.querySelectorAll('#tocList a');
+
+    function updateTOC() {
+      let active = null;
+      headings.forEach(h => {
+        if (window.scrollY >= h.offsetTop - 120) active = h.id;
+      });
+      tocLinks.forEach(a => {
+        a.classList.toggle('active', a.getAttribute('href') === '#' + active);
+      });
+    }
+    window.addEventListener('scroll', updateTOC, { passive: true });
+    updateTOC();
+
+    // ── Share buttons ───────────────────────────────────────
+    const url   = encodeURIComponent(window.location.href);
+    const title = encodeURIComponent(document.title);
+    const tw    = document.getElementById('shareTwitter');
+    const li    = document.getElementById('shareLinkedin');
+    if (tw) tw.href = `https://twitter.com/intent/tweet?url=${url}&text=${title}`;
+    if (li) li.href = `https://www.linkedin.com/sharing/share-offsite/?url=${url}`;
+
+    document.getElementById('copyLink')?.addEventListener('click', () => {
+      navigator.clipboard.writeText(window.location.href).then(() => {
+        const txt = document.getElementById('copyText');
+        txt.textContent = 'Copied!';
+        setTimeout(() => txt.textContent = 'Copy Link', 2000);
+      });
+    });
+  </script>
+</body>
+</html>

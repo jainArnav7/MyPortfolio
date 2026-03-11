@@ -5,9 +5,13 @@
   <script>
     try {
       const t = localStorage.getItem('theme');
-      if (t) document.documentElement.setAttribute('data-theme', t);
-      else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+      if (t) {
+        document.documentElement.setAttribute('data-theme', t);
+      } else if (window.matchMedia &&
+                 window.matchMedia('(prefers-color-scheme: dark)').matches) {
         document.documentElement.setAttribute('data-theme', 'dark');
+      } else {
+        document.documentElement.setAttribute('data-theme', 'light');
       }
     } catch (e) {}
   </script>
@@ -26,6 +30,48 @@
   <title>Arnav Jain | AI &amp; Web Developer</title>
   <link rel="stylesheet" href="styles.css">
   <style>
+    /* ── Theme variables (make sure your styles use these) ── */
+    :root {
+      --bg: #050816;
+      --text: #e5e7eb;
+      --primary: #00d9ff;
+      --secondary: #7c3aed;
+      --success: #06dba8;
+    }
+    :root[data-theme="light"] {
+      --bg: #f9fafb;
+      --text: #111827;
+      --primary: #0ea5e9;
+      --secondary: #7c3aed;
+      --success: #059669;
+    }
+    :root[data-theme="dark"] {
+      --bg: #050816;
+      --text: #e5e7eb;
+      --primary: #00d9ff;
+      --secondary: #a855f7;
+      --success: #06dba8;
+    }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      transition: background 0.35s ease, color 0.35s ease;
+    }
+
+    /* ── Ensure all themed elements respond to data-theme changes ── */
+    *, *::before, *::after {
+      transition-property: background-color, border-color, color, box-shadow;
+      transition-duration: 0.35s;
+      transition-timing-function: ease;
+    }
+    /* Don't animate transforms and layout - only color transitions above */
+    .floating-card, .skill-card, .cert-preview-card, .blog-card-home,
+    .explore-card, .btn, .orbit-ring, .level-bar {
+      transition: transform 0.3s ease, box-shadow 0.3s ease, 
+                  background-color 0.35s ease, border-color 0.35s ease,
+                  color 0.35s ease !important;
+    }
+
     /* ── Theme toggle morph ──────────────────────────────── */
     .theme-toggle { transition: transform 0.35s ease; }
     .theme-toggle:hover { transform: rotate(20deg) scale(1.15); }
@@ -33,11 +79,13 @@
     .theme-toggle.spinning i { transform: rotate(360deg); opacity: 0.5; }
 
     /* ── Typing cursor ───────────────────────────────────── */
-    #rotatingText { display: inline-block; color: var(--primary); min-width: 12ch; }
+    #rotatingText { display: inline; color: var(--primary); }
+    .hero-tagline { white-space: nowrap; }
     .rotating-text-cursor {
-      display: inline-block; width: 2px; height: 1em;
-      background: var(--primary); margin-left: 2px; vertical-align: middle;
-      animation: cursorBlink 0.8s step-end infinite;
+      display: inline-block; width: 2px; height: 0.9em;
+      background: var(--primary); margin-left: 3px; vertical-align: text-bottom;
+      border-radius: 1px;
+      animation: cursorBlink 0.75s step-end infinite;
     }
     @keyframes cursorBlink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
 
@@ -68,7 +116,6 @@
     .skill-card { transition: transform 0.3s, box-shadow 0.3s, border-color 0.3s !important; }
     .skill-card:hover { transform: translateY(-10px) scale(1.03) !important; box-shadow: 0 16px 40px rgba(0,217,255,0.18) !important; border-color: rgba(0,217,255,0.35) !important; }
     .skill-card:hover .skill-glow { opacity: 1 !important; }
-    /* Bars start at 0, JS adds .animated to fill to --level */
     .level-bar { width: 0 !important; transition: width 1.3s cubic-bezier(0.4,0,0.2,1) !important; }
     .level-bar.animated { width: var(--level) !important; }
 
@@ -94,7 +141,17 @@
     .nav-links a.nav-active { color: var(--primary) !important; }
 
     /* ── Scroll progress gradient shimmer ────────────────── */
-    .scroll-progress { background: linear-gradient(90deg, var(--primary), var(--secondary), #06dbaa) !important; background-size: 200% 100% !important; animation: progressShimmer 3s linear infinite !important; }
+    .scroll-progress {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 3px;
+      width: 0;
+      z-index: 9999;
+      background: linear-gradient(90deg, var(--primary), var(--secondary), #06dbaa) !important;
+      background-size: 200% 100% !important;
+      animation: progressShimmer 3s linear infinite !important;
+    }
     @keyframes progressShimmer { 0% { background-position: 0% 0%; } 100% { background-position: 200% 0%; } }
 
     /* ── Mobile menu smooth fade ─────────────────────────── */
@@ -135,7 +192,7 @@
       <div class="nav-social">
         <a href="https://github.com/jainArnav7" target="_blank" rel="noopener" class="social-icon" aria-label="GitHub"><i class="fa-brands fa-github" aria-hidden="true"></i></a>
         <a href="https://www.linkedin.com/in/arnav-jain-b63069354" target="_blank" rel="noopener" class="social-icon" aria-label="LinkedIn"><i class="fa-brands fa-linkedin" aria-hidden="true"></i></a>
-        <a href="mailto:arnavjain711@gmail.com" class="social-icon" aria-label="Email"><i class="fa-solid fa-envelope" aria-hidden="true"></i></a>
+        <a href="/cdn-cgi/l/email-protection#b8d9cad6d9ced2d9d1d68f8989f8dfd5d9d1d496dbd7d5" class="social-icon" aria-label="Email"><i class="fa-solid fa-envelope" aria-hidden="true"></i></a>
         <a href="#" class="social-icon resume-btn" id="resumeBtn" aria-label="Download Resume"><i class="fa-solid fa-download" aria-hidden="true"></i></a>
         <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
           <i class="fa-solid fa-moon" aria-hidden="true"></i>
@@ -148,18 +205,18 @@
   <div class="mobile-menu" id="mobileMenu">
     <ul>
       <li><a href="index.html"          class="mobile-link"><span>01.</span> Home</a></li>
-      <li><a href="aboutme.html"        class="mobile-link"><span>02.</span> About</a></li>
-      <li><a href="skills.html"         class="mobile-link"><span>03.</span> Skills</a></li>
-      <li><a href="projects.html"       class="mobile-link"><span>04.</span> Projects</a></li>
-      <li><a href="certifications.html" class="mobile-link"><span>05.</span> Certifications</a></li>
-      <li><a href="timeline.html"       class="mobile-link"><span>06.</span> Journey</a></li>
-      <li><a href="contact.html"        class="mobile-link"><span>07.</span> Contact</a></li>
-      <li><a href="blog.html"           class="mobile-link"><span>08.</span> Blog</a></li>
+      <li><a href="aboutme.html"       class="mobile-link"><span>02.</span> About</a></li>
+      <li><a href="skills.html"        class="mobile-link"><span>03.</span> Skills</a></li>
+      <li><a href="projects.html"      class="mobile-link"><span>04.</span> Projects</a></li>
+      <li><a href="certifications.html"class="mobile-link"><span>05.</span> Certifications</a></li>
+      <li><a href="timeline.html"      class="mobile-link"><span>06.</span> Journey</a></li>
+      <li><a href="contact.html"       class="mobile-link"><span>07.</span> Contact</a></li>
+      <li><a href="blog.html"          class="mobile-link"><span>08.</span> Blog</a></li>
     </ul>
     <div class="mobile-social">
       <a href="https://github.com/jainArnav7" target="_blank" rel="noopener" aria-label="GitHub"><i class="fa-brands fa-github" aria-hidden="true"></i></a>
       <a href="https://www.linkedin.com/in/arnav-jain-b63069354" target="_blank" rel="noopener" aria-label="LinkedIn"><i class="fa-brands fa-linkedin" aria-hidden="true"></i></a>
-      <a href="mailto:arnavjain711@gmail.com" aria-label="Email"><i class="fa-solid fa-envelope" aria-hidden="true"></i></a>
+      <a href="/cdn-cgi/l/email-protection#7312011d120519121a1d44424233141e121a1f5d101c1e" aria-label="Email"><i class="fa-solid fa-envelope" aria-hidden="true"></i></a>
     </div>
   </div>
 
@@ -180,15 +237,15 @@
 
         <div class="hero-stats">
           <div class="stat-item">
-            <div class="stat-number" data-target="1">0</div>
+            <div class="stat-number" data-target="2">2</div>
             <div class="stat-label">Projects Completed</div>
           </div>
           <div class="stat-item">
-            <div class="stat-number" data-target="1">0</div>
+            <div class="stat-number" data-target="1">1</div>
             <div class="stat-label">Certifications</div>
           </div>
           <div class="stat-item">
-            <div class="stat-number" data-target="100">0</div>
+            <div class="stat-number" data-target="100">100</div>
             <div class="stat-label">% Dedication</div>
           </div>
         </div>
@@ -235,7 +292,7 @@
     <!-- ── SKILLS ─────────────────────────────────────────── -->
     <section id="skills" class="skills-section">
       <div class="section-header">
-        <span class="section-number">02.</span>
+        <span class="section-number">03.</span>
         <h2 class="section-title">Technical Arsenal</h2>
         <div class="section-line"></div>
       </div>
@@ -278,7 +335,7 @@
     <!-- ── CERTIFICATIONS PREVIEW ─────────────────────────── -->
     <section id="certs-preview" class="certs-preview-section">
       <div class="section-header">
-        <span class="section-number">04.</span>
+        <span class="section-number">05.</span>
         <h2 class="section-title">Certifications &amp; Achievements</h2>
         <div class="section-line"></div>
       </div>
@@ -316,7 +373,7 @@
     <!-- ── BLOG PREVIEW ───────────────────────────────────── -->
     <section id="blog-preview" class="blog-preview-section">
       <div class="section-header">
-        <span class="section-number">07.</span>
+        <span class="section-number">08.</span>
         <h2 class="section-title">From the Blog</h2>
         <div class="section-line"></div>
       </div>
@@ -406,7 +463,7 @@
     <!-- ── CONTACT ─────────────────────────────────────────── -->
     <section id="contact" class="contact-section">
       <div class="section-header">
-        <span class="section-number">06.</span>
+        <span class="section-number">07.</span>
         <h2 class="section-title">Get In Touch</h2>
         <div class="section-line"></div>
       </div>
@@ -415,9 +472,9 @@
           <h3>Let's work together</h3>
           <p>Open to collaborations, internships, and interesting projects. Reach out any time.</p>
           <div class="contact-methods">
-            <a href="mailto:arnavjain711@gmail.com" class="contact-method-card" aria-label="Email Me">
+            <a href="/cdn-cgi/l/email-protection#badbc8d4dbccd0dbd3d48d8b8bfaddd7dbd3d694d9d5d7" class="contact-method-card" aria-label="Email Me">
               <div class="method-icon"><i class="fa-solid fa-envelope" aria-hidden="true"></i></div>
-              <div class="method-info"><h4>Email</h4><p>arnavjain711@gmail.com</p></div>
+              <div class="method-info"><h4>Email</h4><p><span class="__cf_email__" data-cfemail="a8c9dac6c9dec2c9c1c69f9999e8cfc5c9c1c486cbc7c5">[email&#160;protected]</span></p></div>
               <i class="fa-solid fa-arrow-right method-arrow" aria-hidden="true"></i>
             </a>
             <a href="https://wa.me/9832081282" target="_blank" rel="noopener" class="contact-method-card" aria-label="WhatsApp">
@@ -489,142 +546,239 @@
     </div>
   </footer>
 
-  <!-- scripts.js handles: navbar scroll, hamburger, scroll-progress width elsewhere -->
-  <script src="scripts.js"></script>
+  <!-- scripts.js handles: navbar scroll, hamburger, scroll-progress width elsewhere if needed -->
+  <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="scripts.js"></script>
   <script>
     // ════════════════════════════════════════════════════════
-    // ① THEME TOGGLE  — self-contained, runs on every page
+    // ① THEME TOGGLE — runs on every page
     // ════════════════════════════════════════════════════════
     (function() {
       const btn  = document.getElementById('themeToggle');
       const html = document.documentElement;
 
       function applyTheme(theme) {
-        html.setAttribute('data-theme', theme);
-        try { localStorage.setItem('theme', theme); } catch(e) {}
-        const icon = btn && btn.querySelector('i');
-        if (icon) icon.className = theme === 'dark' ? 'fa-solid fa-sun' : 'fa-solid fa-moon';
-        if (btn) btn.setAttribute('aria-label', theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode');
+        const t = theme === 'dark' ? 'dark' : 'light';
+        html.setAttribute('data-theme', t);
+        try { localStorage.setItem('theme', t); } catch(e) {}
+
+        if (!btn) return;
+        const icon = btn.querySelector('i');
+        if (icon) {
+          // Show sun when dark (clicking will switch to light), moon when light (clicking will switch to dark)
+          icon.className = t === 'dark' ? 'fa-solid fa-sun' : 'fa-solid fa-moon';
+        }
+        btn.setAttribute(
+          'aria-label',
+          t === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'
+        );
       }
 
-      // Sync icon on load
-      const saved = (function() { try { return localStorage.getItem('theme'); } catch(e) {} })();
-      applyTheme(saved || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'));
+      function resolveInitialTheme() {
+        try {
+          const saved = localStorage.getItem('theme');
+          if (saved === 'dark' || saved === 'light') return saved;
+        } catch (e) {}
+        if (window.matchMedia &&
+            window.matchMedia('(prefers-color-scheme: dark)').matches) {
+          return 'dark';
+        }
+        return 'light';
+      }
 
-      if (btn) btn.addEventListener('click', function() {
-        this.classList.add('spinning');
-        setTimeout(() => this.classList.remove('spinning'), 450);
-        applyTheme(html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
-      });
+      applyTheme(resolveInitialTheme());
+
+      if (btn) {
+        btn.addEventListener('click', function() {
+          this.classList.add('spinning');
+          setTimeout(() => this.classList.remove('spinning'), 450);
+          const current = html.getAttribute('data-theme') === 'dark' ? 'dark' : 'light';
+          const next = current === 'dark' ? 'light' : 'dark';
+          applyTheme(next);
+        });
+      }
     })();
 
     // ════════════════════════════════════════════════════════
     // ② SCROLL PROGRESS BAR
     // ════════════════════════════════════════════════════════
-    const progressBar = document.querySelector('.scroll-progress');
-    window.addEventListener('scroll', () => {
+    (function() {
+      const progressBar = document.querySelector('.scroll-progress');
       if (!progressBar) return;
-      const pct = window.scrollY / (document.documentElement.scrollHeight - window.innerHeight) * 100;
-      progressBar.style.width = Math.min(pct, 100) + '%';
-    }, { passive: true });
+      window.addEventListener('scroll', () => {
+        const pct = window.scrollY / (document.documentElement.scrollHeight - window.innerHeight) * 100;
+        progressBar.style.width = Math.min(pct, 100) + '%';
+      }, { passive: true });
+    })();
 
     // ════════════════════════════════════════════════════════
     // ③ ROTATING / TYPING TAGLINE
     // ════════════════════════════════════════════════════════
-    const phrases  = ['The Future', 'With Python', 'AI Projects', 'Clean UIs', 'Smart Tools', 'Real Things'];
-    const rotEl    = document.getElementById('rotatingText');
-    let pIdx = 0, cIdx = 0, deleting = false;
-    function type() {
-      const word = phrases[pIdx];
-      if (!deleting) {
-        rotEl.textContent = word.slice(0, ++cIdx);
-        if (cIdx === word.length) { deleting = true; setTimeout(type, 1800); return; }
-        setTimeout(type, 80);
-      } else {
-        rotEl.textContent = word.slice(0, --cIdx);
-        if (cIdx === 0) { deleting = false; pIdx = (pIdx + 1) % phrases.length; setTimeout(type, 300); return; }
-        setTimeout(type, 45);
+    (function() {
+      const phrases  = ['The Future', 'With Python', 'AI Projects', 'Clean UIs', 'Smart Tools', 'Real Things'];
+      const rotEl    = document.getElementById('rotatingText');
+      if (!rotEl) return;
+      let pIdx = 0, cIdx = 0, deleting = false;
+
+      function type() {
+        if (!rotEl) return;
+        const word = phrases[pIdx];
+        if (!deleting) {
+          rotEl.textContent = word.slice(0, ++cIdx);
+          if (cIdx === word.length) { deleting = true; setTimeout(type, 1800); return; }
+          setTimeout(type, 80);
+        } else {
+          rotEl.textContent = word.slice(0, --cIdx);
+          if (cIdx === 0) { deleting = false; pIdx = (pIdx + 1) % phrases.length; setTimeout(type, 300); return; }
+          setTimeout(type, 45);
+        }
       }
-    }
-    if (rotEl) setTimeout(type, 900);
+      setTimeout(type, 900);
+    })();
 
     // ════════════════════════════════════════════════════════
-    // ④ STAT COUNTERS  — animate up when hero scrolls in
+    // ④ STAT COUNTERS — animate up when hero scrolls in
     // ════════════════════════════════════════════════════════
-    const statEls = document.querySelectorAll('.stat-number[data-target]');
-    let statsRan = false;
-    function runStats() {
-      if (statsRan) return;
-      const box = document.querySelector('.hero-stats');
-      if (!box || box.getBoundingClientRect().top > window.innerHeight * 0.95) return;
-      statsRan = true;
-      statEls.forEach(el => {
-        const target = +el.dataset.target, steps = 60;
-        let count = 0;
-        const timer = setInterval(() => {
-          count = Math.min(count + target / steps, target);
-          el.textContent = Math.round(count);
-          if (count >= target) clearInterval(timer);
-        }, 18);
-      });
-    }
-    window.addEventListener('scroll', runStats, { passive: true });
-    runStats();
+    (function() {
+      const statEls = document.querySelectorAll('.stat-number[data-target]');
+      if (!statEls.length) return;
+      let statsRan = false;
 
-    // ════════════════════════════════════════════════════════
-    // ⑤ SKILL BARS  — fill on scroll into view
-    // ════════════════════════════════════════════════════════
-    const barObs = new IntersectionObserver(entries => {
-      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('animated'); barObs.unobserve(e.target); } });
-    }, { threshold: 0.3 });
-    document.querySelectorAll('.level-bar').forEach(b => barObs.observe(b));
+      function runStats() {
+        if (statsRan) return;
+        const box = document.querySelector('.hero-stats');
+        if (!box) return;
+        if (box.getBoundingClientRect().top > window.innerHeight * 0.95) return;
 
-    // ════════════════════════════════════════════════════════
-    // ⑥ ACTIVE NAV SECTION  — highlight while scrolling
-    // ════════════════════════════════════════════════════════
-    const secEls = document.querySelectorAll('section[id]');
-    const navAs  = document.querySelectorAll('.nav-links a');
-    function setActiveNav() {
-      let cur = '';
-      secEls.forEach(s => { if (window.scrollY >= s.offsetTop - 150) cur = s.id; });
-      navAs.forEach(a => a.classList.toggle('nav-active', a.getAttribute('href').replace('#','') === cur));
-    }
-    window.addEventListener('scroll', setActiveNav, { passive: true });
-    setActiveNav();
-
-    // ════════════════════════════════════════════════════════
-    // ⑦ CONTACT FORM  — success / error feedback
-    // ════════════════════════════════════════════════════════
-    const cForm  = document.getElementById('contactForm');
-    const cBtn   = document.getElementById('submitBtn');
-    const cOk    = document.getElementById('formSuccess');
-    const cErr   = document.getElementById('formError');
-    if (cForm) cForm.addEventListener('submit', async e => {
-      e.preventDefault();
-      cOk.classList.remove('show'); cErr.classList.remove('show');
-      const orig = cBtn.innerHTML;
-      cBtn.innerHTML = '<span>Sending…</span><i class="fa-solid fa-spinner fa-spin"></i>';
-      cBtn.disabled = true;
-      try {
-        const r = await fetch('https://api.web3forms.com/submit', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-          body: JSON.stringify(Object.fromEntries(new FormData(cForm)))
+        statsRan = true;
+        statEls.forEach(el => {
+          const target = +el.dataset.target || 0;
+          const steps = 60;
+          let count = 0;
+          const timer = setInterval(() => {
+            count = Math.min(count + target / steps, target);
+            el.textContent = Math.round(count);
+            if (count >= target) clearInterval(timer);
+          }, 18);
         });
-        (await r.json()).success ? (cOk.classList.add('show'), cForm.reset()) : cErr.classList.add('show');
-      } catch { cErr.classList.add('show'); }
-      finally { cBtn.innerHTML = orig; cBtn.disabled = false; }
-    });
+      }
+
+      window.addEventListener('scroll', runStats, { passive: true });
+      runStats();
+    })();
 
     // ════════════════════════════════════════════════════════
-    // ⑧ HAMBURGER  — smooth mobile menu
+    // ⑤ SKILL BARS — fill on scroll into view
     // ════════════════════════════════════════════════════════
-    const hb = document.getElementById('hamburger');
-    const mm = document.getElementById('mobileMenu');
-    if (hb && mm) {
-      hb.addEventListener('click', () => { mm.classList.toggle('active'); hb.classList.toggle('active'); });
-      mm.querySelectorAll('a').forEach(a => a.addEventListener('click', () => { mm.classList.remove('active'); hb.classList.remove('active'); }));
-    }
+    (function() {
+      const bars = document.querySelectorAll('.level-bar');
+      if (!bars.length) return;
+      if ('IntersectionObserver' in window) {
+        const barObs = new IntersectionObserver(entries => {
+          entries.forEach(e => {
+            if (e.isIntersecting) {
+              e.target.classList.add('animated');
+              barObs.unobserve(e.target);
+            }
+          });
+        }, { threshold: 0.3 });
+        bars.forEach(b => barObs.observe(b));
+      } else {
+        bars.forEach(b => b.classList.add('animated'));
+      }
+    })();
+
+    // ════════════════════════════════════════════════════════
+    // ⑥ ACTIVE NAV SECTION — (only for in-page anchors)
+    //    If you don't use #section links, this will be a no-op
+    // ════════════════════════════════════════════════════════
+    (function() {
+      const secEls = document.querySelectorAll('section[id]');
+      const navAs  = document.querySelectorAll('.nav-links a[href^="#"]');
+      if (!secEls.length || !navAs.length) return;
+
+      function setActiveNav() {
+        let cur = '';
+        secEls.forEach(s => {
+          if (window.scrollY >= s.offsetTop - 150) cur = s.id;
+        });
+        navAs.forEach(a => {
+          const targetId = a.getAttribute('href').replace('#','');
+          a.classList.toggle('nav-active', targetId === cur);
+        });
+      }
+
+      window.addEventListener('scroll', setActiveNav, { passive: true });
+      setActiveNav();
+    })();
+
+    // ════════════════════════════════════════════════════════
+    // ⑦ CONTACT FORM — success / error feedback
+    // ════════════════════════════════════════════════════════
+    (function() {
+      const cForm  = document.getElementById('contactForm');
+      const cBtn   = document.getElementById('submitBtn');
+      const cOk    = document.getElementById('formSuccess');
+      const cErr   = document.getElementById('formError');
+      if (!cForm || !cBtn || !cOk || !cErr) return;
+
+      cForm.addEventListener('submit', async e => {
+        e.preventDefault();
+        cOk.classList.remove('show'); cErr.classList.remove('show');
+        const orig = cBtn.innerHTML;
+        cBtn.innerHTML = '<span>Sending…</span><i class="fa-solid fa-spinner fa-spin"></i>';
+        cBtn.disabled = true;
+        try {
+          const r = await fetch('https://api.web3forms.com/submit', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+            body: JSON.stringify(Object.fromEntries(new FormData(cForm)))
+          });
+          const data = await r.json();
+          if (data && data.success) {
+            cOk.classList.add('show');
+            cForm.reset();
+          } else {
+            cErr.classList.add('show');
+          }
+        } catch {
+          cErr.classList.add('show');
+        } finally {
+          cBtn.innerHTML = orig;
+          cBtn.disabled = false;
+        }
+      });
+    })();
+
+    // ════════════════════════════════════════════════════════
+    // ⑧ HAMBURGER — smooth mobile menu
+    // ════════════════════════════════════════════════════════
+    (function() {
+      const hb = document.getElementById('hamburger');
+      const mm = document.getElementById('mobileMenu');
+      if (!hb || !mm) return;
+      hb.addEventListener('click', function() {
+        const isOpen = mm.classList.toggle('active');
+        hb.classList.toggle('active', isOpen);
+        hb.setAttribute('aria-expanded', isOpen);
+        document.body.style.overflow = isOpen ? 'hidden' : '';
+      });
+      // Close menu when a link is clicked
+      mm.querySelectorAll('a').forEach(a => {
+        a.addEventListener('click', () => {
+          mm.classList.remove('active');
+          hb.classList.remove('active');
+          hb.setAttribute('aria-expanded', 'false');
+          document.body.style.overflow = '';
+        });
+      });
+      // Close on outside click
+      document.addEventListener('click', function(e) {
+        if (mm.classList.contains('active') && !mm.contains(e.target) && !hb.contains(e.target)) {
+          mm.classList.remove('active');
+          hb.classList.remove('active');
+          hb.setAttribute('aria-expanded', 'false');
+          document.body.style.overflow = '';
+        }
+      });
+    })();
   </script>
-</body>
-</html>
