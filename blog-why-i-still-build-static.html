@@ -442,17 +442,12 @@
       align-self: start; /* required for position:sticky to work inside a grid */
     }
     .sidebar-sticky {
-      position: sticky;
-      top: 90px; /* clears fixed navbar + a little breathing room */
+      position: sticky; top: 90px;
+      top: 90px; /* sticks just below the fixed navbar and follows the user as they scroll */
       display: flex;
       flex-direction: column;
       gap: 1.5rem;
-      /* allow sidebar to scroll internally if it is taller than the viewport */
-      max-height: calc(100vh - 110px);
-      overflow-y: auto;
-      scrollbar-width: none; /* Firefox */
     }
-    .sidebar-sticky::-webkit-scrollbar { display: none; } /* Chrome/Safari */
 
     .toc-widget, .info-widget, .tags-widget {
       background: var(--bg-card);
