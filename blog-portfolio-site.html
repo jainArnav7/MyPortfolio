@@ -1,0 +1,1121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta name="google-adsense-account" content="ca-pub-5574925714908134">
+  <script>
+    try {
+      const t = localStorage.getItem('theme');
+      if (t) document.documentElement.setAttribute('data-theme', t);
+      else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.documentElement.setAttribute('data-theme', 'dark');
+      }
+    } catch (e) {}
+  </script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Building a Portfolio Website From Scratch | Arnav Jain</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=JetBrains+Mono:wght@400;600&family=Inter:wght@300;400;600;700&family=Lora:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <style>
+
+    /* ── Hero Banner ─────────────────────────────────────── */
+    .post-hero {
+      position: relative;
+      width: 100%;
+      height: 420px;
+      overflow: hidden;
+      margin-top: 70px;
+    }
+    .post-hero-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      filter: brightness(0.45) saturate(1.1);
+    }
+    .post-hero-fallback {
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, #0a0f1a 0%, #0d1f35 40%, #0a1628 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .post-hero-fallback-icon {
+      font-size: 5rem;
+      opacity: 0.08;
+      color: var(--primary);
+    }
+    .post-hero-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        to bottom,
+        rgba(10,15,26,0.3) 0%,
+        rgba(10,15,26,0.5) 50%,
+        rgba(10,15,26,0.85) 100%
+      );
+    }
+    .post-hero-content {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: 2.5rem 3rem;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    .post-hero-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.72rem;
+      font-family: 'JetBrains Mono', monospace;
+      color: #ffa000;
+      background: rgba(255,160,0,0.12);
+      border: 1px solid rgba(255,160,0,0.3);
+      padding: 0.25rem 0.75rem;
+      border-radius: 999px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 0.9rem;
+    }
+    .post-hero h1 {
+      font-family: 'Lora', Georgia, serif;
+      font-size: clamp(1.8rem, 4vw, 3rem);
+      font-weight: 600;
+      color: #ffffff;
+      line-height: 1.2;
+      margin-bottom: 0.6rem;
+      text-shadow: 0 2px 20px rgba(0,0,0,0.5);
+    }
+    .post-hero-sub {
+      font-size: 1rem;
+      color: rgba(255,255,255,0.72);
+      margin-bottom: 1rem;
+      font-style: italic;
+    }
+    .post-hero-meta {
+      display: flex;
+      align-items: center;
+      gap: 1.25rem;
+      flex-wrap: wrap;
+    }
+    .post-hero-meta span {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.8rem;
+      color: rgba(255,255,255,0.55);
+      font-family: 'JetBrains Mono', monospace;
+    }
+    .post-hero-meta i { color: var(--primary); }
+
+    /* ── Layout ─────────────────────────────────────────── */
+    .post-shell {
+      padding: 3rem 2rem 6rem;
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 300px;
+      gap: 4rem;
+      align-items: start; /* critical: allows sticky sidebar to work */
+    }
+
+    /* Back link */
+    .post-back {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 0.85rem;
+      font-family: 'JetBrains Mono', monospace;
+      margin-bottom: 2rem;
+      transition: color 0.2s, gap 0.2s;
+    }
+    .post-back:hover { color: var(--primary); gap: 0.8rem; }
+    .post-back i { transform: rotate(180deg); }
+
+    /* Separator */
+    .post-divider {
+      width: 100%;
+      height: 1px;
+      background: linear-gradient(to right, var(--primary), var(--secondary), transparent);
+      margin: 2rem 0;
+      opacity: 0.3;
+    }
+
+    /* ── Quick Stats ─────────────────────────────────────── */
+    .quick-stats {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1rem;
+      margin: 2rem 0 2.5rem;
+    }
+    .stat-card {
+      background: var(--bg-card);
+      border: 1px solid rgba(0,217,255,0.12);
+      border-radius: var(--radius-md);
+      padding: 1.1rem 1rem;
+      text-align: center;
+      transition: border-color 0.2s, transform 0.2s;
+    }
+    .stat-card:hover {
+      border-color: rgba(0,217,255,0.3);
+      transform: translateY(-3px);
+    }
+    .stat-icon { font-size: 1.2rem; color: var(--primary); margin-bottom: 0.5rem; }
+    .stat-value {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      line-height: 1.1;
+      margin-bottom: 0.3rem;
+    }
+    .stat-label {
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    /* ── Code block ──────────────────────────────────────── */
+    .code-block {
+      background: rgba(0,0,0,0.35);
+      border: 1px solid rgba(0,217,255,0.1);
+      border-radius: var(--radius-md);
+      margin: 1.75rem 0;
+      overflow: hidden;
+    }
+    .code-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.6rem 1rem;
+      background: rgba(0,217,255,0.04);
+      border-bottom: 1px solid rgba(0,217,255,0.08);
+    }
+    .code-dots { display: flex; gap: 0.4rem; }
+    .code-dot  { width: 10px; height: 10px; border-radius: 50%; }
+    .dot-red    { background: #ff5f57; }
+    .dot-yellow { background: #ffbd2e; }
+    .dot-green  { background: #28c840; }
+    .code-lang { font-family: 'JetBrains Mono', monospace; font-size: 0.68rem; color: var(--text-muted); }
+    .code-block pre {
+      padding: 1.25rem 1.4rem;
+      overflow-x: auto;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.84rem;
+      line-height: 1.75;
+      color: #cdd6f4;
+      margin: 0;
+    }
+    .ck { color: #89b4fa; }
+    .cs { color: #a6e3a1; }
+    .cc { color: #585b70; font-style: italic; }
+    .ct { color: #f38ba8; }
+    .ca { color: #fab387; }
+
+    /* ── Results highlight box ───────────────────────────── */
+    .result-highlight {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+      padding: 1.5rem 1.75rem;
+      background: var(--bg-card);
+      border-left: 4px solid var(--primary);
+      border-radius: 0 var(--radius-md) var(--radius-md) 0;
+      margin: 1.75rem 0;
+    }
+    .result-trophy { font-size: 2.2rem; flex-shrink: 0; }
+    .result-details { flex: 1; }
+    .result-label {
+      font-size: 0.72rem;
+      font-family: 'JetBrains Mono', monospace;
+      color: var(--primary);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 0.25rem;
+    }
+    .result-title {
+      font-family: 'Poppins', sans-serif;
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 0.2rem;
+    }
+    .result-sub { font-size: 0.82rem; color: var(--text-muted); font-family: 'JetBrains Mono', monospace; }
+
+    /* ── Tools / tech tags ───────────────────────────────── */
+    .tools-grid { display: flex; flex-wrap: wrap; gap: 0.65rem; margin: 1rem 0 1.5rem; }
+    .tool-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.8rem;
+      font-family: 'JetBrains Mono', monospace;
+      padding: 0.3rem 0.85rem;
+      border-radius: 999px;
+      background: rgba(0,217,255,0.07);
+      color: var(--primary);
+      border: 1px solid rgba(0,217,255,0.18);
+      transition: all 0.2s;
+    }
+    .tool-tag:hover { background: rgba(0,217,255,0.14); border-color: rgba(0,217,255,0.35); }
+
+    /* ── Comparison table ────────────────────────────────── */
+    .comparison-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1.5rem 0;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.88rem;
+    }
+    .comparison-table th {
+      padding: 0.75rem 1rem;
+      background: rgba(0,217,255,0.06);
+      color: var(--primary);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.09em;
+      text-align: left;
+      border: 1px solid rgba(0,217,255,0.1);
+    }
+    .comparison-table td {
+      padding: 0.75rem 1rem;
+      border: 1px solid rgba(0,217,255,0.08);
+      color: var(--text-secondary);
+    }
+    .comparison-table tr:hover td { background: rgba(0,217,255,0.03); }
+    .check { color: var(--success); font-weight: 700; }
+    .cross { color: #f38ba8; }
+
+    /* ── Body prose ──────────────────────────────────────── */
+    .post-body {
+      font-family: 'Lora', Georgia, serif;
+      font-size: 1.05rem;
+      line-height: 1.85;
+      color: var(--text-secondary);
+    }
+    .post-body h2 {
+      font-family: 'Poppins', sans-serif;
+      font-size: 1.45rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin: 2.75rem 0 1rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 1px solid rgba(0,217,255,0.1);
+      scroll-margin-top: 100px;
+    }
+    .post-body h3 {
+      font-family: 'Poppins', sans-serif;
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin: 2rem 0 0.75rem;
+      scroll-margin-top: 100px;
+    }
+    .post-body p  { margin-bottom: 1.4rem; }
+    .post-body strong { color: var(--text-primary); font-weight: 600; }
+    .post-body em { color: var(--primary); font-style: italic; }
+    .post-body a  { color: var(--primary); text-decoration: underline; text-underline-offset: 3px; }
+    .post-body a:hover { color: var(--primary-light); }
+    .post-body ul,
+    .post-body ol { padding-left: 1.5rem; margin-bottom: 1.4rem; }
+    .post-body li { margin-bottom: 0.5rem; }
+
+    /* Blockquote */
+    .post-body blockquote {
+      border-left: 3px solid var(--primary);
+      margin: 2rem 0;
+      padding: 1.25rem 1.5rem;
+      background: rgba(0,217,255,0.05);
+      border-radius: 0 var(--radius-md) var(--radius-md) 0;
+      font-style: italic;
+      color: var(--text-primary);
+    }
+    .post-body blockquote cite {
+      display: block;
+      margin-top: 0.75rem;
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      font-style: normal;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    /* Callout boxes */
+    .callout {
+      display: flex;
+      gap: 1rem;
+      padding: 1.25rem 1.5rem;
+      border-radius: var(--radius-md);
+      margin: 2rem 0;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.92rem;
+      line-height: 1.65;
+    }
+    .callout-info { background: rgba(0,217,255,0.07);  border: 1px solid rgba(0,217,255,0.18); }
+    .callout-tip  { background: rgba(6,219,168,0.07);  border: 1px solid rgba(6,219,168,0.18); }
+    .callout-warn { background: rgba(255,160,0,0.07);  border: 1px solid rgba(255,160,0,0.2); }
+    .callout i { margin-top: 0.15rem; flex-shrink: 0; }
+    .callout-info i { color: var(--primary); }
+    .callout-tip  i { color: var(--success); }
+    .callout-warn i { color: #ffa000; }
+
+    /* Post footer */
+    .post-footer {
+      margin-top: 3.5rem;
+      padding-top: 2rem;
+      border-top: 1px solid rgba(0,217,255,0.1);
+    }
+    .post-tags-row { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1.25rem; }
+    .post-tag-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      font-size: 0.72rem;
+      font-family: 'JetBrains Mono', monospace;
+      padding: 0.25rem 0.75rem;
+      border-radius: 999px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .pill-web    { background: rgba(0,217,255,0.1); color: var(--primary); border: 1px solid rgba(0,217,255,0.25); }
+    .pill-static { background: rgba(255,160,0,0.1); color: #ffa000; border: 1px solid rgba(255,160,0,0.25); }
+
+    .share-section { margin-bottom: 2rem; }
+    .share-label { font-size: 0.8rem; font-family: 'JetBrains Mono', monospace; color: var(--text-muted); margin-bottom: 0.75rem; }
+    .share-buttons { display: flex; gap: 0.75rem; flex-wrap: wrap; }
+    .share-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.55rem 1.1rem;
+      border-radius: var(--radius-full);
+      font-size: 0.82rem;
+      font-weight: 600;
+      cursor: pointer;
+      border: none;
+      text-decoration: none;
+      transition: all 0.2s;
+      font-family: 'Inter', sans-serif;
+    }
+    .share-btn:hover      { transform: translateY(-2px); }
+    .share-twitter        { background: rgba(29,161,242,0.12); color: #1da1f2; border: 1px solid rgba(29,161,242,0.25); }
+    .share-linkedin       { background: rgba(0,119,181,0.12);  color: #0077b5; border: 1px solid rgba(0,119,181,0.25); }
+    .share-copy           { background: rgba(0,217,255,0.1);   color: var(--primary); border: 1px solid rgba(0,217,255,0.2); }
+    .share-twitter:hover  { background: rgba(29,161,242,0.22); }
+    .share-linkedin:hover { background: rgba(0,119,181,0.22); }
+    .share-copy:hover     { background: rgba(0,217,255,0.2); }
+
+    /* Post navigation */
+    .post-nav { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 2.5rem; }
+    .post-nav-btn {
+      background: var(--bg-card);
+      border: 1px solid rgba(0,217,255,0.1);
+      border-radius: var(--radius-md);
+      padding: 1rem 1.25rem;
+      text-decoration: none;
+      transition: all 0.3s;
+      display: flex;
+      flex-direction: column;
+      gap: 0.3rem;
+    }
+    .post-nav-btn:hover { border-color: rgba(0,217,255,0.3); transform: translateY(-3px); }
+    .post-nav-btn.next  { text-align: right; }
+    .nav-label {
+      font-size: 0.72rem;
+      font-family: 'JetBrains Mono', monospace;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+    .post-nav-btn.next .nav-label { justify-content: flex-end; }
+    .nav-title { font-size: 0.88rem; color: var(--text-primary); font-weight: 600; line-height: 1.3; }
+
+    /* ── Sidebar ─────────────────────────────────────────── */
+    .post-sidebar {
+      align-self: start; /* required for position:sticky to work inside a grid */
+    }
+    .sidebar-sticky {
+      position: sticky; top: 90px;
+      top: 90px; /* sticks just below the fixed navbar and follows the user as they scroll */
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .toc-widget, .info-widget, .tags-widget {
+      background: var(--bg-card);
+      border: 1px solid rgba(0,217,255,0.1);
+      border-radius: var(--radius-lg);
+      padding: 1.5rem;
+    }
+    .widget-title {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.72rem;
+      color: var(--primary);
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      margin-bottom: 1.1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .toc-list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 0.1rem; }
+    .toc-list a {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      padding: 0.45rem 0.6rem;
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 0.85rem;
+      border-radius: 6px;
+      transition: all 0.2s;
+      border-left: 2px solid transparent;
+      line-height: 1.35;
+    }
+    .toc-list a::before {
+      content: ''; width: 5px; height: 5px; border-radius: 50%;
+      background: var(--text-muted); flex-shrink: 0; transition: background 0.2s;
+    }
+    .toc-list a:hover,
+    .toc-list a.active { color: var(--primary); background: rgba(0,217,255,0.06); border-left-color: var(--primary); }
+    .toc-list a:hover::before,
+    .toc-list a.active::before { background: var(--primary); }
+    .toc-list .toc-h3 { padding-left: 1.4rem; font-size: 0.8rem; }
+
+    .info-row { display: flex; align-items: flex-start; gap: 0.75rem; padding: 0.7rem 0; border-bottom: 1px solid rgba(255,255,255,0.04); }
+    .info-row:last-child  { border-bottom: none; padding-bottom: 0; }
+    .info-row:first-child { padding-top: 0; }
+    .info-icon  { color: var(--primary); font-size: 0.8rem; margin-top: 0.15rem; width: 14px; flex-shrink: 0; }
+    .info-label { font-size: 0.72rem; color: var(--text-muted); font-family: 'JetBrains Mono', monospace; margin-bottom: 0.2rem; }
+    .info-value { font-size: 0.85rem; color: var(--text-secondary); }
+    .tags-cloud { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 0.5rem; }
+
+    /* Reading progress ring */
+    .reading-progress-ring {
+      display: flex; align-items: center; gap: 0.75rem;
+      padding: 0.75rem 1rem;
+      background: rgba(0,217,255,0.05);
+      border: 1px solid rgba(0,217,255,0.1);
+      border-radius: var(--radius-md);
+      font-size: 0.8rem; color: var(--text-muted);
+    }
+    .progress-circle { position: relative; width: 36px; height: 36px; flex-shrink: 0; }
+    .progress-circle svg { transform: rotate(-90deg); }
+    .progress-circle .track { fill: none; stroke: rgba(0,217,255,0.1); stroke-width: 3; }
+    .progress-circle .fill {
+      fill: none; stroke: var(--primary); stroke-width: 3; stroke-linecap: round;
+      stroke-dasharray: 88; stroke-dashoffset: 88; transition: stroke-dashoffset 0.1s ease;
+    }
+    .progress-pct {
+      position: absolute; inset: 0;
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'JetBrains Mono', monospace; font-size: 0.6rem; color: var(--primary);
+    }
+
+    /* ── Responsive ──────────────────────────────────────── */
+    @media (max-width: 1000px) {
+      .post-shell { grid-template-columns: 1fr; gap: 2.5rem; }
+      .post-sidebar { order: -1; align-self: auto; }
+      .sidebar-sticky { position: static; flex-direction: row; flex-wrap: wrap; max-height: none; overflow-y: visible; }
+      .toc-widget, .info-widget, .tags-widget { flex: 1 1 260px; }
+      .reading-progress-ring { display: none; }
+      .quick-stats { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 600px) {
+      .post-shell { padding: 2rem 1.25rem 4rem; }
+      .post-hero { height: 320px; }
+      .post-hero-content { padding: 1.5rem; }
+      .post-nav { grid-template-columns: 1fr; }
+      .share-buttons { flex-wrap: wrap; }
+      .quick-stats { grid-template-columns: repeat(2, 1fr); }
+      .result-highlight { flex-direction: column; gap: 0.75rem; }
+    }
+  </style>
+</head>
+<body>
+  <div class="scroll-progress"></div>
+
+  <!-- ══════════════════════ NAVBAR (original, untouched) ══════════════════════ -->
+  <nav id="navbar">
+    <div class="nav-container">
+      <a href="index.html" class="logo"><span class="logo-bracket">&lt;</span>Arnav<span class="logo-bracket">/&gt;</span></a>
+      <ul class="nav-links">
+        <li><a href="aboutme.html"><span class="nav-number">01.</span> About</a></li>
+        <li><a href="skills.html"><span class="nav-number">02.</span> Skills</a></li>
+        <li><a href="projects.html"><span class="nav-number">03.</span> Projects</a></li>
+        <li><a href="certifications.html"><span class="nav-number">04.</span> Certifications</a></li>
+        <li><a href="timeline.html"><span class="nav-number">05.</span> Journey</a></li>
+        <li><a href="contact.html"><span class="nav-number">06.</span> Contact</a></li>
+      </ul>
+      <div class="nav-social">
+        <a href="https://github.com/jainArnav7" target="_blank" rel="noopener" class="social-icon"><i class="fa-brands fa-github"></i></a>
+        <a href="https://www.linkedin.com/in/arnav-jain-b63069354" target="_blank" rel="noopener" class="social-icon"><i class="fa-brands fa-linkedin"></i></a>
+        <button class="theme-toggle" id="themeToggle"><i class="fa-solid fa-moon"></i></button>
+      </div>
+      <div class="hamburger" id="hamburger"><span></span><span></span><span></span></div>
+    </div>
+  </nav>
+
+  <div class="mobile-menu" id="mobileMenu">
+    <ul>
+      <li><a href="index.html"          class="mobile-link"><span>01.</span> Home</a></li>
+      <li><a href="aboutme.html"        class="mobile-link"><span>02.</span> About</a></li>
+      <li><a href="skills.html"         class="mobile-link"><span>03.</span> Skills</a></li>
+      <li><a href="projects.html"       class="mobile-link"><span>04.</span> Projects</a></li>
+      <li><a href="certifications.html" class="mobile-link"><span>05.</span> Certifications</a></li>
+      <li><a href="timeline.html"       class="mobile-link"><span>06.</span> Journey</a></li>
+      <li><a href="contact.html"        class="mobile-link"><span>07.</span> Contact</a></li>
+    </ul>
+  </div>
+
+  <!-- ══════════════════════ HERO (original, untouched) ════════════════════════ -->
+  <div class="post-hero">
+    <div class="post-hero-fallback">
+      <img class="post-hero-img" src="images/hero-portfolio.png" alt="My Portfolio Website">
+    </div>
+    <div class="post-hero-overlay"></div>
+    <div class="post-hero-content">
+      <div class="post-hero-tag"><i class="fa-solid fa-microchip"></i> Web Dev</div>
+      <h1>Building a Portfolio Website From Scratch</h1>
+      <p class="post-hero-sub">Learn how to create a modern, responsive portfolio website from scratch using HTML, CSS, and JavaScript.</p>
+      <div class="post-hero-meta">
+        <span><i class="fa-solid fa-calendar-days"></i> March 12, 2026</span>
+        <span><i class="fa-solid fa-clock"></i> 7 min read</span>
+        <span><i class="fa-solid fa-user"></i> Arnav Jain</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════ -->
+  <div class="post-shell">
+
+    <!-- ── MAIN ARTICLE ──────────────────────────────────── -->
+    <article class="post-article">
+
+      <a href="blog.html" class="post-back">
+        <i class="fa-solid fa-arrow-right"></i> Back to Blog
+      </a>
+
+      <div class="post-divider"></div>
+
+      <div class="post-body">
+
+        <!-- ── Intro ─────────────────────────────────────── -->
+        <h2 id="intro">Why Build a Portfolio Website?</h2>
+
+        <p>If you are learning coding, design, or any tech skill, you will constantly hear one piece of advice: <em>build a portfolio website.</em> A portfolio is simply a place on the internet where you show your work and the projects you have created.</p>
+
+        <p>Think of it like a digital resume — except instead of just telling people what you can do, you actually show them. When someone visits your portfolio, they can see your real projects, read about your skills, and get a sense of who you are as a developer.</p>
+
+        <p>The best part? You do not need complicated tools or expensive software. In this guide, we will build a portfolio from scratch using only three core technologies: <strong>HTML, CSS, and JavaScript</strong>. That is genuinely all you need.</p>
+
+        <div class="callout callout-info">
+          <i class="fa-solid fa-circle-info"></i>
+          <span><strong>Quick tip:</strong> Your portfolio does not need to be huge. Even 2&ndash;3 solid projects and a short introduction can already make a strong first impression on recruiters and collaborators.</span>
+        </div>
+
+        <!-- Quick Stats -->
+        <div class="quick-stats">
+          <div class="stat-card">
+            <div class="stat-icon"><i class="fa-brands fa-html5"></i></div>
+            <div class="stat-value">3</div>
+            <div class="stat-label">Core Technologies</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon"><i class="fa-solid fa-dollar-sign"></i></div>
+            <div class="stat-value">$0</div>
+            <div class="stat-label">Cost to Build</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon"><i class="fa-solid fa-list-check"></i></div>
+            <div class="stat-value">7</div>
+            <div class="stat-label">Steps to Launch</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon"><i class="fa-solid fa-clock"></i></div>
+            <div class="stat-value">~2hrs</div>
+            <div class="stat-label">Time to First Version</div>
+          </div>
+        </div>
+
+        <!-- ── Step 1 ───────────────────────────────────── -->
+        <h2 id="step1">Step 1: Create the Basic HTML Page</h2>
+
+        <p>Every website starts with HTML. HTML is the skeleton &mdash; it tells the browser what content should exist on the page: headings, paragraphs, images, links, and so on. Without HTML, there is no page.</p>
+
+        <p>Start by creating a file called <strong>index.html</strong> &mdash; this will be the main entry point of your portfolio. Open it in any text editor (VS Code is a great free option) and paste in this foundation:</p>
+
+        <div class="code-block">
+          <div class="code-header">
+            <div class="code-dots">
+              <div class="code-dot dot-red"></div>
+              <div class="code-dot dot-yellow"></div>
+              <div class="code-dot dot-green"></div>
+            </div>
+            <span class="code-lang">index.html</span>
+          </div>
+          <pre><span class="cc">&lt;!-- Every HTML page starts with this declaration --&gt;</span>
+<span class="ct">&lt;!DOCTYPE html&gt;</span>
+<span class="ct">&lt;html</span> <span class="ca">lang</span>=<span class="cs">"en"</span><span class="ct">&gt;</span>
+
+<span class="ct">&lt;head&gt;</span>
+  <span class="ct">&lt;meta</span> <span class="ca">charset</span>=<span class="cs">"UTF-8"</span><span class="ct">&gt;</span>
+  <span class="ct">&lt;meta</span> <span class="ca">name</span>=<span class="cs">"viewport"</span> <span class="ca">content</span>=<span class="cs">"width=device-width, initial-scale=1.0"</span><span class="ct">&gt;</span>
+  <span class="ct">&lt;title&gt;</span>My Portfolio<span class="ct">&lt;/title&gt;</span>
+  <span class="ct">&lt;link</span> <span class="ca">rel</span>=<span class="cs">"stylesheet"</span> <span class="ca">href</span>=<span class="cs">"styles.css"</span><span class="ct">&gt;</span>
+<span class="ct">&lt;/head&gt;</span>
+
+<span class="ct">&lt;body&gt;</span>
+  <span class="ct">&lt;h1&gt;</span>Hello! I&apos;m Arnav<span class="ct">&lt;/h1&gt;</span>
+  <span class="ct">&lt;p&gt;</span>Welcome to my portfolio website.<span class="ct">&lt;/p&gt;</span>
+<span class="ct">&lt;/body&gt;</span>
+
+<span class="ct">&lt;/html&gt;</span></pre>
+        </div>
+
+        <p>Open this file in any browser by double-clicking it. You will see your very first webpage &mdash; a heading and a paragraph. It is simple, but it works. Everything else we build is just adding on top of this.</p>
+
+        <!-- ── Step 2 ───────────────────────────────────── -->
+        <h2 id="step2">Step 2: Add Portfolio Sections</h2>
+
+        <p>A raw webpage with a single heading is a start, but a real portfolio needs organized sections that visitors can scan and navigate. Think about what someone who just landed on your site would want to know about you.</p>
+
+        <p>Most portfolios include these four core sections:</p>
+
+        <ul>
+          <li><strong>About</strong> &mdash; who you are, where you go to school, what you are working on</li>
+          <li><strong>Projects</strong> &mdash; the things you have actually built, with descriptions and links</li>
+          <li><strong>Skills</strong> &mdash; languages, frameworks, and tools you know</li>
+          <li><strong>Contact</strong> &mdash; how people can reach you (email, GitHub, LinkedIn)</li>
+        </ul>
+
+        <p>Use HTML <code style="font-family:'JetBrains Mono',monospace;font-size:0.88em;background:rgba(0,217,255,0.07);padding:0.15rem 0.45rem;border-radius:4px;color:var(--primary);">&lt;section&gt;</code> tags to group these areas clearly:</p>
+
+        <div class="code-block">
+          <div class="code-header">
+            <div class="code-dots">
+              <div class="code-dot dot-red"></div>
+              <div class="code-dot dot-yellow"></div>
+              <div class="code-dot dot-green"></div>
+            </div>
+            <span class="code-lang">index.html &mdash; sections</span>
+          </div>
+          <pre><span class="ct">&lt;section</span> <span class="ca">id</span>=<span class="cs">"about"</span><span class="ct">&gt;</span>
+  <span class="ct">&lt;h2&gt;</span>About Me<span class="ct">&lt;/h2&gt;</span>
+  <span class="ct">&lt;p&gt;</span>I am a student developer who enjoys building websites
+  and learning new technologies.<span class="ct">&lt;/p&gt;</span>
+<span class="ct">&lt;/section&gt;</span>
+
+<span class="ct">&lt;section</span> <span class="ca">id</span>=<span class="cs">"projects"</span><span class="ct">&gt;</span>
+  <span class="ct">&lt;h2&gt;</span>Projects<span class="ct">&lt;/h2&gt;</span>
+  <span class="ct">&lt;p&gt;</span>Here are some things I have built.<span class="ct">&lt;/p&gt;</span>
+<span class="ct">&lt;/section&gt;</span>
+
+<span class="ct">&lt;section</span> <span class="ca">id</span>=<span class="cs">"contact"</span><span class="ct">&gt;</span>
+  <span class="ct">&lt;h2&gt;</span>Contact<span class="ct">&lt;/h2&gt;</span>
+  <span class="ct">&lt;p&gt;</span>Email: hello@example.com<span class="ct">&lt;/p&gt;</span>
+<span class="ct">&lt;/section&gt;</span></pre>
+        </div>
+
+        <p>Now your page has structure. Visitors can scroll through and understand exactly what each area is for.</p>
+
+        <!-- ── Step 3 ───────────────────────────────────── -->
+        <h2 id="step3">Step 3: Add Styling With CSS</h2>
+
+        <p>Right now your page works, but it looks completely unstyled &mdash; plain black text on a white background. This is where <strong>CSS</strong> comes in. CSS controls everything visual: colors, fonts, spacing, layout, and how the page feels overall.</p>
+
+        <p>Create a new file called <strong>styles.css</strong> in the same folder as your HTML file. Here is a clean starting point:</p>
+
+        <div class="code-block">
+          <div class="code-header">
+            <div class="code-dots">
+              <div class="code-dot dot-red"></div>
+              <div class="code-dot dot-yellow"></div>
+              <div class="code-dot dot-green"></div>
+            </div>
+            <span class="code-lang">styles.css</span>
+          </div>
+          <pre><span class="cc">/* Reset defaults and set a clean base */</span>
+<span class="ck">*</span> {
+  <span class="ca">box-sizing</span>: <span class="cs">border-box</span>;
+  <span class="ca">margin</span>: <span class="cs">0</span>;
+  <span class="ca">padding</span>: <span class="cs">0</span>;
+}
+
+<span class="ck">body</span> {
+  <span class="ca">font-family</span>: <span class="cs">'Inter', Arial, sans-serif</span>;
+  <span class="ca">background</span>: <span class="cs">#f5f5f5</span>;
+  <span class="ca">color</span>: <span class="cs">#111</span>;
+  <span class="ca">line-height</span>: <span class="cs">1.7</span>;
+}
+
+<span class="ck">section</span> {
+  <span class="ca">background</span>: <span class="cs">white</span>;
+  <span class="ca">padding</span>: <span class="cs">2rem</span>;
+  <span class="ca">margin</span>: <span class="cs">2rem auto</span>;
+  <span class="ca">max-width</span>: <span class="cs">800px</span>;
+  <span class="ca">border-radius</span>: <span class="cs">12px</span>;
+  <span class="ca">box-shadow</span>: <span class="cs">0 2px 12px rgba(0,0,0,0.07)</span>;
+}</pre>
+        </div>
+
+        <p>Refresh the browser after linking this file and your page will look dramatically cleaner right away.</p>
+
+        <div class="callout callout-tip">
+          <i class="fa-solid fa-lightbulb"></i>
+          <span><strong>Pro tip:</strong> <a href="https://fonts.google.com" target="_blank" rel="noopener">Google Fonts</a> gives you access to hundreds of free, professional fonts. Add one line to your <code style="font-family:'JetBrains Mono',monospace;font-size:0.85em;">&lt;head&gt;</code> and your typography will instantly look more polished than the default system fonts.</span>
+        </div>
+
+        <!-- ── Step 4 ───────────────────────────────────── -->
+        <h2 id="step4">Step 4: Show Your Projects</h2>
+
+        <p>The projects section is the heart of any portfolio. This is the part recruiters and collaborators actually care about &mdash; it shows that you have built real things, not just watched tutorials.</p>
+
+        <p>Each project entry should answer three questions: what is it, what does it do, and where can I see it? Give every project a name, a short description, and a link to either a live demo or the GitHub repo.</p>
+
+        <div class="code-block">
+          <div class="code-header">
+            <div class="code-dots">
+              <div class="code-dot dot-red"></div>
+              <div class="code-dot dot-yellow"></div>
+              <div class="code-dot dot-green"></div>
+            </div>
+            <span class="code-lang">index.html &mdash; projects section</span>
+          </div>
+          <pre><span class="ct">&lt;section</span> <span class="ca">id</span>=<span class="cs">"projects"</span><span class="ct">&gt;</span>
+  <span class="ct">&lt;h2&gt;</span>Projects<span class="ct">&lt;/h2&gt;</span>
+
+  <span class="ct">&lt;div</span> <span class="ca">class</span>=<span class="cs">"project-card"</span><span class="ct">&gt;</span>
+    <span class="ct">&lt;h3&gt;</span>AI Homework Helper<span class="ct">&lt;/h3&gt;</span>
+    <span class="ct">&lt;p&gt;</span>A Chrome extension that explains homework questions using AI.<span class="ct">&lt;/p&gt;</span>
+    <span class="ct">&lt;a</span> <span class="ca">href</span>=<span class="cs">"https://github.com/jainArnav7"</span><span class="ct">&gt;</span>View on GitHub &rarr;<span class="ct">&lt;/a&gt;</span>
+  <span class="ct">&lt;/div&gt;</span>
+
+  <span class="ct">&lt;div</span> <span class="ca">class</span>=<span class="cs">"project-card"</span><span class="ct">&gt;</span>
+    <span class="ct">&lt;h3&gt;</span>Personal Blog<span class="ct">&lt;/h3&gt;</span>
+    <span class="ct">&lt;p&gt;</span>A blog where I write about coding and technology.<span class="ct">&lt;/p&gt;</span>
+    <span class="ct">&lt;a</span> <span class="ca">href</span>=<span class="cs">"blog.html"</span><span class="ct">&gt;</span>Read the Blog &rarr;<span class="ct">&lt;/a&gt;</span>
+  <span class="ct">&lt;/div&gt;</span>
+
+<span class="ct">&lt;/section&gt;</span></pre>
+        </div>
+
+        <p>Even two projects is enough to get started. The key is to have something real and linkable &mdash; not just placeholder text. You can always add more as you build them.</p>
+
+        <!-- ── Step 5 ───────────────────────────────────── -->
+        <h2 id="step5">Step 5: Make It Responsive</h2>
+
+        <p>A large portion of people who visit your portfolio will be on a phone or tablet, not a desktop. If your site only looks good on a wide screen, you are losing a big chunk of your audience right away.</p>
+
+        <p>Making a site look good across all screen sizes is called <strong>responsive design</strong>. In CSS, you do this with <em>media queries</em> &mdash; rules that only apply when the screen is a certain width.</p>
+
+        <div class="code-block">
+          <div class="code-header">
+            <div class="code-dots">
+              <div class="code-dot dot-red"></div>
+              <div class="code-dot dot-yellow"></div>
+              <div class="code-dot dot-green"></div>
+            </div>
+            <span class="code-lang">styles.css &mdash; responsive</span>
+          </div>
+          <pre><span class="cc">/* Layout for tablets and desktops */</span>
+<span class="ck">.project-grid</span> {
+  <span class="ca">display</span>: <span class="cs">grid</span>;
+  <span class="ca">grid-template-columns</span>: <span class="cs">repeat(2, 1fr)</span>;
+  <span class="ca">gap</span>: <span class="cs">1.5rem</span>;
+}
+
+<span class="cc">/* Stack to single column on phones */</span>
+<span class="ck">@media</span> (max-width: <span class="cs">600px</span>) {
+  <span class="ck">.project-grid</span> {
+    <span class="ca">grid-template-columns</span>: <span class="cs">1fr</span>;
+  }
+  <span class="ck">body</span> {
+    <span class="ca">padding</span>: <span class="cs">1rem</span>;
+  }
+}</pre>
+        </div>
+
+        <p>Always test your portfolio by resizing your browser window &mdash; or use the built-in device simulator in your browser (press F12, then click the phone icon). Your site should look clean at every width.</p>
+
+        <!-- ── Step 6 ───────────────────────────────────── -->
+        <h2 id="step6">Step 6: Add Small JavaScript Features</h2>
+
+        <p>JavaScript is what makes a website feel alive and polished. You do not need to write complex code &mdash; even small interactive touches make your portfolio feel noticeably more professional.</p>
+
+        <p>Some great additions that are beginner-friendly:</p>
+
+        <ul>
+          <li><strong>Dark / light mode toggle</strong> &mdash; saves the user&apos;s preference in localStorage</li>
+          <li><strong>Hamburger menu</strong> &mdash; shows and hides navigation on mobile screens</li>
+          <li><strong>Smooth scrolling</strong> &mdash; anchor links glide instead of jumping abruptly</li>
+          <li><strong>Fade-in animations</strong> &mdash; sections animate into view as you scroll down</li>
+        </ul>
+
+        <div class="code-block">
+          <div class="code-header">
+            <div class="code-dots">
+              <div class="code-dot dot-red"></div>
+              <div class="code-dot dot-yellow"></div>
+              <div class="code-dot dot-green"></div>
+            </div>
+            <span class="code-lang">scripts.js &mdash; dark mode toggle</span>
+          </div>
+          <pre><span class="cc">// Toggle dark mode and remember the choice</span>
+<span class="ck">const</span> toggle = document.<span class="ca">getElementById</span>(<span class="cs">'themeToggle'</span>);
+
+toggle.<span class="ca">addEventListener</span>(<span class="cs">'click'</span>, () => {
+  <span class="ck">const</span> current = document.body.<span class="ca">getAttribute</span>(<span class="cs">'data-theme'</span>);
+  <span class="ck">const</span> next = current === <span class="cs">'dark'</span> ? <span class="cs">'light'</span> : <span class="cs">'dark'</span>;
+  document.body.<span class="ca">setAttribute</span>(<span class="cs">'data-theme'</span>, next);
+  localStorage.<span class="ca">setItem</span>(<span class="cs">'theme'</span>, next);
+});</pre>
+        </div>
+
+        <div class="callout callout-info">
+          <i class="fa-solid fa-circle-info"></i>
+          <span>You do not need to write all of this from scratch. Reading how other developers built these features &mdash; then adapting the code for your own site &mdash; is exactly how most developers actually learn JavaScript.</span>
+        </div>
+
+        <!-- ── Step 7 ───────────────────────────────────── -->
+        <h2 id="step7">Step 7: Publish Your Portfolio Online</h2>
+
+        <p>A portfolio that only lives on your laptop does not do you much good. Once your site looks solid, you need to put it on the internet so anyone with a link can see it.</p>
+
+        <p>The three best free hosting options for static portfolios are:</p>
+
+        <div class="tools-grid">
+          <span class="tool-tag"><i class="fa-brands fa-github"></i> GitHub Pages</span>
+          <span class="tool-tag"><i class="fa-solid fa-globe"></i> Netlify</span>
+          <span class="tool-tag"><i class="fa-solid fa-bolt"></i> Vercel</span>
+        </div>
+
+        <p>All three are completely free for personal projects. <strong>GitHub Pages</strong> is the easiest starting point &mdash; push your files to a repository, enable Pages in the settings, and your site is live at a <code style="font-family:'JetBrains Mono',monospace;font-size:0.88em;background:rgba(0,217,255,0.07);padding:0.15rem 0.45rem;border-radius:4px;color:var(--primary);">username.github.io</code> URL within minutes.</p>
+
+        <div class="callout callout-tip">
+          <i class="fa-solid fa-lightbulb"></i>
+          <span><strong>Bonus:</strong> Hosting on <a href="https://pages.github.com" target="_blank" rel="noopener">GitHub Pages</a> means recruiters can also see your commit history &mdash; real proof that you are writing and improving code over time. That matters more than most people realize.</span>
+        </div>
+
+        <!-- ── Tools ───────────────────────────────────── -->
+        <h2 id="tools">Tools Used in This Project</h2>
+
+        <p>Here is the complete toolkit for everything in this guide. No paid software, no complex setup &mdash; just the core trio that every web developer starts with:</p>
+
+        <div class="tools-grid">
+          <span class="tool-tag"><i class="fa-brands fa-html5"></i> HTML5</span>
+          <span class="tool-tag"><i class="fa-brands fa-css3-alt"></i> CSS3</span>
+          <span class="tool-tag"><i class="fa-brands fa-js"></i> JavaScript</span>
+          <span class="tool-tag"><i class="fa-brands fa-github"></i> GitHub Pages</span>
+          <span class="tool-tag"><i class="fa-solid fa-code"></i> VS Code</span>
+        </div>
+
+        <p>These are the foundational skills that every web developer builds on top of. Frameworks and libraries come later &mdash; but if you understand HTML, CSS, and JavaScript well, picking up React or any other tool becomes much easier.</p>
+
+        <!-- ── Conclusion ───────────────────────────────── -->
+        <h2 id="conclusion">Final Thoughts</h2>
+
+        <p>Building a portfolio website is one of the best first projects you can take on as a developer. It is practical, it is personal, and it directly teaches you the three fundamental layers of the web &mdash; structure, style, and behavior &mdash; all in one project.</p>
+
+        <p>The best part is that a portfolio is never truly "done." Every new project you build, every new skill you learn, you can add it to your site. It grows with you.</p>
+
+        <p>Do not wait until you feel ready. Start with something simple, get it online, and improve it over time. A real, live portfolio &mdash; even a basic one &mdash; will always beat a perfect one that never gets published.</p>
+
+        <blockquote>
+          Building projects is how you learn. A portfolio simply shows the world what you built.
+          <cite>— Arnav Jain</cite>
+        </blockquote>
+            <!-- ═══════════════ END POST BODY ═══════════════════ -->
+
+      <!-- Footer: tags + share + nav -->
+      <div class="post-footer">
+
+        <div class="post-tags-row">
+          <span class="post-tag-pill pill-web"><i class="fa-solid fa-code"></i> Web Dev</span>
+          <span class="post-tag-pill pill-static"><i class="fa-solid fa-file-code"></i> Static Sites</span>
+        </div>
+
+        <div class="share-section">
+          <p class="share-label">// share_post()</p>
+          <div class="share-buttons">
+            <a class="share-btn share-twitter" id="shareTwitter" href="#" target="_blank" rel="noopener">
+              <i class="fa-brands fa-x-twitter"></i> Share on X
+            </a>
+            <a class="share-btn share-linkedin" id="shareLinkedin" href="#" target="_blank" rel="noopener">
+              <i class="fa-brands fa-linkedin"></i> Share on LinkedIn
+            </a>
+            <button class="share-btn share-copy" id="copyLink">
+              <i class="fa-solid fa-link"></i> <span id="copyText">Copy Link</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="post-nav">
+          <a href="#" class="post-nav-btn prev">
+            <span class="nav-label"><i class="fa-solid fa-arrow-left"></i> Previous</span>
+            <span class="nav-title">What I Learned Building My First ML Model</span>
+          </a>
+          <a href="blog-tsa-2025.html" class="post-nav-btn next">
+            <span class="nav-label">Next <i class="fa-solid fa-arrow-right"></i></span>
+            <span class="nav-title">My First Year Competing in TSA</span>
+          </a>
+        </div>
+
+      </div>
+    </article>
+
+    <!-- ── SIDEBAR ────────────────────────────────────────── -->
+    <aside class="post-sidebar">
+      <div class="sidebar-sticky">
+
+        <div class="reading-progress-ring">
+          <div class="progress-circle">
+            <svg viewBox="0 0 36 36" width="36" height="36">
+              <circle class="track" cx="18" cy="18" r="14"/>
+              <circle class="fill"  cx="18" cy="18" r="14" id="progressFill"/>
+            </svg>
+            <div class="progress-pct" id="progressPct">0%</div>
+          </div>
+          <span>Reading progress</span>
+        </div>
+
+        <div class="toc-widget">
+          <div class="widget-title"><i class="fa-solid fa-list"></i> Table of Contents</div>
+          <ul class="toc-list" id="tocList">
+            <li><a href="#intro">Why Build a Portfolio Website?</a></li>
+            <li><a href="#step1">Step 1: Create the Basic HTML Page</a></li>
+            <li><a href="#step2">Step 2: Add Portfolio Sections</a></li>
+            <li><a href="#step3">Step 3: Add Styling With CSS</a></li>
+            <li><a href="#step4">Step 4: Show Your Projects</a></li>
+            <li><a href="#step5">Step 5: Make It Responsive</a></li>
+            <li><a href="#step6">Step 6: Add JavaScript Features</a></li>
+            <li><a href="#step7">Step 7: Publish Online</a></li>
+            <li><a href="#tools">Tools Used in This Project</a></li>
+            <li><a href="#conclusion">Final Thoughts</a></li>
+          </ul>
+        </div>
+
+        <div class="info-widget">
+          <div class="widget-title"><i class="fa-solid fa-circle-info"></i> Post Info</div>
+          <div class="info-row">
+            <i class="fa-solid fa-calendar-days info-icon"></i>
+            <div>
+              <div class="info-label">Published</div>
+              <div class="info-value">March 11, 2026</div>
+            </div>
+          </div>
+          <div class="info-row">
+            <i class="fa-solid fa-clock info-icon"></i>
+            <div>
+              <div class="info-label">Read Time</div>
+              <div class="info-value">~7 minutes</div>
+            </div>
+          </div>
+          <div class="info-row">
+            <i class="fa-solid fa-folder info-icon"></i>
+            <div>
+              <div class="info-label">Category</div>
+              <div class="info-value">Web Dev</div>
+            </div>
+          </div>
+          <div class="info-row">
+            <i class="fa-solid fa-user info-icon"></i>
+            <div>
+              <div class="info-label">Author</div>
+              <div class="info-value">Arnav Jain</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="tags-widget">
+          <div class="widget-title"><i class="fa-solid fa-tags"></i> Tags</div>
+          <div class="tags-cloud">
+            <span class="post-tag-pill pill-web">Web Dev</span>
+            <span class="post-tag-pill pill-static">Static Sites</span>
+          </div>
+        </div>
+
+      </div>
+    </aside>
+
+  </div><!-- /post-shell -->
+
+  <footer>
+    <div class="footer-content">
+      <div class="footer-text">
+        <p>Designed &amp; Built by <span class="highlight">Arnav Jain</span></p>
+        <p>&copy; 2026 All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="scripts.js"></script>
+  <script>
+    // ── Reading progress ring ───────────────────────────────
+    const fillEl        = document.getElementById('progressFill');
+    const pctEl         = document.getElementById('progressPct');
+    const circumference = 2 * Math.PI * 14;
+
+    function updateProgress() {
+      const body   = document.documentElement;
+      const total  = body.scrollHeight - body.clientHeight;
+      const pct    = total > 0 ? Math.round((window.scrollY / total) * 100) : 0;
+      const offset = circumference - (pct / 100) * circumference;
+      if (fillEl) {
+        fillEl.style.strokeDasharray  = circumference;
+        fillEl.style.strokeDashoffset = offset;
+      }
+      if (pctEl) pctEl.textContent = pct + '%';
+    }
+    window.addEventListener('scroll', updateProgress, { passive: true });
+    updateProgress();
+
+    // ── Active TOC highlight ────────────────────────────────
+    const headings = document.querySelectorAll('.post-body h2[id]');
+    const tocLinks = document.querySelectorAll('#tocList a');
+
+    function updateTOC() {
+      let active = null;
+      headings.forEach(h => {
+        if (window.scrollY >= h.offsetTop - 120) active = h.id;
+      });
+      tocLinks.forEach(a => {
+        a.classList.toggle('active', a.getAttribute('href') === '#' + active);
+      });
+    }
+    window.addEventListener('scroll', updateTOC, { passive: true });
+    updateTOC();
+
+    // ── Share buttons ───────────────────────────────────────
+    const url   = encodeURIComponent(window.location.href);
+    const title = encodeURIComponent(document.title);
+    const tw    = document.getElementById('shareTwitter');
+    const li    = document.getElementById('shareLinkedin');
+    if (tw) tw.href = `https://twitter.com/intent/tweet?url=${url}&text=${title}`;
+    if (li) li.href = `https://www.linkedin.com/sharing/share-offsite/?url=${url}`;
+
+    document.getElementById('copyLink')?.addEventListener('click', () => {
+      const copyText = document.getElementById('copyText');
+      navigator.clipboard.writeText(window.location.href)
+        .then(() => {
+          if (copyText) copyText.textContent = 'Copied!';
+          setTimeout(() => {
+            if (copyText) copyText.textContent = 'Copy Link';
+          }, 1800);
+        })
+        .catch(() => {
+          if (copyText) copyText.textContent = 'Copy failed';
+        });
+    });
+  </script>
+</body>
+</html>
